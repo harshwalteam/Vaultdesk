@@ -1,0 +1,56 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.16/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.16",
+  "version": "1.0.0",
+  "id": "vaultdesk-harshwal-ai-2025",
+  "packageName": "com.harshwal.vaultdesk",
+  "developer": {
+    "name": "Harshwal Consulting Services Pvt Ltd",
+    "websiteUrl": "https://harshwal.com",
+    "privacyUrl": "https://harshwal.com/privacy",
+    "termsOfUseUrl": "https://harshwal.com/terms"
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "name": {
+    "short": "VaultDesk",
+    "full": "VaultDesk \u2014 AI Vault Purchase Request"
+  },
+  "description": {
+    "short": "Raise AI tool purchase requests",
+    "full": "Harshwal AI Vault \u2014 Submit purchase requests for any AI tool, SaaS subscription, API, or technology. Auto-fills your Teams profile. Routes to aivault@harshwal.com for approval."
+  },
+  "accentColor": "#7c3aed",
+  "staticTabs": [
+    {
+      "entityId": "vaultdesk-purchase-form",
+      "name": "VaultDesk",
+      "contentUrl": "https://harshalteam.github.io/vaultdesk/",
+      "websiteUrl": "https://harshalteam.github.io/vaultdesk/",
+      "scopes": [
+        "personal",
+        "team"
+      ]
+    }
+  ],
+  "configurableTabs": [
+    {
+      "configurationUrl": "https://harshalteam.github.io/vaultdesk/?config=true",
+      "canUpdateConfiguration": false,
+      "scopes": [
+        "team",
+        "groupchat"
+      ]
+    }
+  ],
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ],
+  "validDomains": [
+    ""harshalteam.github.io""
+  ],
+  
+}
