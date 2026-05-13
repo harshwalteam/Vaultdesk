@@ -265,8 +265,8 @@ input[type="date"].field-input{color-scheme:light}
       <div class="q-num">Q1</div>
       <label class="q-title" for="q1_tool_name">Tool / Service Name <span class="req">*</span></label>
       <p class="q-hint">Exact product name — e.g. "Claude API (Anthropic)", "GitHub Copilot Business"</p>
-      <input type="text" id="q1_tool_name" class="field-input" placeholder='e.g. "Notion AI"' oninput="validateA()" />
-      <div class="inline-warn">⚠ A similar tool may already be active. Check the existing register before proceeding.</div>
+      <input type="text" id="q1_tool_name" class="field-input" placeholder='e.g. "Notion AI"' oninput="validateA(); checkDuplicate();" />
+      <div class="inline-warn" id="warn_duplicate" style="display:none">⚠ A similar tool may already be active. Check the existing register before proceeding.</div>
     </div>
 
     <!-- Q2 Department -->
@@ -776,6 +776,10 @@ function pickRadio(groupId, el, value) {
 }
 
 /* ── STEP A ── */
+function checkDuplicate() {
+  var val = document.getElementById('q1_tool_name').value.trim();
+  document.getElementById('warn_duplicate').style.display = val.length > 0 ? 'flex' : 'none';
+}
 function handleQ2Change() {
   var sel = document.getElementById('q2_dept').value;
   var inp = document.getElementById('q2_dept_other');
