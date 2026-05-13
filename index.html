@@ -265,8 +265,7 @@ input[type="date"].field-input{color-scheme:light}
       <div class="q-num">Q1</div>
       <label class="q-title" for="q1_tool_name">Tool / Service Name <span class="req">*</span></label>
       <p class="q-hint">Exact product name — e.g. "Claude API (Anthropic)", "GitHub Copilot Business"</p>
-      <input type="text" id="q1_tool_name" class="field-input" placeholder='e.g. "Notion AI"' oninput="validateA(); checkDuplicate();" />
-      <div class="inline-warn" id="warn_duplicate" style="display:none">⚠ A similar tool may already be active. Check the existing register before proceeding.</div>
+      <input type="text" id="q1_tool_name" class="field-input" placeholder='e.g. "Notion AI"' oninput="validateA()" />
     </div>
 
     <!-- Q2 Department -->
@@ -400,17 +399,7 @@ input[type="date"].field-input{color-scheme:light}
     <div class="form-card">
       <div class="q-num">Q9</div>
       <label class="q-title" for="q9_owner">Project Owner / Manager <span class="req">*</span></label>
-      <div class="select-wrap">
-        <select id="q9_owner" onchange="handleQ9Change(); validateB();">
-          <option value="">Select or type…</option>
-          <option value="lokesh">Lokesh</option>
-          <option value="priya">Priya</option>
-          <option value="amit">Amit</option>
-          <option value="sanwar">Sanwar Harshwal</option>
-          <option value="other">Other — type below ↓</option>
-        </select>
-      </div>
-      <input type="text" id="q9_owner_other" class="field-input other-input" placeholder="Type owner name…" oninput="validateB()" style="display:none" />
+      <input type="text" id="q9_owner" class="field-input" placeholder="Type owner name…" oninput="validateB()" />
     </div>
 
     <!-- Q10 Tool Scope -->
@@ -442,10 +431,6 @@ input[type="date"].field-input{color-scheme:light}
       <div class="select-wrap">
         <select id="q11_primary_user" onchange="handleQ11Change(); validateB();">
           <option value="">Select primary user…</option>
-          <option value="lokesh">Lokesh</option>
-          <option value="priya">Priya</option>
-          <option value="amit">Amit</option>
-          <option value="sanwar">Sanwar Harshwal</option>
           <option value="department">Department</option>
           <option value="dm_dept">DM Dept</option>
           <option value="other">Other — type below ↓</option>
@@ -589,34 +574,14 @@ input[type="date"].field-input{color-scheme:light}
     <div class="form-card">
       <div class="q-num">Q6</div>
       <label class="q-title" for="q6_requested_by">Requested By <span class="req">*</span></label>
-      <div class="select-wrap">
-        <select id="q6_requested_by" onchange="handleQ6Change(); validateD();">
-          <option value="">Select your name…</option>
-          <option value="lokesh">Lokesh</option>
-          <option value="priya">Priya</option>
-          <option value="amit">Amit</option>
-          <option value="sanwar">Sanwar Harshwal</option>
-          <option value="other">Other — type below ↓</option>
-        </select>
-      </div>
-      <input type="text" id="q6_requested_other" class="field-input other-input" placeholder="Type name…" oninput="validateD()" style="display:none" />
-      <p class="confirm-email">Confirmation email → <span id="q6_email_display">—</span></p>
+      <input type="text" id="q6_requested_by" class="field-input" placeholder="Type your name…" oninput="validateD()" />
     </div>
 
     <!-- Q20 Reporting Manager -->
     <div class="form-card">
       <div class="q-num">Q20</div>
       <label class="q-title" for="q20_manager">Reporting Manager <span class="req">*</span></label>
-      <div class="select-wrap">
-        <select id="q20_manager" onchange="handleQ20Change(); validateD();">
-          <option value="">Select reporting manager…</option>
-          <option value="sanwar">Sanwar Harshwal</option>
-          <option value="lokesh">Lokesh</option>
-          <option value="priya">Priya</option>
-          <option value="other">Other — type below ↓</option>
-        </select>
-      </div>
-      <input type="text" id="q20_manager_other" class="field-input other-input" placeholder="Type name…" oninput="validateD()" style="display:none" />
+      <input type="text" id="q20_manager" class="field-input" placeholder="Type manager name…" oninput="validateD()" />
     </div>
 
     <!-- Q18 Subscription Manager -->
@@ -624,17 +589,7 @@ input[type="date"].field-input{color-scheme:light}
       <div class="q-num">Q18</div>
       <label class="q-title" for="q18_sub_manager">Subscription Manager <span class="req">*</span></label>
       <p class="q-hint">Who manages licence, renewals, and billing?</p>
-      <div class="select-wrap">
-        <select id="q18_sub_manager" onchange="handleQ18Change(); validateD();">
-          <option value="">Select subscription manager…</option>
-          <option value="lokesh">Lokesh</option>
-          <option value="priya">Priya</option>
-          <option value="amit">Amit</option>
-          <option value="sanwar">Sanwar Harshwal</option>
-          <option value="other">Other — type below ↓</option>
-        </select>
-      </div>
-      <input type="text" id="q18_sub_other" class="field-input other-input" placeholder="Type name…" oninput="validateD()" style="display:none" />
+      <input type="text" id="q18_sub_manager" class="field-input" placeholder="Type subscription manager name…" oninput="validateD()" />
     </div>
 
     <!-- Q19 Required By Date -->
@@ -779,10 +734,6 @@ function pickRadio(groupId, el, value) {
 }
 
 /* ── STEP A ── */
-function checkDuplicate() {
-  var val = document.getElementById('q1_tool_name').value.trim();
-  document.getElementById('warn_duplicate').style.display = val.length > 0 ? 'flex' : 'none';
-}
 function handleQ2Change() {
   var sel = document.getElementById('q2_dept').value;
   var inp = document.getElementById('q2_dept_other');
@@ -811,12 +762,6 @@ function validateA() { if (isStepAValid()) document.getElementById('err-a').clas
 function handleQ8Change() {
   var sel = document.getElementById('q8_project').value;
   var inp = document.getElementById('q8_project_other');
-  inp.style.display = (sel === 'other') ? 'block' : 'none';
-  if (sel !== 'other') inp.value = '';
-}
-function handleQ9Change() {
-  var sel = document.getElementById('q9_owner').value;
-  var inp = document.getElementById('q9_owner_other');
   inp.style.display = (sel === 'other') ? 'block' : 'none';
   if (sel !== 'other') inp.value = '';
 }
@@ -857,9 +802,8 @@ function isStepBValid() {
   var proj = document.getElementById('q8_project').value;
   if (!proj) return false;
   if (proj === 'other' && !document.getElementById('q8_project_other').value.trim()) return false;
-  var owner = document.getElementById('q9_owner').value;
-  if (!owner) return false;
-  if (owner === 'other' && !document.getElementById('q9_owner_other').value.trim()) return false;
+  /* Q9 is now a plain text input */
+  if (!document.getElementById('q9_owner').value.trim()) return false;
   if (!radioState['rg_scope']) return false;
   var pUser = document.getElementById('q11_primary_user').value;
   if (!pUser) return false;
@@ -881,29 +825,6 @@ function isStepCValid() {
 function validateC() { if (isStepCValid()) document.getElementById('err-c').classList.remove('show'); }
 
 /* ── STEP D ── */
-function handleQ6Change() {
-  var sel = document.getElementById('q6_requested_by').value;
-  var inp = document.getElementById('q6_requested_other');
-  inp.style.display = (sel === 'other') ? 'block' : 'none';
-  if (sel !== 'other') inp.value = '';
-  var map = { lokesh:'lokesh@harshwal.com', priya:'priya@harshwal.com', amit:'amit@harshwal.com', sanwar:'sanwar@harshwal.com' };
-  document.getElementById('q6_email_display').textContent = map[sel] || (sel === 'other' ? '(enter name above)' : '—');
-  validateD();
-}
-function handleQ20Change() {
-  var sel = document.getElementById('q20_manager').value;
-  var inp = document.getElementById('q20_manager_other');
-  inp.style.display = (sel === 'other') ? 'block' : 'none';
-  if (sel !== 'other') inp.value = '';
-  validateD();
-}
-function handleQ18Change() {
-  var sel = document.getElementById('q18_sub_manager').value;
-  var inp = document.getElementById('q18_sub_other');
-  inp.style.display = (sel === 'other') ? 'block' : 'none';
-  if (sel !== 'other') inp.value = '';
-  validateD();
-}
 (function setMinDate() {
   var d = new Date(), added = 0;
   while (added < 5) { d.setDate(d.getDate() + 1); var day = d.getDay(); if (day !== 0 && day !== 6) added++; }
@@ -911,15 +832,9 @@ function handleQ18Change() {
   if (el) el.min = d.toISOString().split('T')[0];
 })();
 function isStepDValid() {
-  var reqBy = document.getElementById('q6_requested_by').value;
-  if (!reqBy) return false;
-  if (reqBy === 'other' && !document.getElementById('q6_requested_other').value.trim()) return false;
-  var mgr = document.getElementById('q20_manager').value;
-  if (!mgr) return false;
-  if (mgr === 'other' && !document.getElementById('q20_manager_other').value.trim()) return false;
-  var sub = document.getElementById('q18_sub_manager').value;
-  if (!sub) return false;
-  if (sub === 'other' && !document.getElementById('q18_sub_other').value.trim()) return false;
+  if (!document.getElementById('q6_requested_by').value.trim()) return false;
+  if (!document.getElementById('q20_manager').value.trim()) return false;
+  if (!document.getElementById('q18_sub_manager').value.trim()) return false;
   if (!document.getElementById('q19_date').value) return false;
   return true;
 }
@@ -936,8 +851,7 @@ function updateDeclare() {
 /* ── SUBMIT ── */
 function handleSubmit() {
   var toolName = document.getElementById('q1_tool_name').value.trim();
-  var reqBy    = document.getElementById('q6_requested_by').value;
-  var reqName  = (reqBy === 'other') ? document.getElementById('q6_requested_other').value.trim() : reqBy;
+  var reqName  = document.getElementById('q6_requested_by').value.trim();
   document.getElementById('success-meta').textContent = '"' + toolName + '" requested by ' + reqName;
   document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
   document.getElementById('successScreen').classList.add('active');
