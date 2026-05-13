@@ -699,6 +699,17 @@ var radioState = {};
 var userTags   = [];
 var roiSelected = new Set();
 
+/* ── ROI MULTI-SELECT ── */
+function toggleRoi(el, value) {
+  if (roiSelected.has(value)) {
+    roiSelected.delete(value);
+    el.classList.remove('selected');
+  } else {
+    roiSelected.add(value);
+    el.classList.add('selected');
+  }
+}
+
 /* ── NAVIGATION ── */
 function goTo(toStep, fromStep, validatorFn) {
   /* Auto-add any pending name in Q12 input before validating */
