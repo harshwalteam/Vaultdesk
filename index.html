@@ -744,6 +744,9 @@ var userTags   = [];
 
 /* ── NAVIGATION ── */
 function goTo(toStep, fromStep, validatorFn) {
+  /* Auto-add any pending name in Q12 input before validating */
+  var q12inp = document.getElementById('q12_user_input');
+  if (q12inp && q12inp.value.trim()) { addUserTag(); }
   if (!validatorFn()) {
     document.getElementById('err-' + fromStep).classList.add('show');
     return;
@@ -827,7 +830,13 @@ function updateCostBadge() {
   var q3 = parseFloat(document.getElementById('q3_cost').value) || 0;
   var n  = parseInt(document.getElementById('q13_num_users').value) || 0;
   var el = document.getElementById('cost_per_user');
-  el.textContent = (n > 0 && q3 > 0) ? '₹' + Math.round(q3 / n).toLocaleString('en-IN') + '/month' : '—';
+  if (n > 0 && q3 > 0) {
+    el.textContent = '₹' + Math.round(q3 / n).toLocaleString('en-IN') + '/month';
+  } else if (n > 0) {
+    el.textContent = '₹500/month (default)';
+  } else {
+    el.textContent = '—';
+  }
 }
 function addUserTag() {
   var inp = document.getElementById('q12_user_input');
