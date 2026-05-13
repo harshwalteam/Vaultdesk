@@ -1,1479 +1,522 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>VaultDesk — Harshwal AI Vault</title>
-
-<!-- Microsoft Teams JS SDK -->
-<script src="https://res.cdn.office.net/teams-js/2.22.0/js/MicrosoftTeams.min.js"></script>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-
-<style>
-/* ── RESET & TOKENS ─────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --bg:       #0c0c14;
-  --surface:  #131320;
-  --card:     #181828;
-  --card2:    #1e1e30;
-  --violet:   #a78bfa;
-  --violet2:  #7c3aed;
-  --violet3:  #6d28d9;
-  --gold:     #f0c040;
-  --sky:      #38bdf8;
-  --green:    #4ade80;
-  --rose:     #f472b6;
-  --amber:    #fb923c;
-  --red:      #f87171;
-  --white:    #f0eeff;
-  --t2:       #9b97b8;
-  --t3:       #5a5672;
-  --border:   rgba(167,139,250,0.12);
-  --border2:  rgba(167,139,250,0.25);
-  --glow:     rgba(167,139,250,0.15);
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--bg);
-  color: var(--white);
-  font-family: 'Sora', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ── AMBIENT BACKGROUND ─────────────────────────────────────────── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse 60% 40% at 10% 0%, rgba(124,58,237,0.18) 0%, transparent 55%),
-    radial-gradient(ellipse 40% 30% at 90% 80%, rgba(240,192,64,0.08) 0%, transparent 50%);
-  z-index: 0;
-}
-
-/* ── TOPBAR ─────────────────────────────────────────────────────── */
-.topbar {
-  position: sticky; top: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 24px; height: 56px;
-  background: rgba(12,12,20,0.92);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-}
-.topbar-brand { display: flex; align-items: center; gap: 10px; }
-.brand-mark {
-  width: 32px; height: 32px; border-radius: 8px;
-  background: linear-gradient(135deg, var(--violet), var(--gold));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 800; color: #0c0c14;
-  flex-shrink: 0;
-}
-.brand-name { font-size: 15px; font-weight: 700; letter-spacing: -0.3px; }
-.brand-name span { color: var(--violet); }
-.topbar-right { display: flex; align-items: center; gap: 12px; }
-.topbar-email {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; color: var(--t3); padding: 3px 8px;
-  border: 1px solid var(--border); border-radius: 12px;
-}
-#topbar-user {
-  display: flex; align-items: center; gap: 7px;
-  padding: 3px 10px 3px 4px;
-  background: var(--card); border: 1px solid var(--border2);
-  border-radius: 20px; font-size: 12px; color: var(--t2);
-}
-.user-av {
-  width: 24px; height: 24px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--violet), var(--violet3));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 9px; font-weight: 700; color: white;
-}
-
-/* ── PROGRESS HEADER ────────────────────────────────────────────── */
-.progress-header {
-  background: var(--surface); border-bottom: 1px solid var(--border);
-  padding: 14px 24px;
-}
-.progress-steps {
-  display: flex; align-items: center; gap: 0; max-width: 720px; margin: 0 auto;
-}
-.prog-step {
-  display: flex; align-items: center; gap: 6px; flex: 1;
-  cursor: pointer; transition: .2s;
-}
-.prog-step-dot {
-  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px; font-weight: 700;
-  border: 2px solid var(--border); color: var(--t3);
-  transition: .25s;
-}
-.prog-step.done .prog-step-dot {
-  background: var(--green); border-color: var(--green); color: #0c0c14;
-}
-.prog-step.active .prog-step-dot {
-  background: var(--violet2); border-color: var(--violet); color: white;
-  box-shadow: 0 0 12px rgba(167,139,250,0.4);
-}
-.prog-step-label { font-size: 10px; font-weight: 600; color: var(--t3); transition: .2s; }
-.prog-step.active .prog-step-label { color: var(--violet); }
-.prog-step.done .prog-step-label { color: var(--green); }
-.prog-connector { flex: 1; height: 1px; background: var(--border); margin: 0 4px; max-width: 40px; transition: .4s; }
-.prog-connector.done { background: var(--green); }
-.progress-bar-line {
-  height: 3px; background: rgba(167,139,250,0.1);
-  border-radius: 2px; margin-top: 10px; overflow: hidden;
-}
-.progress-bar-fill {
-  height: 100%; border-radius: 2px;
-  background: linear-gradient(90deg, var(--violet2), var(--violet));
-  transition: width .5s cubic-bezier(.4,0,.2,1);
-}
-
-/* ── MAIN ───────────────────────────────────────────────────────── */
-.main { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; padding: 24px 20px 80px; }
-
-/* ── SECTION ────────────────────────────────────────────────────── */
-.section { display: none; }
-.section.active { display: block; animation: fadeUp .3s ease; }
-@keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-
-.section-label {
-  display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
-}
-.section-badge {
-  padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  font-family: 'JetBrains Mono', monospace;
-}
-.section-title { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
-
-/* ── FIELD CARD ─────────────────────────────────────────────────── */
-.field-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 14px; padding: 18px 20px; margin-bottom: 12px;
-  transition: border-color .2s;
-}
-.field-card:focus-within { border-color: var(--border2); }
-.field-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
-.field-num {
-  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
-  color: var(--t3); padding-top: 2px; flex-shrink: 0; min-width: 28px;
-}
-.field-label { font-size: 13px; font-weight: 600; color: var(--white); flex: 1; line-height: 1.4; }
-.req-star { color: var(--red); margin-left: 3px; }
-.opt-tag { color: var(--t3); font-size: 11px; font-weight: 400; }
-.field-hint { font-size: 10px; color: var(--t3); margin-bottom: 8px; padding-left: 38px; font-style: italic; }
-
-/* Inputs */
-.fi, .fs, .fta {
-  width: 100%; padding: 10px 14px;
-  background: var(--card2); border: 1px solid var(--border);
-  border-radius: 9px; color: var(--white);
-  font-family: 'Sora', sans-serif; font-size: 13px;
-  outline: none; transition: border-color .2s, box-shadow .2s;
-}
-.fi:focus, .fs:focus, .fta:focus {
-  border-color: var(--violet); box-shadow: 0 0 0 3px rgba(167,139,250,0.12);
-}
-.fi::placeholder, .fta::placeholder { color: var(--t3); font-size: 12px; }
-.fs { appearance: none; cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a5672' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px;
-}
-.fs option { background: var(--card2); }
-.fta { resize: vertical; min-height: 72px; }
-.fi.valid { border-color: var(--green); }
-.fi.error, .fs.error { border-color: var(--red); }
-
-/* Calculated badge */
-.calc-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 12px; border-radius: 8px;
-  background: rgba(240,192,64,0.1); border: 1px solid rgba(240,192,64,0.25);
-  font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--gold); font-weight: 600;
-  margin-top: 6px;
-}
-
-/* Radio group */
-.radio-group { display: flex; flex-wrap: wrap; gap: 8px; }
-.radio-opt {
-  display: flex; align-items: center; gap: 7px;
-  padding: 8px 14px; border: 1px solid var(--border); border-radius: 9px;
-  background: var(--card2); cursor: pointer; font-size: 12px; color: var(--t2);
-  transition: .15s; user-select: none;
-}
-.radio-opt:hover { border-color: var(--border2); color: var(--white); }
-.radio-opt.selected { border-color: var(--violet); background: rgba(167,139,250,0.08); color: var(--white); }
-.radio-opt.selected-gold { border-color: var(--gold); background: rgba(240,192,64,0.08); color: var(--gold); }
-.radio-opt input { accent-color: var(--violet); }
-
-/* Checkbox group */
-.check-group { display: flex; flex-direction: column; gap: 8px; }
-.check-opt {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 10px 14px; border: 1px solid var(--border); border-radius: 9px;
-  background: var(--card2); cursor: pointer; font-size: 12px; color: var(--t2);
-  transition: .15s; user-select: none; line-height: 1.5;
-}
-.check-opt:hover { border-color: var(--border2); color: var(--white); }
-.check-opt.checked { border-color: var(--green); background: rgba(74,222,128,0.06); color: var(--white); }
-.check-opt input { accent-color: var(--green); margin-top: 2px; flex-shrink: 0; }
-
-/* Duplicate warning */
-.dup-warning {
-  display: none; align-items: center; gap: 8px;
-  padding: 10px 14px; border-radius: 8px; margin-top: 8px;
-  background: rgba(251,146,60,0.12); border: 1px solid rgba(251,146,60,0.3);
-  font-size: 11px; color: var(--amber);
-}
-.dup-warning.show { display: flex; }
-
-/* Finance warning */
-.finance-note {
-  display: none; align-items: center; gap: 8px;
-  padding: 10px 14px; border-radius: 8px; margin-top: 6px;
-  background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.25);
-  font-size: 11px; color: var(--red);
-}
-.finance-note.show { display: flex; }
-
-/* Priority tag */
-.priority-tag {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 700;
-  margin-top: 6px; font-family: 'JetBrains Mono', monospace;
-}
-
-/* ── GRID 2 ──────────────────────────────────────────────────────── */
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media(max-width:600px) { .grid-2 { grid-template-columns: 1fr; } }
-
-/* ── NAV BUTTONS ────────────────────────────────────────────────── */
-.nav-row {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-top: 20px; gap: 12px;
-}
-.btn-prev {
-  padding: 11px 22px; background: transparent; border: 1px solid var(--border2);
-  border-radius: 10px; color: var(--t2); font-family: 'Sora', sans-serif;
-  font-size: 13px; font-weight: 600; cursor: pointer; transition: .2s;
-}
-.btn-prev:hover { border-color: var(--violet); color: var(--violet); }
-.btn-next {
-  padding: 11px 28px; background: linear-gradient(135deg, var(--violet2), var(--violet));
-  border: none; border-radius: 10px; color: white; font-family: 'Sora', sans-serif;
-  font-size: 13px; font-weight: 700; cursor: pointer; transition: .2s;
-  box-shadow: 0 4px 20px rgba(124,58,237,0.3);
-}
-.btn-next:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(124,58,237,0.4); }
-.btn-next:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-.btn-submit {
-  padding: 13px 36px; background: linear-gradient(135deg, var(--violet2), var(--gold));
-  border: none; border-radius: 10px; color: #0c0c14; font-family: 'Sora', sans-serif;
-  font-size: 14px; font-weight: 800; cursor: pointer; transition: .2s;
-  box-shadow: 0 4px 24px rgba(167,139,250,0.35);
-}
-.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(167,139,250,0.45); }
-.btn-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-
-/* ── SECTION E — DECLARATION ─────────────────────────────────────── */
-.decl-header {
-  padding: 16px 20px; border-radius: 12px; margin-bottom: 14px;
-  background: rgba(167,139,250,0.07); border: 1px solid rgba(167,139,250,0.2);
-}
-.decl-header h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-.decl-header p { font-size: 11px; color: var(--t2); line-height: 1.6; }
-.decl-progress {
-  display: flex; align-items: center; gap: 8px; margin-top: 10px;
-}
-.decl-prog-bar { flex: 1; height: 4px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden; }
-.decl-prog-fill { height: 100%; border-radius: 2px; background: var(--green); transition: width .3s ease; width: 0%; }
-.decl-prog-txt { font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--green); }
-
-/* ── REVIEW PANEL ────────────────────────────────────────────────── */
-.review-grid { display: grid; gap: 12px; }
-.review-card {
-  background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 18px;
-}
-.review-card-title { font-size: 10px; font-weight: 700; color: var(--violet); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
-.review-row { display: flex; gap: 8px; align-items: baseline; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-.review-row:last-child { border-bottom: none; }
-.review-key { font-size: 11px; color: var(--t3); flex-shrink: 0; min-width: 140px; }
-.review-val { font-size: 12px; color: var(--white); font-weight: 500; }
-
-/* ── SUCCESS SCREEN ─────────────────────────────────────────────── */
-#success-screen {
-  display: none; position: fixed; inset: 0; z-index: 500;
-  background: var(--bg); align-items: center; justify-content: center;
-  flex-direction: column; text-align: center; padding: 40px;
-}
-#success-screen.show { display: flex; animation: fadeUp .4s ease; }
-.success-icon {
-  width: 80px; height: 80px; border-radius: 50%; margin-bottom: 24px;
-  background: rgba(74,222,128,0.12); border: 2px solid var(--green);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 36px; animation: pop .4s cubic-bezier(.34,1.56,.64,1);
-}
-@keyframes pop { from{transform:scale(0)} to{transform:scale(1)} }
-.pr-id-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 20px; border-radius: 12px; margin: 16px 0;
-  background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.3);
-  font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; color: var(--violet);
-}
-.success-actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; justify-content: center; }
-.btn-new {
-  padding: 12px 24px; background: linear-gradient(135deg, var(--violet2), var(--violet));
-  border: none; border-radius: 10px; color: white; font-family: 'Sora', sans-serif;
-  font-size: 13px; font-weight: 700; cursor: pointer; transition: .2s;
-}
-.btn-ghost {
-  padding: 12px 24px; background: transparent; border: 1px solid var(--border2);
-  border-radius: 10px; color: var(--t2); font-family: 'Sora', sans-serif;
-  font-size: 13px; cursor: pointer; transition: .2s;
-}
-.btn-ghost:hover { color: var(--white); border-color: var(--white); }
-
-/* ── LOADING SPINNER ─────────────────────────────────────────────── */
-.spinner {
-  display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: white; border-radius: 50%; animation: spin .7s linear infinite;
-  vertical-align: middle; margin-right: 8px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── TOAST ──────────────────────────────────────────────────────── */
-.toast {
-  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
-  background: var(--card2); border: 1px solid var(--border2);
-  padding: 12px 20px; border-radius: 10px; font-size: 13px;
-  opacity: 0; transition: .3s; pointer-events: none; z-index: 999; white-space: nowrap;
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast.error { border-color: rgba(248,113,113,0.4); color: var(--red); }
-.toast.success { border-color: rgba(74,222,128,0.4); color: var(--green); }
-
-
-
-/* ── UTILITY CLASSES ── */
-.teams-badge {
-  font-size: 10px;
-  padding: 3px 8px;
-  border-radius: 10px;
-  background: rgba(74,222,128,0.1);
-  border: 1px solid rgba(74,222,128,0.2);
-  color: var(--green);
-  font-family: 'JetBrains Mono', monospace;
-}
-.mono-violet {
-  color: var(--violet);
-  font-family: 'JetBrains Mono', monospace;
-}
-
-/* ── ADD PERSON BUTTON ── */
-.add-person-btn {
-  padding: 9px 16px;
-  background: rgba(167,139,250,0.15);
-  border: 1px solid var(--border2);
-  border-radius: 9px;
-  color: var(--violet);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  font-family: 'Sora', sans-serif;
-  transition: background .15s;
-}
-.add-person-btn:hover { background: rgba(167,139,250,0.28); }
-
-/* scrollbar */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-thumb { background: rgba(167,139,250,0.2); border-radius: 3px; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>VaultDesk — Harshwal AI Vault</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
 
-<!-- TOP BAR -->
-<div class="topbar">
-  <div class="topbar-brand">
-    <div class="brand-mark">V</div>
-    <div class="brand-name"><span>Vault</span>Desk</div>
+<div class="app" id="appRoot">
+
+  <!-- ── TOP BAR ── -->
+  <header class="topbar">
+    <div class="brand"><span class="brand-v">V</span><span class="brand-name">VaultDesk</span></div>
+    <div class="topbar-right">
+      <span class="user-email">aivault@harshwal.com</span>
+      <button class="topbar-menu" aria-label="Menu">⋯</button>
+    </div>
+  </header>
+
+  <!-- ── TEAM BADGE ── -->
+  <div class="team-badge-row">
+    <span class="detecting-label">Detecting…</span>
+    <span class="team-badge">● Teams</span>
+    <div class="avatar-circle" aria-label="User A">A</div>
   </div>
-  <div class="topbar-right">
-    <div class="topbar-email">aivault@harshwal.com</div>
-    <div id="topbar-user">
-      <div class="user-av" id="av-initials">⋯</div>
-      <span id="av-name" style="font-size:12px;color:var(--t2);">Detecting…</span>
-    </div>
-    <div id="teams-status" class="teams-badge" style="display:none;">● Teams</div>
-  </div>
-</div>
 
-<!-- PROGRESS -->
-<div class="progress-header">
-  <div class="progress-steps" id="prog-steps">
-    <div class="prog-step active" id="ps-0" onclick="goToSection(0)">
-      <div class="prog-step-dot">A</div>
-      <div class="prog-step-label">Tool Details</div>
+  <!-- ── STEP NAV ── -->
+  <nav class="step-nav" aria-label="Form steps">
+    <div class="step-nav-item active" id="snav-a" data-step="a">
+      <span class="snav-letter">A</span>
+      <span class="snav-label">Tool Details</span>
     </div>
-    <div class="prog-connector" id="pc-0"></div>
-    <div class="prog-step" id="ps-1" onclick="goToSection(1)">
-      <div class="prog-step-dot">B</div>
-      <div class="prog-step-label">Project & Users</div>
+    <div class="step-nav-item" id="snav-b" data-step="b">
+      <span class="snav-letter">B</span>
+      <span class="snav-label">Project &amp; Users</span>
     </div>
-    <div class="prog-connector" id="pc-1"></div>
-    <div class="prog-step" id="ps-2" onclick="goToSection(2)">
-      <div class="prog-step-dot">C</div>
-      <div class="prog-step-label">Business Case</div>
+    <div class="step-nav-item" id="snav-c" data-step="c">
+      <span class="snav-letter">C</span>
+      <span class="snav-label">Business Case</span>
     </div>
-    <div class="prog-connector" id="pc-2"></div>
-    <div class="prog-step" id="ps-3" onclick="goToSection(3)">
-      <div class="prog-step-dot">D</div>
-      <div class="prog-step-label">Approval</div>
+    <div class="step-nav-item" id="snav-d" data-step="d">
+      <span class="snav-letter">D</span>
+      <span class="snav-label">Approval</span>
     </div>
-    <div class="prog-connector" id="pc-3"></div>
-    <div class="prog-step" id="ps-4" onclick="goToSection(4)">
-      <div class="prog-step-dot">E</div>
-      <div class="prog-step-label">Declare & Submit</div>
+    <div class="step-nav-item" id="snav-e" data-step="e">
+      <span class="snav-letter">E</span>
+      <span class="snav-label">Declare &amp; Submit</span>
     </div>
-  </div>
-  <div class="progress-bar-line"><div class="progress-bar-fill" id="prog-fill" style="width:0%"></div></div>
-</div>
+  </nav>
 
-<!-- MAIN -->
-<div class="main">
-
-  <!-- ═══ SECTION A ═══ -->
-  <div class="section active" id="sec-0">
-    <div class="section-label">
-      <span class="section-badge" style="background:rgba(167,139,250,0.15);color:var(--violet);border:1px solid var(--border2);">A — Tool Details</span>
-    </div>
-    <div class="section-title" style="margin-bottom:20px;">What are you requesting?</div>
-
-    <div class="field-card">
-      <div class="field-top">
-        <span class="field-num">Q1</span>
-        <label class="field-label" for="q1">Tool / Service Name <span class="req-star">*</span></label>
-      </div>
-      <div class="field-hint">Exact product name — e.g. "Claude API (Anthropic)", "GitHub Copilot Business"</div>
-      <input class="fi" id="q1" placeholder="Enter tool or service name…" autocomplete="off"
-        oninput="checkDuplicate(this.value); validateField(this)">
-      <div class="dup-warning" id="dup-warn">
-        ⚠ A similar tool may already be active. Check the existing register before proceeding.
-      </div>
+  <!-- ═══════════════════════════════════════
+       STEP A — TOOL DETAILS
+  ════════════════════════════════════════ -->
+  <section class="step-panel active" id="step-a">
+    <div class="panel-header">
+      <h2 class="panel-title">A — Tool Details</h2>
+      <p class="panel-subtitle">What are you requesting?</p>
     </div>
 
-    <div class="grid-2">
-      <div class="field-card">
-        <div class="field-top">
-          <span class="field-num">Q2</span>
-          <label class="field-label" for="q2">Department <span class="req-star">*</span></label>
+    <div class="form-grid">
+
+      <!-- Q1 Tool Name (full width) -->
+      <div class="form-card full-width">
+        <div class="q-num">Q1</div>
+        <label class="q-title" for="q1_tool_name">Tool / Service Name <span class="req">*</span></label>
+        <p class="q-hint">Exact product name — e.g. "Claude API (Anthropic)", "GitHub Copilot Business"</p>
+        <input type="text" id="q1_tool_name" class="field-input" placeholder='e.g. "Notion AI"' oninput="validateA()" />
+        <div class="inline-warn" id="warn_duplicate">
+          ⚠ A similar tool may already be active. Check the existing register before proceeding.
         </div>
-        <select class="fs" id="q2" onchange="validateField(this)">
-          <option value="">Select department…</option>
-          <option>Tax</option>
-          <option>Audit</option>
-          <option>Advisory</option>
-          <option>Accounts / Finance</option>
-          <option>Admin / HR</option>
-          <option>IT</option>
-          <option>Management</option>
-          <option>Cross-Department</option>
-        </select>
       </div>
 
-      <div class="field-card">
-        <div class="field-top">
-          <span class="field-num">Q4</span>
-          <label class="field-label" for="q4">Category <span class="req-star">*</span></label>
+      <!-- Q2 Department -->
+      <div class="form-card">
+        <div class="q-num">Q2</div>
+        <label class="q-title" for="q2_dept">Department <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="q2_dept" onchange="validateA()">
+            <option value="">Select department…</option>
+            <option value="tax">Tax</option>
+            <option value="audit">Audit</option>
+            <option value="advisory">Advisory</option>
+            <option value="accounts">Accounts / Finance</option>
+            <option value="admin">Admin / HR</option>
+            <option value="it">IT</option>
+            <option value="management">Management</option>
+            <option value="dm_dept">DM Dept</option>
+            <option value="cross">Cross-Department</option>
+            <option value="other">Other — type below ↓</option>
+          </select>
         </div>
-        <select class="fs" id="q4" onchange="validateField(this)">
-          <option value="">Select category…</option>
-          <option>AI / LLM API</option>
-          <option>SaaS Tool — Productivity</option>
-          <option>SaaS Tool — Analytics</option>
-          <option>Infrastructure / Cloud</option>
-          <option>Agent Build / Development</option>
-          <option>Training / Certification</option>
-          <option>Hardware / Device</option>
-          <option>Integration / Middleware</option>
-          <option>Security / Compliance</option>
-          <option>Other</option>
-        </select>
+        <input type="text" id="q2_dept_other" class="field-input other-input" placeholder="Type department…" oninput="validateA()" style="display:none" />
       </div>
-    </div>
 
-    <div class="grid-2">
-      <div class="field-card">
-        <div class="field-top">
-          <span class="field-num">Q3</span>
-          <label class="field-label" for="q3">Monthly Cost (INR) <span class="req-star">*</span></label>
+      <!-- Q4 Category -->
+      <div class="form-card">
+        <div class="q-num">Q4</div>
+        <label class="q-title" for="q4_category">Category <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="q4_category" onchange="validateA()">
+            <option value="">Select category…</option>
+            <option value="ai_llm">AI / LLM API</option>
+            <option value="saas_prod">SaaS Tool — Productivity</option>
+            <option value="saas_analytics">SaaS Tool — Analytics</option>
+            <option value="infra">Infrastructure / Cloud</option>
+            <option value="agent">Agent Build / Development</option>
+            <option value="training">Training / Certification</option>
+            <option value="hardware">Hardware / Device</option>
+            <option value="integration">Integration / Middleware</option>
+            <option value="security">Security / Compliance</option>
+            <option value="other">Other</option>
+          </select>
         </div>
-        <div class="field-hint">For annual plans: Total ÷ 12</div>
-        <input class="fi" id="q3" type="number" placeholder="e.g. 18500"
-          oninput="calcCostPerUser(); checkFinanceRequired(); validateField(this)">
-        <div class="finance-note show" id="finance-note" style="display:none;">
+      </div>
+
+      <!-- Q3 Monthly Cost -->
+      <div class="form-card">
+        <div class="q-num">Q3</div>
+        <label class="q-title" for="q3_cost">Monthly Cost (INR) <span class="req">*</span></label>
+        <p class="q-hint">For annual plans: Total ÷ 12</p>
+        <input type="number" id="q3_cost" class="field-input" min="0" placeholder="0" oninput="checkCost(); validateA();" />
+        <div class="inline-warn" id="warn_cost" style="display:none">
           ⚠ Amount exceeds ₹5,000/month — Finance approval is mandatory.
         </div>
       </div>
 
-      <div class="field-card">
-        <div class="field-top">
-          <span class="field-num">Q7</span>
-          <label class="field-label" for="q7">Priority <span class="req-star">*</span></label>
-        </div>
-        <select class="fs" id="q7" onchange="updatePriority(this.value); validateField(this)">
-          <option value="">Select priority…</option>
-          <option value="critical">Critical — Blocking current work</option>
-          <option value="high">High — Required this month</option>
-          <option value="medium">Medium — Required this quarter</option>
-          <option value="low">Low — Nice to have</option>
-        </select>
-        <div id="priority-tag"></div>
-      </div>
-    </div>
-
-    <div class="field-card">
-      <div class="field-top">
-        <span class="field-num">Q5</span>
-        <label class="field-label" for="q5">Business Justification <span class="req-star">*</span></label>
-      </div>
-      <div class="field-hint">What problem does this solve? What does it automate? Why this tool over alternatives?</div>
-      <textarea class="fta" id="q5" rows="4"
-        placeholder="e.g. This API will automate our GL reconciliation — reducing manual review time from 6 hours to 45 minutes per batch, enabling the team to focus on higher-value work…"
-        oninput="validateField(this)"></textarea>
-    </div>
-
-    <div class="nav-row">
-      <div></div>
-      <button class="btn-next" onclick="nextSection(0)">Next: Project & Users →</button>
-    </div>
-  </div>
-
-  <!-- ═══ SECTION B ═══ -->
-  <div class="section" id="sec-1">
-    <div class="section-label">
-      <span class="section-badge" style="background:rgba(56,189,248,0.12);color:var(--sky);border:1px solid rgba(56,189,248,0.25);">B — Project & Users</span>
-    </div>
-    <div class="section-title" style="margin-bottom:20px;">Who uses it and for what?</div>
-
-    <div class="grid-2">
-      <div class="field-card">
-        <div class="field-top">
-          <span class="field-num">Q8</span>
-          <label class="field-label" for="q8">Project Name <span class="req-star">*</span></label>
-        </div>
-        <select class="fs" id="q8" onchange="validateField(this)">
-          <option value="">Select project…</option>
-          <option>Tax Filing Automation</option>
-          <option>GL Reconciliation Agent</option>
-          <option>DM Outreach Pipeline</option>
-          <option>HR Automation Suite</option>
-          <option>Grant Compliance Tracker</option>
-          <option>System Monitor</option>
-          <option>RFP Builder</option>
-          <option>Capital Assets Agent</option>
-          <option>SEFA / SF-425 Reports</option>
-          <option>Shared / No Specific Project</option>
-          <option>Firm-wide Tool</option>
-          <option>New Project (specify in comments)</option>
-        </select>
-      </div>
-
-      <div class="field-card">
-        <div class="field-top">
-          <span class="field-num">Q9</span>
-          <label class="field-label" for="q9">Project Owner / Manager <span class="req-star">*</span></label>
-        </div>
-        <select class="fs" id="q9" data-other="q9-other">
-          <option value="">Select or type…</option>
-          <option value="other">Other — type below ↓</option>
-        </select>
-        <input class="fi" id="q9-other" placeholder="Type project owner / manager name…"
-          style="margin-top:8px;display:none;" oninput="validateField(this)">
-      </div>
-    </div>
-
-    <div class="field-card">
-      <div class="field-top">
-        <span class="field-num">Q10</span>
-        <label class="field-label">Tool Scope <span class="req-star">*</span></label>
-      </div>
-      <div class="field-hint">How is this tool being used?</div>
-      <div class="radio-group" id="q10-group">
-        <label class="radio-opt"><input type="radio" name="q10" value="Specific Project Only"> Specific Project Only</label>
-        <label class="radio-opt"><input type="radio" name="q10" value="Shared Across Multiple Projects"> Shared Across Projects</label>
-        <label class="radio-opt"><input type="radio" name="q10" value="Department-wide"> Department-wide</label>
-        <label class="radio-opt"><input type="radio" name="q10" value="Company-wide"> Company-wide</label>
-      </div>
-    </div>
-
-    <div class="grid-2">
-      <div class="field-card">
-        <div class="field-top">
-          <span class="field-num">Q11</span>
-          <label class="field-label" for="q11">Primary User <span class="req-star">*</span></label>
-        </div>
-        <div class="field-hint">Main person managing day-to-day usage</div>
-        <select class="fs" id="q11" data-other="q11-other">
-          <option value="">Select primary user…</option>
-          <option value="other">Other — type below ↓</option>
-        </select>
-        <input class="fi" id="q11-other" placeholder="Type primary user name…"
-          style="margin-top:8px;display:none;" oninput="validateField(this)">
-      </div>
-
-      <div class="field-card">
-        <div class="field-top">
-          <span class="field-num">Q13</span>
-          <label class="field-label" for="q13">Expected Number of Users <span class="req-star">*</span></label>
-        </div>
-        <input class="fi" id="q13" type="number" min="1" placeholder="e.g. 4"
-          oninput="calcCostPerUser(); validateField(this)">
-        <div class="calc-badge" id="cpu-badge" style="display:none;">
-          💰 Cost per user: <span id="cpu-val">—</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="field-card">
-      <div class="field-top">
-        <span class="field-num">Q12</span>
-        <label class="field-label">All Users Who Will Use This Tool <span class="req-star">*</span></label>
-      </div>
-      <div class="field-hint">Check all who will use this tool. Use "Add Person" to add someone not listed.</div>
-      <div class="check-group" id="q12-group"></div>
-      <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-        <input class="fi" id="q12-other-input" placeholder="Add another person's name…"
-          style="flex:1;min-width:180px;">
-        <button type="button" class="add-person-btn" onclick="addOtherUser()">＋ Add Person</button>
-      </div>
-      <div id="q12-other-tags" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
-    </div>
-
-    <div class="field-card">
-      <div class="field-top">
-        <span class="field-num">Q14</span>
-        <label class="field-label">Usage Type <span class="req-star">*</span></label>
-      </div>
-      <div class="radio-group" id="q14-group">
-        <label class="radio-opt"><input type="radio" name="q14" value="Individual"> Individual (1 person)</label>
-        <label class="radio-opt"><input type="radio" name="q14" value="Team"> Team (2–5 people)</label>
-        <label class="radio-opt"><input type="radio" name="q14" value="Department"> Department (full dept)</label>
-        <label class="radio-opt"><input type="radio" name="q14" value="Company-wide"> Company-wide</label>
-      </div>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn-prev" onclick="prevSection(1)">← Back</button>
-      <button class="btn-next" onclick="nextSection(1)">Next: Business Case →</button>
-    </div>
-  </div>
-
-  <!-- ═══ SECTION C ═══ -->
-  <div class="section" id="sec-2">
-    <div class="section-label">
-      <span class="section-badge" style="background:rgba(74,222,128,0.12);color:var(--green);border:1px solid rgba(74,222,128,0.25);">C — Business Case</span>
-    </div>
-    <div class="section-title" style="margin-bottom:20px;">What value will this deliver?</div>
-
-    <div class="field-card">
-      <div class="field-top">
-        <span class="field-num">Q16</span>
-        <label class="field-label" for="q16">Expected Business Outcome <span class="req-star">*</span></label>
-      </div>
-      <div class="field-hint">Be specific with numbers — "saves X hours/week", "reduces errors by X%", "enables X new clients"</div>
-      <textarea class="fta" id="q16" rows="4"
-        placeholder="e.g. This will reduce tax return preparation time from 4 hours to 1.5 hours per return. With 40 returns/month, we save 100 hours/month = ₹3,50,000 in billable time."
-        oninput="validateField(this)"></textarea>
-    </div>
-
-    <div class="field-card">
-      <div class="field-top">
-        <span class="field-num">Q17</span>
-        <label class="field-label">Expected ROI / Measurable Benefit <span class="req-star">*</span></label>
-      </div>
-      <div class="field-hint">Select primary benefit type</div>
-      <div class="radio-group" id="q17-group" style="margin-bottom:10px;">
-        <label class="radio-opt"><input type="radio" name="q17" value="Hours saved"> ⏱ Hours Saved/Week</label>
-        <label class="radio-opt"><input type="radio" name="q17" value="Error reduction"> ✓ Error Reduction</label>
-        <label class="radio-opt"><input type="radio" name="q17" value="Revenue enabled"> ₹ Revenue Enabled</label>
-        <label class="radio-opt"><input type="radio" name="q17" value="Client capacity"> 👥 Client Capacity</label>
-        <label class="radio-opt"><input type="radio" name="q17" value="Cost avoidance"> 🛡 Cost Avoidance</label>
-        <label class="radio-opt"><input type="radio" name="q17" value="Compliance"> ⚖ Compliance/Risk</label>
-      </div>
-      <input class="fi" id="q17-val" placeholder="Estimated value — e.g. 22 hours/week, ₹50,000/month, 30% error reduction…">
-    </div>
-
-    <div class="nav-row">
-      <button class="btn-prev" onclick="prevSection(2)">← Back</button>
-      <button class="btn-next" onclick="nextSection(2)">Next: Approval Details →</button>
-    </div>
-  </div>
-
-  <!-- ═══ SECTION D ═══ -->
-  <div class="section" id="sec-3">
-    <div class="section-label">
-      <span class="section-badge" style="background:rgba(251,146,60,0.12);color:var(--amber);border:1px solid rgba(251,146,60,0.25);">D — Approval Details</span>
-    </div>
-    <div class="section-title" style="margin-bottom:20px;">Approval & administration</div>
-
-    <div class="grid-2">
-      <div class="field-card">
-        <div class="field-top">
-          <span class="field-num">Q6</span>
-          <label class="field-label" for="q6">Requested By <span class="req-star">*</span></label>
-        </div>
-        <select class="fs" id="q6" data-other="q6-other-wrap">
-          <option value="">Select your name…</option>
-          <option value="other">Other — type below ↓</option>
-        </select>
-        <div id="q6-other-wrap" style="display:none;margin-top:8px;display:none;">
-          <input class="fi" id="q6-other-name" placeholder="Your full name…" style="margin-bottom:6px;"
-            id="q6-other-name-input">
-          <input class="fi" id="q6-other-email" type="email" placeholder="your.email@harshwal.com"
-            id="q6-other-email-input">
-        </div>
-        <div style="margin-top:6px;font-size:11px;color:var(--t3);">
-          Confirmation email → <span id="req-email-preview" class="mono-violet">—</span>
+      <!-- Q7 Priority -->
+      <div class="form-card">
+        <div class="q-num">Q7</div>
+        <label class="q-title" for="q7_priority">Priority <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="q7_priority" onchange="validateA()">
+            <option value="">Select priority…</option>
+            <option value="critical">Critical — Blocking current work</option>
+            <option value="high">High — Required this month</option>
+            <option value="medium">Medium — Required this quarter</option>
+            <option value="low">Low — Nice to have</option>
+          </select>
         </div>
       </div>
 
-      <div class="field-card">
-        <div class="field-top">
-          <span class="field-num">Q20</span>
-          <label class="field-label" for="q20">Reporting Manager <span class="req-star">*</span></label>
+      <!-- Q5 Business Justification (full width) -->
+      <div class="form-card full-width">
+        <div class="q-num">Q5</div>
+        <label class="q-title" for="q5_justification">Business Justification <span class="req">*</span></label>
+        <p class="q-hint">What problem does this solve? What does it automate? Why this tool over alternatives?</p>
+        <textarea id="q5_justification" class="field-input field-textarea" rows="4" oninput="validateA()"></textarea>
+      </div>
+
+    </div><!-- /form-grid -->
+
+    <div class="panel-footer">
+      <div class="footer-left"></div>
+      <div class="footer-right">
+        <div class="error-toast" id="err-a">⚠ Please fill all required fields.</div>
+        <button class="btn-next" onclick="goTo('b', 'a', isStepAValid)">Next: Project &amp; Users →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       STEP B — PROJECT & USERS
+  ════════════════════════════════════════ -->
+  <section class="step-panel" id="step-b">
+    <div class="panel-header">
+      <h2 class="panel-title">B — Project &amp; Users</h2>
+      <p class="panel-subtitle">Who uses it and for what?</p>
+    </div>
+
+    <div class="form-grid">
+
+      <!-- Q8 Project Name -->
+      <div class="form-card full-width">
+        <div class="q-num">Q8</div>
+        <label class="q-title" for="q8_project">Project Name <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="q8_project" onchange="handleQ8Change(); validateB();">
+            <option value="">Select project…</option>
+            <option value="tax_filing">Tax Filing Automation</option>
+            <option value="gl_recon">GL Reconciliation Agent</option>
+            <option value="dm_outreach">DM Outreach Pipeline</option>
+            <option value="hr_auto">HR Automation Suite</option>
+            <option value="grant">Grant Compliance Tracker</option>
+            <option value="sysmon">System Monitor</option>
+            <option value="rfp">RFP Builder</option>
+            <option value="capital">Capital Assets Agent</option>
+            <option value="sefa">SEFA / SF-425 Reports</option>
+            <option value="shared">Shared / No Specific Project</option>
+            <option value="firmwide">Firm-wide Tool</option>
+            <option value="other">Other — type below ↓</option>
+          </select>
         </div>
-        <select class="fs" id="q20" data-other="q20-other">
-          <option value="">Select reporting manager…</option>
-          <option value="other">Other — type below ↓</option>
-        </select>
-        <input class="fi" id="q20-other" placeholder="Type reporting manager name…"
-          style="margin-top:8px;display:none;" oninput="validateField(this)">
+        <input type="text" id="q8_project_other" class="field-input other-input" placeholder="Type project name…" oninput="validateB()" style="display:none" />
       </div>
-    </div>
 
-    <div class="grid-2">
-      <div class="field-card">
-        <div class="field-top">
-          <span class="field-num">Q18</span>
-          <label class="field-label" for="q18">Subscription Manager (after purchase) <span class="req-star">*</span></label>
+      <!-- Q9 Project Owner -->
+      <div class="form-card">
+        <div class="q-num">Q9</div>
+        <label class="q-title" for="q9_owner">Project Owner / Manager <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="q9_owner" onchange="handleQ9Change(); validateB();">
+            <option value="">Select or type…</option>
+            <option value="lokesh">Lokesh</option>
+            <option value="priya">Priya</option>
+            <option value="amit">Amit</option>
+            <option value="sanwar">Sanwar Harshwal</option>
+            <option value="other">Other — type below ↓</option>
+          </select>
         </div>
-        <div class="field-hint">Who manages licence, renewals, and billing?</div>
-        <select class="fs" id="q18" data-other="q18-other">
-          <option value="">Select subscription manager…</option>
-          <option value="other">Other — type below ↓</option>
-        </select>
-        <input class="fi" id="q18-other" placeholder="Type subscription manager name…"
-          style="margin-top:8px;display:none;" oninput="validateField(this)">
+        <input type="text" id="q9_owner_other" class="field-input other-input" placeholder="Type owner name…" oninput="validateB()" style="display:none" />
       </div>
 
-      <div class="field-card">
-        <div class="field-top">
-          <span class="field-num">Q19</span>
-          <label class="field-label" for="q19">Required By Date <span class="req-star">*</span></label>
-        </div>
-        <div class="field-hint">Minimum 5 working days from today</div>
-        <input class="fi" id="q19" type="date" oninput="validateField(this)">
-      </div>
-    </div>
-
-    <div class="field-card">
-      <div class="field-top">
-        <span class="field-num">Q22</span>
-        <label class="field-label" for="q22">Additional Comments <span class="opt-tag">(optional)</span></label>
-      </div>
-      <textarea class="fta" id="q22" rows="3"
-        placeholder="Trial details, discount codes, contract terms, special implementation notes…"></textarea>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn-prev" onclick="prevSection(3)">← Back</button>
-      <button class="btn-next" onclick="nextSection(3)">Next: Review & Declare →</button>
-    </div>
-  </div>
-
-  <!-- ═══ SECTION E ═══ -->
-  <div class="section" id="sec-4">
-    <div class="section-label">
-      <span class="section-badge" style="background:rgba(167,139,250,0.15);color:var(--violet);border:1px solid var(--border2);">E — Review & Submit</span>
-    </div>
-    <div class="section-title" style="margin-bottom:20px;">Review your request</div>
-
-    <!-- Review summary -->
-    <div class="review-grid" id="review-panel"></div>
-
-    <div style="margin-top:20px;">
-      <div class="decl-header">
-        <h3>Final Declaration</h3>
-        <p>All 5 declarations must be confirmed. The Submit button activates only when all are ticked.</p>
-        <div class="decl-progress">
-          <div class="decl-prog-bar"><div class="decl-prog-fill" id="decl-fill"></div></div>
-          <div class="decl-prog-txt" id="decl-count">0 / 5</div>
+      <!-- Q10 Tool Scope -->
+      <div class="form-card">
+        <div class="q-num">Q10</div>
+        <label class="q-title">Tool Scope <span class="req">*</span></label>
+        <p class="q-hint">How is this tool being used?</p>
+        <div class="radio-group" id="rg_scope">
+          <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_project'); validateB();">
+            <span class="radio-dot"><span class="radio-inner"></span></span>Specific Project Only
+          </label>
+          <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_shared'); validateB();">
+            <span class="radio-dot"><span class="radio-inner"></span></span>Shared Across Projects
+          </label>
+          <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_dept'); validateB();">
+            <span class="radio-dot"><span class="radio-inner"></span></span>Department-wide
+          </label>
+          <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_company'); validateB();">
+            <span class="radio-dot"><span class="radio-inner"></span></span>Company-wide
+          </label>
         </div>
       </div>
 
-      <div class="check-group" id="decl-group">
-        <label class="check-opt" onclick="updateDecl()">
-          <input type="checkbox" id="d1">
-          I have checked the existing tool register and confirmed no duplicate tool is already active.
-        </label>
-        <label class="check-opt" onclick="updateDecl()">
-          <input type="checkbox" id="d2">
-          I understand this purchase requires management approval before any payment is made.
-        </label>
-        <label class="check-opt" onclick="updateDecl()">
-          <input type="checkbox" id="d3">
-          I confirm the business justification and ROI estimates are accurate to the best of my knowledge.
-        </label>
-        <label class="check-opt" onclick="updateDecl()">
-          <input type="checkbox" id="d4">
-          I agree the named subscription manager is responsible for renewal and cancellation management.
-        </label>
-        <label class="check-opt" onclick="updateDecl()">
-          <input type="checkbox" id="d5">
-          I understand that unapproved purchases will not be reimbursed by the firm.
-        </label>
+      <!-- Q11 Primary User -->
+      <div class="form-card">
+        <div class="q-num">Q11</div>
+        <label class="q-title" for="q11_primary_user">Primary User <span class="req">*</span></label>
+        <p class="q-hint">Main person managing day-to-day usage</p>
+        <div class="select-wrap">
+          <select id="q11_primary_user" onchange="handleQ11Change(); validateB();">
+            <option value="">Select primary user…</option>
+            <option value="lokesh">Lokesh</option>
+            <option value="priya">Priya</option>
+            <option value="amit">Amit</option>
+            <option value="sanwar">Sanwar Harshwal</option>
+            <option value="department">Department</option>
+            <option value="dm_dept">DM Dept</option>
+            <option value="other">Other — type below ↓</option>
+          </select>
+        </div>
+        <input type="text" id="q11_primary_other" class="field-input other-input" placeholder="Type name…" oninput="validateB()" style="display:none" />
+      </div>
+
+      <!-- Q13 Expected Users -->
+      <div class="form-card">
+        <div class="q-num">Q13</div>
+        <label class="q-title" for="q13_num_users">Expected Number of Users <span class="req">*</span></label>
+        <input type="number" id="q13_num_users" class="field-input" min="1" value="" placeholder="e.g. 3" oninput="updateCostBadge(); validateB();" />
+        <div class="cost-badge">💰 Cost per user: <span id="cost_per_user">—</span></div>
+      </div>
+
+      <!-- Q12 All Users (full width) -->
+      <div class="form-card full-width">
+        <div class="q-num">Q12</div>
+        <label class="q-title">All Users Who Will Use This Tool <span class="req">*</span></label>
+        <p class="q-hint">Check all who will use this tool. Use "Add Person" to add someone not listed.</p>
+        <div class="tag-row">
+          <input type="text" id="q12_user_input" class="field-input tag-field" placeholder="Type a name…" onkeydown="if(event.key==='Enter'){addUserTag()}" />
+          <button class="btn-add" onclick="addUserTag()">＋ Add Person</button>
+        </div>
+        <div class="tags-wrap" id="q12_tags"></div>
+      </div>
+
+      <!-- Q14 Usage Type (full width) -->
+      <div class="form-card full-width">
+        <div class="q-num">Q14</div>
+        <label class="q-title">Usage Type <span class="req">*</span></label>
+        <div class="radio-group" id="rg_usage">
+          <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_individual'); validateB();">
+            <span class="radio-dot"><span class="radio-inner"></span></span>Individual (1 person)
+          </label>
+          <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_team'); validateB();">
+            <span class="radio-dot"><span class="radio-inner"></span></span>Team (2–5 people)
+          </label>
+          <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_dept'); validateB();">
+            <span class="radio-dot"><span class="radio-inner"></span></span>Department (full dept)
+          </label>
+          <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_company'); validateB();">
+            <span class="radio-dot"><span class="radio-inner"></span></span>Company-wide
+          </label>
+        </div>
+      </div>
+
+    </div><!-- /form-grid -->
+
+    <div class="panel-footer">
+      <button class="btn-back" onclick="goBack('a','b')">← Back</button>
+      <div class="footer-right">
+        <div class="error-toast" id="err-b">⚠ Please fill all required fields.</div>
+        <button class="btn-next" onclick="goTo('c','b', isStepBValid)">Next: Business Case →</button>
       </div>
     </div>
+  </section>
 
-    <div class="nav-row" style="margin-top:20px;">
-      <button class="btn-prev" onclick="prevSection(4)">← Back</button>
-      <button class="btn-submit" id="submit-btn" disabled onclick="submitForm()">
-        Submit Purchase Request →
-      </button>
+  <!-- ═══════════════════════════════════════
+       STEP C — BUSINESS CASE
+  ════════════════════════════════════════ -->
+  <section class="step-panel" id="step-c">
+    <div class="panel-header">
+      <h2 class="panel-title">C — Business Case</h2>
+      <p class="panel-subtitle">What value will this deliver?</p>
     </div>
-  </div>
 
-</div><!-- /main -->
+    <div class="form-grid">
 
-<!-- SUCCESS -->
-<div id="success-screen">
-  <div class="success-icon">✓</div>
-  <div style="font-size:28px;font-weight:800;margin-bottom:8px;">Request Submitted!</div>
-  <div style="font-size:14px;color:var(--t2);max-width:460px;line-height:1.7;margin-bottom:4px;">
-    Your purchase request has been received. Your reporting manager and AI Vault team have been notified.
-  </div>
-  <div class="pr-id-badge" id="pr-id-display">—</div>
-  <div id="success-note" style="display:none;font-size:12px;margin:6px 0;max-width:460px;text-align:center;"></div>
-  <div style="font-size:12px;color:var(--t3);">aivault@harshwal.com notified • Approval workflow started</div>
-  <div class="success-actions">
-    <button class="btn-new" onclick="resetForm()">＋ New Request</button>
-    <button class="btn-ghost" onclick="window.print()">🖨 Print Copy</button>
-  </div>
-</div>
+      <!-- Q16 Expected Business Outcome -->
+      <div class="form-card full-width">
+        <div class="q-num">Q16</div>
+        <label class="q-title" for="q16_outcome">Expected Business Outcome <span class="req">*</span></label>
+        <p class="q-hint">Be specific with numbers — "saves X hours/week", "reduces errors by X%", "enables X new clients"</p>
+        <textarea id="q16_outcome" class="field-input field-textarea" rows="4" oninput="validateC()"></textarea>
+      </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+      <!-- Q17 ROI -->
+      <div class="form-card full-width">
+        <div class="q-num">Q17</div>
+        <label class="q-title">Expected ROI / Measurable Benefit <span class="req">*</span></label>
+        <p class="q-hint">Select primary benefit type</p>
+        <div class="radio-group roi-group" id="rg_roi">
+          <label class="radio-opt roi-opt" onclick="pickRadio('rg_roi',this,'roi_hours'); validateC();">
+            <span class="radio-dot"><span class="radio-inner"></span></span>⏱ Hours Saved/Week
+          </label>
+          <label class="radio-opt roi-opt" onclick="pickRadio('rg_roi',this,'roi_errors'); validateC();">
+            <span class="radio-dot"><span class="radio-inner"></span></span>✓ Error Reduction
+          </label>
+          <label class="radio-opt roi-opt" onclick="pickRadio('rg_roi',this,'roi_revenue'); validateC();">
+            <span class="radio-dot"><span class="radio-inner"></span></span>₹ Revenue Enabled
+          </label>
+          <label class="radio-opt roi-opt" onclick="pickRadio('rg_roi',this,'roi_clients'); validateC();">
+            <span class="radio-dot"><span class="radio-inner"></span></span>👥 Client Capacity
+          </label>
+          <label class="radio-opt roi-opt" onclick="pickRadio('rg_roi',this,'roi_cost'); validateC();">
+            <span class="radio-dot"><span class="radio-inner"></span></span>🛡 Cost Avoidance
+          </label>
+          <label class="radio-opt roi-opt" onclick="pickRadio('rg_roi',this,'roi_compliance'); validateC();">
+            <span class="radio-dot"><span class="radio-inner"></span></span>⚖ Compliance/Risk
+          </label>
+        </div>
+      </div>
 
-<script>
-// ── CONFIG ────────────────────────────────────────────────────────
-// WEBHOOK: Paste your Power Automate HTTP trigger URL here after setup
-// See VaultDesk_Setup_Guide.md — Step 1 for how to create this in 10 minutes
-const WEBHOOK_URL = "PASTE_POWER_AUTOMATE_WEBHOOK_URL_HERE";
+    </div>
 
-const VAULT_EMAIL = "aivault@harshwal.com";
+    <div class="panel-footer">
+      <button class="btn-back" onclick="goBack('b','c')">← Back</button>
+      <div class="footer-right">
+        <div class="error-toast" id="err-c">⚠ Please fill all required fields.</div>
+        <button class="btn-next" onclick="goTo('d','c', isStepCValid)">Next: Approval Details →</button>
+      </div>
+    </div>
+  </section>
 
-// Teams profile state — auto-filled from SDK
-let teamsUser = { name: "", email: "", initials: "", jobTitle: "", department: "" };
-let teamsReady = false;
+  <!-- ═══════════════════════════════════════
+       STEP D — APPROVAL DETAILS
+  ════════════════════════════════════════ -->
+  <section class="step-panel" id="step-d">
+    <div class="panel-header">
+      <h2 class="panel-title">D — Approval Details</h2>
+      <p class="panel-subtitle">Approval &amp; administration</p>
+    </div>
 
-// Known tools for duplicate detection
-const KNOWN_TOOLS = [
-  "claude api","anthropic","gpt-4","openai","github copilot","copilot",
-  "aws ec2","aws","airtable","notion ai","notion","gemini","vertex ai",
-  "google cloud","slack","microsoft teams","teams","zoom","figma","canva",
-  "hubspot","salesforce","jira","atlassian","power automate","power bi",
-  "excel","sharepoint","onedrive","dropbox","grammarly","zapier","make","n8n"
-];
+    <div class="form-grid">
 
-// Member email map — add your team's actual email addresses here
-// Format: "Full Name": "email@harshwal.com"
-const MEMBER_EMAILS = {
-  // Add your team members here:
-  // "John Smith": "john@harshwal.com",
-};
+      <!-- Q6 Requested By -->
+      <div class="form-card">
+        <div class="q-num">Q6</div>
+        <label class="q-title" for="q6_requested_by">Requested By <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="q6_requested_by" onchange="handleQ6Change(); validateD();">
+            <option value="">Select your name…</option>
+            <option value="lokesh">Lokesh</option>
+            <option value="priya">Priya</option>
+            <option value="amit">Amit</option>
+            <option value="sanwar">Sanwar Harshwal</option>
+            <option value="other">Other — type below ↓</option>
+          </select>
+        </div>
+        <input type="text" id="q6_requested_other" class="field-input other-input" placeholder="Type name…" oninput="validateD()" style="display:none" />
+        <p class="confirm-email">Confirmation email → <span id="q6_email_display">—</span></p>
+      </div>
 
-// ── INIT ──────────────────────────────────────────────────────────
-let currentSection = 0;
-let requestorEmail = "";
+      <!-- Q20 Reporting Manager -->
+      <div class="form-card">
+        <div class="q-num">Q20</div>
+        <label class="q-title" for="q20_manager">Reporting Manager <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="q20_manager" onchange="handleQ20Change(); validateD();">
+            <option value="">Select reporting manager…</option>
+            <option value="sanwar">Sanwar Harshwal</option>
+            <option value="lokesh">Lokesh</option>
+            <option value="priya">Priya</option>
+            <option value="other">Other — type below ↓</option>
+          </select>
+        </div>
+        <input type="text" id="q20_manager_other" class="field-input other-input" placeholder="Type name…" oninput="validateD()" style="display:none" />
+      </div>
 
-// ── TEAMS PROFILE AUTO-FILL ──────────────────────────────────────
-async function initTeamsProfile() {
-  try {
-    await microsoftTeams.app.initialize();
-    const ctx = await microsoftTeams.app.getContext();
+      <!-- Q18 Subscription Manager -->
+      <div class="form-card">
+        <div class="q-num">Q18</div>
+        <label class="q-title" for="q18_sub_manager">Subscription Manager (after purchase) <span class="req">*</span></label>
+        <p class="q-hint">Who manages licence, renewals, and billing?</p>
+        <div class="select-wrap">
+          <select id="q18_sub_manager" onchange="handleQ18Change(); validateD();">
+            <option value="">Select subscription manager…</option>
+            <option value="lokesh">Lokesh</option>
+            <option value="priya">Priya</option>
+            <option value="amit">Amit</option>
+            <option value="sanwar">Sanwar Harshwal</option>
+            <option value="other">Other — type below ↓</option>
+          </select>
+        </div>
+        <input type="text" id="q18_sub_other" class="field-input other-input" placeholder="Type name…" oninput="validateD()" style="display:none" />
+      </div>
 
-    const name      = ctx.user?.displayName  || "";
-    const email     = ctx.user?.loginHint    || ctx.user?.userPrincipalName || "";
-    const jobTitle  = ctx.user?.jobTitle     || "";
-    const dept      = ctx.user?.department   || "";
-    const initials  = name.split(" ").map(n => n[0]).join("").slice(0,2).toUpperCase() || "ME";
+      <!-- Q19 Required By Date -->
+      <div class="form-card">
+        <div class="q-num">Q19</div>
+        <label class="q-title" for="q19_date">Required By Date <span class="req">*</span></label>
+        <p class="q-hint">Minimum 5 working days from today</p>
+        <input type="date" id="q19_date" class="field-input" oninput="validateD()" />
+      </div>
 
-    teamsUser = { name, email, initials, jobTitle, department: dept };
-    teamsReady = true;
+      <!-- Q22 Comments (full width, optional) -->
+      <div class="form-card full-width">
+        <div class="q-num">Q22</div>
+        <label class="q-title" for="q22_comments">Additional Comments <span class="optional">(optional)</span></label>
+        <textarea id="q22_comments" class="field-input field-textarea" rows="3"></textarea>
+      </div>
 
-    // Topbar
-    document.getElementById("av-name").textContent    = name || "Team Member";
-    document.getElementById("av-initials").textContent = initials;
-    const statusEl = document.getElementById("teams-status");
-    if (statusEl) statusEl.style.display = "block";
+    </div>
 
-    // Q6 auto-fill card
-    document.getElementById("q6-av").textContent = initials;
-    document.getElementById("q6").textContent    = name || "—";
-    document.getElementById("req-email-preview").textContent = email || "—";
-    document.getElementById("q6-val").value   = name;
-    document.getElementById("q6-email-val").value = email;
-    requestorEmail = email;
+    <div class="panel-footer">
+      <button class="btn-back" onclick="goBack('c','d')">← Back</button>
+      <div class="footer-right">
+        <div class="error-toast" id="err-d">⚠ Please fill all required fields.</div>
+        <button class="btn-next" onclick="goTo('e','d', isStepDValid)">Next: Review &amp; Declare →</button>
+      </div>
+    </div>
+  </section>
 
-    // Pre-fill department if Teams has it
-    if (dept) {
-      const deptMap = {
-        "tax":"Tax","audit":"Audit","advisory":"Advisory","finance":"Accounts / Finance",
-        "hr":"Admin / HR","it":"IT","management":"Management","accounts":"Accounts / Finance"
-      };
-      const mapped = deptMap[dept.toLowerCase()];
-      if (mapped) {
-        const q2 = document.getElementById("q2");
-        for (let opt of q2.options) { if (opt.value === mapped) { opt.selected = true; break; } }
-      }
-    }
+  <!-- ═══════════════════════════════════════
+       STEP E — REVIEW & SUBMIT
+  ════════════════════════════════════════ -->
+  <section class="step-panel" id="step-e">
+    <div class="panel-header">
+      <h2 class="panel-title">E — Review &amp; Submit</h2>
+      <p class="panel-subtitle">Review your request</p>
+    </div>
 
-    return true;
-  } catch(e) {
-    // Not in Teams — show fallback
-    // Running outside Teams — using manual fallback mode
-    showManualFallback();
-    return false;
-  }
-}
+    <div class="form-grid">
 
-function showManualFallback() {
-  // Replace Q6 auto-card with a text input for non-Teams use
-  document.getElementById("av-name").textContent     = "Browser Mode";
-  document.getElementById("av-initials").textContent = "👤";
-  document.getElementById("q6").textContent = "Fill in manually below";
-  document.getElementById("q6-av").textContent = "?";
+      <div class="form-card full-width declaration-card">
+        <h3 class="declare-heading">Final Declaration</h3>
+        <p class="declare-sub">All 5 declarations must be confirmed. The Submit button activates only when all are ticked.</p>
+        <div class="declare-progress"><span id="declare-count">0</span> / 5</div>
 
-  // Inject a simple name + email input into Q6 area
-  const q6card = document.getElementById("q6").closest(".field-card");
-  if (q6card) {
-    const wrap = document.createElement("div");
-    wrap.style.cssText = "margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:8px;";
+        <div class="declare-list">
+          <label class="declare-item">
+            <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
+            <span>I have checked the existing tool register and confirmed no duplicate tool is already active.</span>
+          </label>
+          <label class="declare-item">
+            <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
+            <span>I understand this purchase requires management approval before any payment is made.</span>
+          </label>
+          <label class="declare-item">
+            <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
+            <span>I confirm the business justification and ROI estimates are accurate to the best of my knowledge.</span>
+          </label>
+          <label class="declare-item">
+            <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
+            <span>I agree the named subscription manager is responsible for renewal and cancellation management.</span>
+          </label>
+          <label class="declare-item">
+            <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
+            <span>I understand that unapproved purchases will not be reimbursed by the firm.</span>
+          </label>
+        </div>
+      </div>
 
-    const nameInp = document.createElement("input");
-    nameInp.className = "fi";
-    nameInp.id = "q6-manual-name";
-    nameInp.placeholder = "Your full name…";
-    nameInp.addEventListener("input", () => {
-      const v = document.getElementById("q6-val");
-      if (v) v.value = nameInp.value;
-      const d = document.getElementById("q6");
-      if (d && d.tagName !== "SELECT") d.textContent = nameInp.value || "—";
-    });
+    </div>
 
-    const emailInp = document.createElement("input");
-    emailInp.className = "fi";
-    emailInp.id = "q6-manual-email";
-    emailInp.type = "email";
-    emailInp.placeholder = "your@harshwal.com";
-    emailInp.addEventListener("input", () => {
-      requestorEmail = emailInp.value;
-      const ev = document.getElementById("q6-email-val");
-      if (ev) ev.value = emailInp.value;
-      const ep = document.getElementById("req-email-preview");
-      if (ep) ep.textContent = emailInp.value || "—";
-    });
+    <div class="panel-footer">
+      <button class="btn-back" onclick="goBack('d','e')">← Back</button>
+      <div class="footer-right">
+        <button class="btn-submit" id="submitBtn" onclick="handleSubmit()" disabled>Submit Purchase Request →</button>
+      </div>
+    </div>
+  </section>
 
-    wrap.appendChild(nameInp);
-    wrap.appendChild(emailInp);
-    q6card.appendChild(wrap);
-  }
-}
+  <!-- ═══════════════════════════════════════
+       SUCCESS
+  ════════════════════════════════════════ -->
+  <section class="success-screen" id="successScreen">
+    <div class="success-icon">✓</div>
+    <h2 class="success-title">Request Submitted!</h2>
+    <p class="success-sub">Your purchase request has been received. Your reporting manager and AI Vault team have been notified.</p>
+    <p class="success-meta" id="success-meta">—</p>
+    <p class="success-note">aivault@harshwal.com notified • Approval workflow started</p>
+    <div class="success-actions">
+      <button class="btn-new" onclick="resetForm()">＋ New Request</button>
+      <button class="btn-print" onclick="window.print()">🖨 Print Copy</button>
+    </div>
+  </section>
 
-window.addEventListener("DOMContentLoaded", async () => {
-  // Set min date for Q19
-  const d = new Date(); d.setDate(d.getDate() + 5);
-  document.getElementById("q19").min = d.toISOString().split("T")[0];
+</div><!-- /app -->
 
-  // Wire checkbox styles
-  wireCheckboxes("q12-group");
-
-  // Wire Enter key for Add Person input
-  const q12inp = document.getElementById("q12-other-input");
-  if (q12inp) q12inp.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); addOtherUser(); } });
-
-  // Wire all "Other" selects — data-other attribute points to the reveal input/div id
-  document.querySelectorAll("select[data-other]").forEach(sel => {
-    const targetId = sel.dataset.other;
-    sel.addEventListener("change", () => {
-      const isOther = sel.value === "other";
-      // Toggle the reveal target
-      const target = document.getElementById(targetId);
-      if (target) target.style.display = isOther ? "block" : "none";
-      if (!isOther) {
-        // Clear the other input when switching back
-        const inp = target && target.tagName === "INPUT" ? target : null;
-        if (inp) inp.value = "";
-      }
-      validateField(sel);
-    });
-  });
-
-  // Wire Q6 select (Requested By)
-  const q6sel = document.getElementById("q6");
-  if (q6sel) {
-    q6sel.addEventListener("change", () => updateRequestorFromSelect(q6sel));
-  }
-
-  // Wire Q6-other inputs
-  const q6n = document.getElementById("q6-other-name-input");
-  if (q6n) q6n.addEventListener("input", () => {
-    document.getElementById("q6-val").value = q6n.value;
-    const disp = document.getElementById("q6");
-    if (disp && disp.tagName !== "SELECT") disp.textContent = q6n.value || "—";
-  });
-
-  const q6e = document.getElementById("q6-other-email-input");
-  if (q6e) q6e.addEventListener("input", () => {
-    requestorEmail = q6e.value;
-    const ev = document.getElementById("q6-email-val");
-    if (ev) ev.value = q6e.value;
-    const ep = document.getElementById("req-email-preview");
-    if (ep) ep.textContent = q6e.value || "—";
-  });
-  wireRadios("q10-group");
-  wireRadios("q14-group");
-  wireRadios("q17-group");
-  wireCheckboxes("decl-group");
-  updateProgress();
-
-  // Init Teams profile (async — fills in after page loads)
-  await initTeamsProfile();
-});
-
-// ── OTHER FIELD HELPERS ──────────────────────────────────────────
-function handleOther(selectId, inputId) {
-  const sel = document.getElementById(selectId);
-  const inp = document.getElementById(inputId);
-  const wrap = document.getElementById(selectId + '-other-wrap'); // for q6
-  if (!inp && !wrap) return;
-  const isOther = sel.value === 'other';
-  if (inp) inp.style.display = isOther ? 'block' : 'none';
-  if (wrap) wrap.style.display = isOther ? 'block' : 'none';
-  if (!isOther && inp) inp.value = '';
-}
-
-function getFieldValue(selectId) {
-  // Returns the actual value — either the dropdown selection or the typed "other" value
-  const sel = document.getElementById(selectId);
-  if (!sel) return '';
-  if (sel.value === 'other') {
-    const inp = document.getElementById(selectId + '-other');
-    return (inp && inp.value.trim()) ? inp.value.trim() : '';
-  }
-  return sel.value;
-}
-
-// Q12 — Add Other Person tag
-function addOtherUser() {
-  const inp = document.getElementById('q12-other-input');
-  const name = inp.value.trim();
-  if (!name) return;
-  inp.value = '';
-
-  // Check if already in checkboxes or tags
-  const safeName = name.replace(/"/g, '');
-  const existing = document.querySelectorAll('#q12-group input[value="' + safeName + '"], .q12-extra-tag[data-name="' + safeName + '"]');
-  if (existing.length) { inp.placeholder = name + ' already added'; setTimeout(function(){inp.placeholder=`Add another person's name…`},2000); return; }
-
-  // Add as a tag
-  const tag = document.createElement('div');
-  tag.className = 'q12-extra-tag';
-  tag.dataset.name = name;
-  tag.style.cssText = 'display:inline-flex;align-items:center;gap:6px;padding:5px 10px;background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.3);border-radius:20px;font-size:12px;color:var(--violet);';
-  const rmBtn = document.createElement('span');
-  rmBtn.textContent = '×';
-  rmBtn.style.cssText = 'cursor:pointer;color:var(--red);font-weight:700;margin-left:4px;';
-  rmBtn.onclick = function(){ tag.remove(); };
-  tag.textContent = name + ' ';
-  tag.appendChild(rmBtn);
-  document.getElementById('q12-other-tags').appendChild(tag);
-  inp.placeholder = `Add another person's name…`;
-}
-
-function getQ12AllUsers() {
-  // Checked from the dynamic checkbox group
-  const checked = [...document.querySelectorAll('#q12-group input:checked')].map(i => i.value);
-  // Plus typed-in extra tags
-  const extras  = [...document.querySelectorAll('.q12-extra-tag')].map(t => t.dataset.name);
-  return [...checked, ...extras].join(', ') || 'None selected';
-}
-
-function updateRequestorFromSelect(sel) {
-  const isOther = sel.value === 'other';
-  const wrap = document.getElementById('q6-other-wrap');
-  if (wrap) wrap.style.display = isOther ? 'block' : 'none';
-  if (!isOther) {
-    // Look up email from MEMBER_EMAILS
-    const email = MEMBER_EMAILS[sel.value] || '';
-    requestorEmail = email;
-    const preview = document.getElementById('req-email-preview');
-    if (preview) preview.textContent = email || '(email not configured)';
-    const valInp = document.getElementById('q6-val');
-    if (valInp) valInp.value = sel.value;
-    const emailInp = document.getElementById('q6-email-val');
-    if (emailInp) emailInp.value = email;
-  }
-}
-
-// ── CHECKBOX / RADIO WIRING ───────────────────────────────────────
-function wireCheckboxes(groupId) {
-  document.querySelectorAll(`#${groupId} .check-opt`).forEach(opt => {
-    const inp = opt.querySelector("input");
-    inp.addEventListener("change", () => opt.classList.toggle("checked", inp.checked));
-    opt.addEventListener("click", e => {
-      if (e.target !== inp) { inp.checked = !inp.checked; inp.dispatchEvent(new Event("change")); }
-    });
-  });
-}
-function wireRadios(groupId) {
-  document.querySelectorAll(`#${groupId} .radio-opt`).forEach(opt => {
-    const inp = opt.querySelector("input");
-    inp.addEventListener("change", () => {
-      document.querySelectorAll(`#${groupId} .radio-opt`).forEach(o => o.classList.remove("selected","selected-gold"));
-      opt.classList.add("selected");
-    });
-    opt.addEventListener("click", e => {
-      if (e.target !== inp) { inp.checked = true; inp.dispatchEvent(new Event("change")); }
-    });
-  });
-}
-
-// ── SECTION NAVIGATION ────────────────────────────────────────────
-function nextSection(from) {
-  if (!validateSection(from)) return;
-  if (from === 3) buildReview();
-  goToSection(from + 1);
-}
-function prevSection(from) { goToSection(from - 1); }
-
-function goToSection(idx) {
-  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
-  document.getElementById(`sec-${idx}`).classList.add("active");
-  currentSection = idx;
-  updateProgress();
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function updateProgress() {
-  const pct = [0, 20, 40, 60, 80, 100][currentSection] || 0;
-  document.getElementById("prog-fill").style.width = pct + "%";
-  document.querySelectorAll(".prog-step").forEach((el, i) => {
-    el.classList.remove("active", "done");
-    if (i < currentSection) el.classList.add("done");
-    else if (i === currentSection) el.classList.add("active");
-  });
-  document.querySelectorAll(".prog-connector").forEach((el, i) => {
-    el.classList.toggle("done", i < currentSection);
-  });
-}
-
-// ── VALIDATION ────────────────────────────────────────────────────
-function validateField(el) {
-  if (!el.value.trim()) el.classList.add("error");
-  else el.classList.remove("error");
-}
-
-function validateSection(idx) {
-  const required = {
-    0: ["q1","q2","q4","q3","q7","q5"],
-    1: ["q8","q9","q11","q13"],
-    2: ["q16"],
-    3: ["q20","q18","q19"],  // q6 auto-filled from Teams
-    4: []
-  };
-  let ok = true;
-  (required[idx] || []).forEach(id => {
-    const el = document.getElementById(id);
-    if (!el || !el.value.trim()) {
-      if (el) el.classList.add("error");
-      ok = false;
-    }
-  });
-  // Check radio groups
-  if (idx === 1) {
-    if (!document.querySelector('input[name="q10"]:checked')) ok = false;
-    if (!document.querySelector('input[name="q14"]:checked')) ok = false;
-    const users = document.querySelectorAll("#q12-group input:checked");
-    if (!users.length) ok = false;
-  }
-  if (idx === 2) {
-    if (!document.querySelector('input[name="q17"]:checked')) ok = false;
-  }
-  if (!ok) { showToast("Please fill all required fields.", "error"); }
-  return ok;
-}
-
-// ── SMART HELPERS ─────────────────────────────────────────────────
-function checkDuplicate(val) {
-  const lower = val.toLowerCase();
-  const isDup = KNOWN_TOOLS.some(t => lower.includes(t) || t.includes(lower) && lower.length > 3);
-  document.getElementById("dup-warn").classList.toggle("show", isDup && val.length > 3);
-}
-
-function calcCostPerUser() {
-  const amt = parseFloat(document.getElementById("q3").value) || 0;
-  const users = parseInt(document.getElementById("q13").value) || 0;
-  const badge = document.getElementById("cpu-badge");
-  if (amt > 0 && users > 0) {
-    badge.style.display = "inline-flex";
-    document.getElementById("cpu-val").textContent = "₹" + Math.round(amt/users).toLocaleString("en-IN") + "/month";
-  } else {
-    badge.style.display = "none";
-  }
-}
-
-function checkFinanceRequired() {
-  const amt = parseFloat(document.getElementById("q3").value) || 0;
-  document.getElementById("finance-note").style.display = amt > 5000 ? "flex" : "none";
-}
-
-function updatePriority(val) {
-  const el = document.getElementById("priority-tag");
-  const map = {
-    critical: ["🔴 CRITICAL","background:rgba(248,113,113,0.15);color:#f87171;border:1px solid rgba(248,113,113,0.3);"],
-    high:     ["🟠 HIGH",     "background:rgba(251,146,60,0.15);color:#fb923c;border:1px solid rgba(251,146,60,0.3);"],
-    medium:   ["🟡 MEDIUM",   "background:rgba(240,192,64,0.15);color:#f0c040;border:1px solid rgba(240,192,64,0.3);"],
-    low:      ["🟢 LOW",      "background:rgba(74,222,128,0.12);color:#4ade80;border:1px solid rgba(74,222,128,0.3);"],
-  };
-  if (map[val]) {
-    el.innerHTML = `<span class="priority-tag" style="${map[val][1]}">${map[val][0]}</span>`;
-  } else { el.innerHTML = ""; }
-}
-
-function updateRequestor(name) {
-  // Legacy — Teams auto-fill handles this now
-  const email = MEMBER_EMAILS[name] || "—";
-  requestorEmail = email;
-  const el = document.getElementById("req-email-preview");
-  if (el) el.textContent = email;
-}
-
-// ── REVIEW BUILDER ────────────────────────────────────────────────
-function getV(id) { return document.getElementById(id)?.value?.trim() || "—"; }
-function getRadio(name) { return document.querySelector(`input[name="${name}"]:checked`)?.value || "—"; }
-function getChecked(groupId) {
-  if (groupId === 'q12-group') return getQ12AllUsers();
-  return [...document.querySelectorAll(`#${groupId} input:checked`)].map(i=>i.value).join(", ") || "None selected";
-}
-
-function buildReview() {
-  const amt = parseFloat(getV("q3")) || 0;
-  const users = parseInt(getV("q13")) || 0;
-  const cpu = users > 0 ? "₹" + Math.round(amt/users).toLocaleString("en-IN") + "/month" : "—";
-  const sections = [
-    { title:"A — Tool Details", color:"var(--violet)", rows:[
-      ["Tool Name", getV("q1")],
-      ["Department", getV("q2")],
-      ["Category", getV("q4")],
-      ["Monthly Cost", amt ? "₹" + amt.toLocaleString("en-IN") : "—"],
-      ["Priority", getV("q7")],
-      ["Business Justification", getV("q5")],
-    ]},
-    { title:"B — Project & Users", color:"var(--sky)", rows:[
-      ["Project", getV("q8")],
-      ["Project Owner", getFieldValue("q9")],
-      ["Tool Scope", getRadio("q10")],
-      ["Primary User", getFieldValue("q11")],
-      ["All Users", getChecked("q12-group")],
-      ["No. of Users", getV("q13")],
-      ["Cost Per User", cpu],
-      ["Usage Type", getRadio("q14")],
-    ]},
-    { title:"C — Business Case", color:"var(--green)", rows:[
-      ["Expected Outcome", getV("q16")],
-      ["ROI Type", getRadio("q17")],
-      ["ROI Value", getV("q17-val")],
-    ]},
-    { title:"D — Approval", color:"var(--amber)", rows:[
-      ["Requested By", document.getElementById("q6-val").value || document.getElementById("q6").textContent],
-      ["Requestor Email", requestorEmail],
-      ["Reporting Manager", getFieldValue("q20")],
-      ["Subscription Manager", getFieldValue("q18")],
-      ["Required By", getV("q19")],
-      ["Finance Required", amt > 5000 ? "✓ Yes (amount > ₹5,000)" : "No"],
-      ["Comments", getV("q22") || "(none)"],
-    ]},
-  ];
-  document.getElementById("review-panel").innerHTML = sections.map(s => `
-    <div class="review-card">
-      <div class="review-card-title" style="color:${s.color};">${s.title}</div>
-      ${s.rows.map(r => `
-        <div class="review-row">
-          <div class="review-key">${r[0]}</div>
-          <div class="review-val">${r[1]}</div>
-        </div>`).join("")}
-    </div>`).join("");
-}
-
-// ── DECLARATION ───────────────────────────────────────────────────
-function updateDecl() {
-  setTimeout(() => {
-    const total = 5;
-    const checked = [...document.querySelectorAll("#decl-group input")].filter(i=>i.checked).length;
-    document.getElementById("decl-fill").style.width = (checked/total*100) + "%";
-    document.getElementById("decl-count").textContent = `${checked} / ${total}`;
-    document.getElementById("submit-btn").disabled = checked < total;
-    document.querySelectorAll("#decl-group .check-opt").forEach(opt => {
-      opt.classList.toggle("checked", opt.querySelector("input").checked);
-    });
-  }, 50);
-}
-
-// ── SUBMIT ────────────────────────────────────────────────────────
-function generatePRID() {
-  const n = Date.now().toString().slice(-4);
-  return "PR-" + n;
-}
-
-async function submitForm() {
-  const btn = document.getElementById("submit-btn");
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>Submitting…';
-
-  const prId       = generatePRID();
-  const amt        = parseFloat(getV("q3")) || 0;
-  const users      = parseInt(getV("q13")) || 0;
-  const cpu        = users > 0 ? "₹" + Math.round(amt/users).toLocaleString("en-IN") : "—";
-  const financeReq = amt > 5000 ? "YES — Finance approval mandatory" : "No";
-
-  // Requestor from Teams profile (auto) or manual fallback
-  const reqName  = teamsUser.name  || document.getElementById("q6-val").value   || document.getElementById("q6").textContent || "Not set";
-  const reqEmail = teamsUser.email || document.getElementById("q6-email-val")?.value || requestorEmail || "";
-
-  // Full payload — Power Automate reads every field
-  const payload = {
-    pr_id:                prId,
-    vault_email:          VAULT_EMAIL,
-    requestor_name:       reqName,
-    requestor_email:      reqEmail,
-    requestor_job_title:  teamsUser.jobTitle     || "",
-    requestor_department: teamsUser.department   || getV("q2"),
-    tool_name:            getV("q1"),
-    department:           getV("q2"),
-    category:             getV("q4"),
-    monthly_cost_inr:     amt,
-    amount_display:       "₹" + amt.toLocaleString("en-IN"),
-    annual_cost:          "₹" + (amt * 12).toLocaleString("en-IN"),
-    priority:             getV("q7"),
-    justification:        getV("q5"),
-    project_name:         getV("q8"),
-    project_owner:        getFieldValue("q9"),
-    tool_scope:           getRadio("q10"),
-    primary_user:         getFieldValue("q11"),
-    all_users:            getChecked("q12-group"),
-    num_users:            users,
-    cost_per_user:        cpu,
-    usage_type:           getRadio("q14"),
-    expected_outcome:     getV("q16"),
-    roi_type:             getRadio("q17"),
-    roi_value:            getV("q17-val"),
-    reporting_manager:    getFieldValue("q20"),
-    subscription_manager: getFieldValue("q18"),
-    required_by_date:     getV("q19"),
-    finance_required:     financeReq,
-    comments:             getV("q22") || "None",
-    submit_timestamp_iso: new Date().toISOString(),
-    submit_time_ist:      new Date().toLocaleString("en-IN", {timeZone:"Asia/Kolkata"}),
-    source:               teamsReady ? "Microsoft Teams Tab" : "Web Browser",
-  };
-
-  // ── POST to Power Automate HTTP trigger ───────────────────────────
-  const webhookConfigured = WEBHOOK_URL && WEBHOOK_URL !== "PASTE_POWER_AUTOMATE_WEBHOOK_URL_HERE";
-
-  if (webhookConfigured) {
-    try {
-      const resp = await fetch(WEBHOOK_URL, {
-        method:  "POST",
-        headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify(payload),
-      });
-      if (!resp.ok) throw new Error("HTTP " + resp.status);
-      showSuccessScreen(prId, false);
-    } catch(err) {
-      console.error("Webhook failed:", err);
-      btn.disabled = false;
-      btn.textContent = "Retry Submit →";
-      showToast("Submission failed — check your connection and try again.", "error");
-    }
-  } else {
-    // Demo mode: webhook not yet configured
-    console.log("Demo mode — payload:", payload);
-    showSuccessScreen(prId, true);
-  }
-}
-
-function showSuccessScreen(prId, demoMode) {
-  document.getElementById("pr-id-display").textContent = prId;
-  const noteEl = document.getElementById("success-note");
-  if (noteEl) {
-    noteEl.textContent = demoMode
-      ? "⚙ Demo mode — paste your Power Automate webhook URL in WEBHOOK_URL to enable real emails."
-      : "✓ Email sent to aivault@harshwal.com and confirmation to " + (teamsUser.email || "your email") + ".";
-    noteEl.style.color = demoMode ? "var(--amber)" : "var(--green)";
-    noteEl.style.display = "block";
-  }
-  document.getElementById("success-screen").classList.add("show");
-  showToast(prId + " submitted ✓", "success");
-}
-
-// ── RESET ─────────────────────────────────────────────────────────
-function resetForm() {
-  document.getElementById("success-screen").classList.remove("show");
-  document.querySelectorAll(".fi,.fs,.fta").forEach(el => el.value = "");
-  document.querySelectorAll("input[type=checkbox],input[type=radio]").forEach(el => el.checked = false);
-  document.querySelectorAll(".check-opt,.radio-opt").forEach(el => el.classList.remove("checked","selected","selected-gold"));
-  document.querySelectorAll(".fi,.fs").forEach(el => el.classList.remove("error","valid"));
-  document.getElementById("dup-warn").classList.remove("show");
-  document.getElementById("finance-note").style.display = "none";
-  document.getElementById("cpu-badge").style.display = "none";
-  document.getElementById("priority-tag").innerHTML = "";
-  document.getElementById("req-email-preview").textContent = "—";
-  document.getElementById("decl-fill").style.width = "0%";
-  document.getElementById("decl-count").textContent = "0 / 5";
-  document.getElementById("submit-btn").disabled = true;
-  // Restore Teams user info (don't clear it — it's auto-filled)
-  if (teamsUser.name) {
-    document.getElementById('q6-av').textContent = teamsUser.initials;
-    document.getElementById('q6').textContent    = teamsUser.name;
-    document.getElementById('req-email-preview').textContent = teamsUser.email;
-    document.getElementById('q6-val').value      = teamsUser.name;
-    document.getElementById('q6-email-val').value = teamsUser.email;
-    requestorEmail = teamsUser.email;
-  } else {
-    requestorEmail = '';
-  }
-  goToSection(0);
-}
-
-// ── TOAST ─────────────────────────────────────────────────────────
-function showToast(msg, type = "") {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.className = `toast show ${type}`;
-  setTimeout(() => t.className = "toast", 3200);
-}
-</script>
+<script src="assets/js/main.js"></script>
 </body>
 </html>
