@@ -1,1397 +1,830 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>VaultDesk — Harshwal AI Vault</title>
-  <style>
-/* ════════════════════════════════════════════
-   VaultDesk — style.css
-   harshwalteam.github.io/Vaultdesk/
-   ════════════════════════════════════════════ */
-
-/* ── RESET & BASE ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { font-size: 15px; -webkit-text-size-adjust: 100%; }
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-  background: #07090f;
-  color: #d8dce8;
-  min-height: 100vh;
-  line-height: 1.55;
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<title>VaultDesk — Harshwal AI Vault</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#0b1f42;--navy2:#132a5a;--navy3:#1d3c77;
+  --gold:#c8a030;--gold2:#f0c040;--gold3:#fdf6e3;
+  --teal:#0d7a80;--teal2:#1abc9c;--teal3:#e2f7f5;
+  --green:#0a5c36;--green2:#22a55e;--green3:#e3f7ec;
+  --orange:#b84010;--orange2:#e8692a;--orange3:#fdf0e8;
+  --purple:#3d1478;--purple2:#7e3fd4;--purple3:#f0e8fc;
+  --coral:#b8001e;--coral2:#e93c52;--coral3:#fce8ec;
+  --blue:#1250a0;--blue2:#3d88e0;--blue3:#e6f0fc;
+  --ink:#0d1724;--ink2:#2e3d52;--ink3:#6b7a8e;
+  --bg:#f0f3f8;--white:#ffffff;--rule:#c8d4e8;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',sans-serif;
+  --radius:8px;
+  --shadow:0 2px 12px rgba(11,31,66,.10);
 }
-
-/* ── APP SHELL ── */
-.app {
-  max-width: 980px;
-  margin: 0 auto;
-  min-height: 100vh;
-  background: #0c1018;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:13px;line-height:1.5}
 
 /* ── TOP BAR ── */
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 24px;
-  background: #0c1018;
-  border-bottom: 1px solid #181f2d;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
+.topbar{background:var(--navy);position:sticky;top:0;z-index:300;border-bottom:3px solid var(--gold)}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:0 28px;min-height:52px}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-logo{width:36px;height:36px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:13px;color:var(--navy);letter-spacing:-1px}
+.brand-name{font-size:15px;font-weight:800;color:#fff;letter-spacing:.3px}
+.brand-sub{font-size:9px;color:rgba(255,255,255,.45);letter-spacing:1.2px;text-transform:uppercase;margin-top:1px;font-family:var(--mono)}
+.doc-badge{background:rgba(200,160,48,.15);border:1px solid rgba(200,160,48,.35);color:var(--gold2);font-family:var(--mono);font-size:10px;padding:4px 12px;border-radius:20px;font-weight:600;letter-spacing:.4px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.user-email{color:rgba(255,255,255,.45);font-size:11px;font-family:var(--mono)}
+.avatar-btn{width:32px;height:32px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:var(--navy);border:none;cursor:pointer}
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 17px;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: -0.3px;
-}
+/* ── STEP NAV (like tabs) ── */
+.step-nav{background:var(--navy2);display:flex;overflow-x:auto;border-top:1px solid rgba(255,255,255,.07);padding:0 28px;scrollbar-width:none}
+.step-nav::-webkit-scrollbar{display:none}
+.snav-item{padding:12px 20px;font-size:11px;font-weight:700;cursor:pointer;color:rgba(255,255,255,.4);background:transparent;border:none;border-bottom:3px solid transparent;letter-spacing:.4px;white-space:nowrap;transition:.18s;font-family:var(--mono);display:flex;align-items:center;gap:8px}
+.snav-item.active{color:#fff;border-bottom-color:var(--gold2)}
+.snav-item:hover:not(.active){color:rgba(255,255,255,.75)}
+.snav-circle{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;transition:.18s}
+.snav-item.active .snav-circle{background:var(--gold);color:var(--navy)}
+.snav-item.done .snav-circle{background:#2d5a1a;color:#8dbb56}
+.snav-item.done{color:rgba(255,255,255,.5)}
 
-.brand-v {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  background: #7c6af7;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 800;
-  margin-right: 2px;
-}
+/* ── PANELS ── */
+.panel{display:none;padding:28px;max-width:1200px;margin:0 auto}
+.panel.active{display:block}
 
-.brand-name { color: #e8eaf6; }
+/* ── SECTION HEADING ── */
+.sh{font-size:11px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:10px;margin:28px 0 14px;letter-spacing:.8px;text-transform:uppercase;font-family:var(--mono)}
+.sh::after{content:'';flex:1;height:1px;background:var(--rule)}
+.badge{padding:2px 10px;border-radius:20px;font-size:9px;font-weight:800;letter-spacing:.5px;font-family:var(--mono)}
+.b-navy{background:var(--navy);color:#fff}
+.b-gold{background:var(--gold3);color:var(--gold)}
+.b-coral{background:var(--coral3);color:var(--coral)}
+.b-green{background:var(--green3);color:var(--green)}
+.b-teal{background:var(--teal3);color:var(--teal)}
 
-.topbar-right { display: flex; align-items: center; gap: 12px; }
-.user-email { font-size: 12px; color: #556; }
-
-.topbar-menu {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #556;
-  font-size: 18px;
-  padding: 4px 6px;
-  border-radius: 6px;
-}
-.topbar-menu:hover { background: #181f2d; }
-
-/* ── TEAM BADGE ROW ── */
-.team-badge-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 24px;
-  background: #0c1018;
-  border-bottom: 1px solid #181f2d;
-  font-size: 12px;
-}
-
-.detecting-label { color: #445; }
-
-.team-badge {
-  background: #12293a;
-  border: 1px solid #1a4060;
-  border-radius: 20px;
-  padding: 2px 10px;
-  color: #4a9eca;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.avatar-circle {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: #7c6af7;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ── STEP NAV ── */
-.step-nav {
-  display: flex;
-  align-items: stretch;
-  background: #0c1018;
-  border-bottom: 1px solid #181f2d;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.step-nav::-webkit-scrollbar { display: none; }
-
-.step-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 13px 22px;
-  font-size: 13px;
-  color: #445;
-  cursor: default;
-  border-bottom: 2px solid transparent;
-  white-space: nowrap;
-  transition: color 0.2s;
-  flex-shrink: 0;
-}
-
-.step-nav-item.active {
-  color: #c8c0f8;
-  border-bottom-color: #7c6af7;
-}
-
-.step-nav-item.done {
-  color: #6a8a4a;
-  border-bottom-color: #3a5a28;
-}
-
-.snav-letter {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: #181f2d;
-  color: #556;
-  font-size: 11px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: background 0.2s, color 0.2s;
-}
-
-.step-nav-item.active .snav-letter { background: #7c6af7; color: #fff; }
-.step-nav-item.done  .snav-letter  { background: #2d5a1a; color: #8dbb56; }
-
-.snav-label { font-size: 13px; }
-
-/* ── STEP PANELS ── */
-.step-panel { display: none; flex: 1; flex-direction: column; }
-.step-panel.active { display: flex; }
-
-/* ── PANEL HEADER ── */
-.panel-header {
-  padding: 26px 28px 18px;
-  border-bottom: 1px solid #181f2d;
-}
-
-.panel-title {
-  font-size: 17px;
-  font-weight: 700;
-  color: #e8eaf6;
-  margin-bottom: 4px;
-}
-
-.panel-subtitle { font-size: 13px; color: #556; }
+/* ── NOTICE ── */
+.notice{border-radius:var(--radius);padding:14px 18px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;border-left:4px solid}
+.n-red{background:var(--coral3);border-color:var(--coral2)}
+.n-blue{background:var(--blue3);border-color:var(--navy)}
+.n-green{background:var(--green3);border-color:var(--green2)}
+.n-gold{background:var(--gold3);border-color:var(--gold)}
+.notice-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.notice-title{font-size:12px;font-weight:800;color:var(--ink);margin-bottom:3px}
+.notice-text{font-size:11px;color:var(--ink2);line-height:1.6}
 
 /* ── FORM GRID ── */
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  padding: 20px 28px;
-  flex: 1;
-}
-
-.full-width { grid-column: 1 / -1; }
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.full-width{grid-column:1/-1}
 
 /* ── FORM CARDS ── */
-.form-card {
-  background: #11161f;
-  border: 1px solid #181f2d;
-  border-radius: 10px;
-  padding: 18px 18px 16px;
-}
+.form-card{background:var(--white);border:1.5px solid var(--rule);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
 
 /* ── Q LABELS ── */
-.q-num {
-  font-size: 10px;
-  font-weight: 700;
-  color: #334;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 5px;
-}
-
-.q-title {
-  display: block;
-  font-size: 14px;
-  font-weight: 600;
-  color: #d0d4e8;
-  margin-bottom: 4px;
-}
-
-.req { color: #c04040; font-weight: 400; }
-.optional { color: #445; font-size: 12px; font-weight: 400; }
-
-.q-hint {
-  font-size: 12px;
-  color: #3a4560;
-  margin-bottom: 12px;
-  line-height: 1.5;
-}
+.q-num{font-size:10px;font-weight:700;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;font-family:var(--mono)}
+.q-title{display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.req{color:var(--coral2);font-weight:400}
+.optional{color:var(--ink3);font-size:11px;font-weight:400}
+.q-hint{font-size:11px;color:var(--ink3);margin-bottom:12px;line-height:1.5}
 
 /* ── INPUTS ── */
-.field-input {
-  width: 100%;
-  background: #080c14;
-  border: 1px solid #1e2840;
-  border-radius: 7px;
-  padding: 9px 13px;
-  color: #d0d4e8;
-  font-size: 14px;
-  font-family: inherit;
-  line-height: 1.4;
-  transition: border-color 0.15s;
-  outline: none;
-  appearance: none;
-  -webkit-appearance: none;
-}
-
-.field-input:focus { border-color: #7c6af7; }
-.field-input::placeholder { color: #2a3450; }
-
-.field-textarea { resize: vertical; min-height: 90px; }
-
-input[type="date"].field-input { color-scheme: dark; }
+.field-input{width:100%;background:var(--bg);border:1.5px solid var(--rule);border-radius:6px;padding:9px 13px;color:var(--ink);font-size:13px;font-family:var(--sans);line-height:1.4;transition:border-color .15s;outline:none}
+.field-input:focus{border-color:var(--navy);background:#fff}
+.field-input::placeholder{color:var(--ink3)}
+.field-textarea{resize:vertical;min-height:90px}
+input[type="date"].field-input{color-scheme:light}
 
 /* ── SELECT ── */
-.select-wrap { position: relative; }
-
-.select-wrap select {
-  width: 100%;
-  background: #080c14;
-  border: 1px solid #1e2840;
-  border-radius: 7px;
-  padding: 9px 34px 9px 13px;
-  color: #d0d4e8;
-  font-size: 14px;
-  font-family: inherit;
-  appearance: none;
-  -webkit-appearance: none;
-  cursor: pointer;
-  transition: border-color 0.15s;
-  outline: none;
-}
-
-.select-wrap select:focus { border-color: #7c6af7; }
-
-.select-wrap::after {
-  content: '▾';
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #445;
-  font-size: 11px;
-  pointer-events: none;
-}
-
-/* ── OTHER INPUT (shown below select) ── */
-.other-input { margin-top: 8px; }
+.select-wrap{position:relative}
+.select-wrap select{width:100%;background:var(--bg);border:1.5px solid var(--rule);border-radius:6px;padding:9px 34px 9px 13px;color:var(--ink);font-size:13px;font-family:var(--sans);appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color .15s;outline:none}
+.select-wrap select:focus{border-color:var(--navy);background:#fff}
+.select-wrap::after{content:'▾';position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:11px;pointer-events:none}
+.other-input{margin-top:8px}
 
 /* ── COST BADGE ── */
-.cost-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: #0d1a0a;
-  border: 1px solid #1e3a14;
-  border-radius: 7px;
-  padding: 7px 13px;
-  color: #6db840;
-  font-size: 12px;
-  font-family: 'Courier New', monospace;
-  margin-top: 10px;
-}
+.cost-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green3);border:1.5px solid var(--green2);border-radius:6px;padding:7px 14px;color:var(--green);font-size:11px;font-family:var(--mono);font-weight:700;margin-top:10px}
 
-/* ── INLINE WARNINGS ── */
-.inline-warn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: #1a1006;
-  border: 1px solid #4a2e08;
-  border-radius: 7px;
-  padding: 7px 12px;
-  color: #c88030;
-  font-size: 12px;
-  margin-top: 9px;
-}
+/* ── INLINE WARN ── */
+.inline-warn{display:flex;align-items:center;gap:6px;background:var(--gold3);border:1.5px solid var(--gold);border-radius:6px;padding:8px 12px;color:#7a5800;font-size:11px;margin-top:9px;font-weight:600}
 
-/* ── TAG INPUT (Q12) ── */
-.tag-row {
-  display: flex;
-  gap: 8px;
-}
-
-.tag-field { flex: 1; }
-
-.btn-add {
-  background: #16103a;
-  border: 1px solid #2e2478;
-  border-radius: 7px;
-  padding: 9px 16px;
-  color: #8a80e8;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s;
-  font-family: inherit;
-}
-.btn-add:hover { background: #201660; }
-
-.tags-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin-top: 10px;
-  min-height: 10px;
-}
-
-.tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: #160f36;
-  border: 1px solid #2a205e;
-  border-radius: 20px;
-  padding: 4px 12px;
-  color: #9a92e8;
-  font-size: 13px;
-}
-
-.tag-x {
-  cursor: pointer;
-  color: #554890;
-  font-size: 15px;
-  line-height: 1;
-  transition: color 0.1s;
-  margin-left: 2px;
-}
-.tag-x:hover { color: #c04040; }
+/* ── TAG INPUT ── */
+.tag-row{display:flex;gap:8px}
+.tag-field{flex:1}
+.btn-add{background:var(--navy);border:none;border-radius:6px;padding:9px 18px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:var(--mono);letter-spacing:.3px;transition:background .15s}
+.btn-add:hover{background:var(--navy2)}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;min-height:10px}
+.tag{display:inline-flex;align-items:center;gap:6px;background:var(--navy);border-radius:20px;padding:4px 12px;color:#fff;font-size:11px;font-family:var(--mono)}
+.tag-x{cursor:pointer;color:rgba(255,255,255,.5);font-size:15px;line-height:1;transition:color .1s;margin-left:2px}
+.tag-x:hover{color:var(--coral2)}
 
 /* ── RADIO GROUPS ── */
-.radio-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.radio-opt {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  padding: 8px 16px;
-  border: 1px solid #1e2840;
-  border-radius: 8px;
-  color: #556;
-  font-size: 13px;
-  transition: all 0.15s;
-  user-select: none;
-}
-
-.radio-opt:hover {
-  border-color: #4a3a90;
-  color: #a098e0;
-  background: #0e0c20;
-}
-
-.radio-opt.selected {
-  border-color: #7c6af7;
-  background: #120e30;
-  color: #c0b8f8;
-}
-
-.radio-dot {
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  border: 2px solid #2a3450;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: border-color 0.15s;
-}
-
-.radio-opt.selected .radio-dot {
-  border-color: #7c6af7;
-  background: #7c6af7;
-}
-
-.radio-inner {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #fff;
-  display: none;
-}
-
-.radio-opt.selected .radio-inner { display: block; }
-
-/* ROI grid layout */
-.roi-group {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 8px;
-}
-
-.roi-opt { justify-content: flex-start; }
+.radio-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.radio-opt{display:flex;align-items:center;gap:8px;cursor:pointer;padding:8px 16px;border:1.5px solid var(--rule);border-radius:6px;color:var(--ink3);font-size:12px;transition:all .15s;user-select:none;background:#fff}
+.radio-opt:hover{border-color:var(--navy);color:var(--navy);background:var(--blue3)}
+.radio-opt.selected{border-color:var(--navy);background:var(--navy);color:#fff}
+.radio-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--rule);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .15s}
+.radio-opt.selected .radio-dot{border-color:#fff;background:#fff}
+.radio-inner{width:5px;height:5px;border-radius:50%;background:var(--navy);display:none}
+.radio-opt.selected .radio-inner{display:block}
+.roi-group{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
 
 /* ── CONFIRM EMAIL ── */
-.confirm-email {
-  font-size: 12px;
-  color: #445;
-  margin-top: 8px;
-}
+.confirm-email{font-size:11px;color:var(--ink3);margin-top:8px;font-family:var(--mono)}
 
 /* ── DECLARATION CARD ── */
-.declaration-card { background: #0e1320; }
-
-.declare-heading {
-  font-size: 15px;
-  font-weight: 700;
-  color: #d0d4e8;
-  margin-bottom: 4px;
-}
-
-.declare-sub {
-  font-size: 12px;
-  color: #445;
-  margin-bottom: 12px;
-}
-
-.declare-progress {
-  display: inline-block;
-  background: #181f2d;
-  border: 1px solid #252f45;
-  border-radius: 20px;
-  padding: 3px 14px;
-  font-size: 13px;
-  color: #667;
-  font-weight: 600;
-  margin-bottom: 16px;
-}
-
-.declare-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.declare-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  cursor: pointer;
-  padding: 12px 14px;
-  background: #0c1018;
-  border: 1px solid #181f2d;
-  border-radius: 8px;
-  font-size: 13px;
-  color: #778;
-  transition: border-color 0.15s, color 0.15s;
-  user-select: none;
-}
-
-.declare-item:hover {
-  border-color: #2a3450;
-  color: #99a;
-}
-
-.declare-item:has(.declare-check:checked) {
-  border-color: #2a5a3a;
-  color: #8ac060;
-  background: #0a130d;
-}
-
-.declare-check {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
-  border: 2px solid #2a3450;
-  background: #080c14;
-  cursor: pointer;
-  flex-shrink: 0;
-  margin-top: 1px;
-  position: relative;
-  transition: all 0.15s;
-}
-
-.declare-check:checked {
-  background: #3a7a28;
-  border-color: #3a7a28;
-}
-
-.declare-check:checked::after {
-  content: '✓';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
-}
+.declaration-card{background:var(--navy);border-color:var(--navy)}
+.declare-heading{font-size:14px;font-weight:800;color:#fff;margin-bottom:4px}
+.declare-sub{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:12px}
+.declare-progress{display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:3px 14px;font-size:12px;color:var(--gold2);font-weight:700;margin-bottom:16px;font-family:var(--mono)}
+.declare-list{display:flex;flex-direction:column;gap:10px}
+.declare-item{display:flex;align-items:flex-start;gap:12px;cursor:pointer;padding:12px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:12px;color:rgba(255,255,255,.6);transition:all .15s;user-select:none}
+.declare-item:hover{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.85)}
+.declare-item:has(.declare-check:checked){border-color:var(--green2);color:#8ddd60;background:rgba(34,165,94,.1)}
+.declare-check{appearance:none;-webkit-appearance:none;width:18px;height:18px;border-radius:4px;border:2px solid rgba(255,255,255,.3);background:transparent;cursor:pointer;flex-shrink:0;margin-top:1px;position:relative;transition:all .15s}
+.declare-check:checked{background:var(--green2);border-color:var(--green2)}
+.declare-check:checked::after{content:'✓';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:11px;font-weight:700}
 
 /* ── PANEL FOOTER ── */
-.panel-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 28px;
-  border-top: 1px solid #181f2d;
-  background: #0c1018;
-  flex-shrink: 0;
-  gap: 12px;
-}
-
-.footer-left {}
-.footer-right { display: flex; align-items: center; gap: 12px; }
+.panel-footer{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-top:1.5px solid var(--rule);background:var(--white);position:sticky;bottom:0;z-index:10;box-shadow:0 -2px 12px rgba(11,31,66,.08)}
+.footer-right{display:flex;align-items:center;gap:12px}
 
 /* ── BUTTONS ── */
-.btn-back {
-  background: transparent;
-  border: 1px solid #1e2840;
-  border-radius: 8px;
-  padding: 10px 20px;
-  color: #556;
-  font-size: 13px;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.15s;
-}
-.btn-back:hover { border-color: #4a3a90; color: #a098e0; }
-
-.btn-next {
-  background: #7c6af7;
-  border: none;
-  border-radius: 8px;
-  padding: 11px 24px;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.15s;
-}
-.btn-next:hover { background: #6858e0; }
-.btn-next:active { transform: scale(0.98); }
-
-.btn-submit {
-  background: #2d6a1a;
-  border: none;
-  border-radius: 8px;
-  padding: 11px 28px;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.15s;
-}
-.btn-submit:hover:not(:disabled) { background: #3a8820; }
-.btn-submit:disabled {
-  background: #1a2818;
-  color: #3a5030;
-  cursor: not-allowed;
-}
+.btn-back{background:transparent;border:1.5px solid var(--rule);border-radius:6px;padding:10px 22px;color:var(--ink3);font-size:12px;cursor:pointer;font-family:var(--mono);font-weight:600;letter-spacing:.3px;transition:all .15s}
+.btn-back:hover{border-color:var(--navy);color:var(--navy)}
+.btn-next{background:var(--navy);border:none;border-radius:6px;padding:11px 26px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;font-family:var(--mono);letter-spacing:.4px;transition:background .15s}
+.btn-next:hover{background:var(--navy2)}
+.btn-next:active{transform:scale(.98)}
+.btn-submit{background:var(--green2);border:none;border-radius:6px;padding:11px 26px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;font-family:var(--mono);letter-spacing:.4px;transition:background .15s}
+.btn-submit:hover:not(:disabled){background:var(--green)}
+.btn-submit:disabled{background:var(--rule);color:var(--ink3);cursor:not-allowed}
 
 /* ── ERROR TOAST ── */
-.error-toast {
-  background: #180a0a;
-  border: 1px solid #4a1818;
-  border-radius: 8px;
-  padding: 8px 14px;
-  color: #c04040;
-  font-size: 12px;
-  display: none;
-  align-items: center;
-  gap: 5px;
-  white-space: nowrap;
-}
-.error-toast.show { display: flex; }
+.error-toast{background:var(--coral3);border:1.5px solid var(--coral2);border-radius:6px;padding:8px 16px;color:var(--coral);font-size:11px;display:none;align-items:center;gap:6px;white-space:nowrap;font-family:var(--mono);font-weight:600}
+.error-toast.show{display:flex}
 
 /* ── SUCCESS SCREEN ── */
-.success-screen {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  padding: 60px 28px;
-  text-align: center;
-}
-.success-screen.active { display: flex; }
+.success-screen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;padding:60px 28px;text-align:center}
+.success-screen.active{display:flex}
+.success-icon{width:80px;height:80px;border-radius:50%;background:var(--green3);border:3px solid var(--green2);color:var(--green);font-size:38px;display:flex;align-items:center;justify-content:center;margin-bottom:24px}
+.success-title{font-size:24px;font-weight:800;color:var(--navy);margin-bottom:10px}
+.success-sub{font-size:13px;color:var(--ink3);max-width:440px;line-height:1.6;margin-bottom:6px}
+.success-meta{font-size:12px;color:var(--ink3);margin-bottom:8px;font-family:var(--mono)}
+.success-note{font-size:11px;color:var(--ink3);margin-bottom:28px}
+.success-actions{display:flex;gap:12px}
+.btn-new{background:var(--navy);border:none;border-radius:6px;padding:11px 22px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;font-family:var(--mono)}
+.btn-new:hover{background:var(--navy2)}
+.btn-print{background:transparent;border:1.5px solid var(--rule);border-radius:6px;padding:11px 22px;color:var(--ink3);font-size:12px;cursor:pointer;font-family:var(--mono);font-weight:600}
+.btn-print:hover{border-color:var(--navy);color:var(--navy)}
 
-.success-icon {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: #0c1e0a;
-  border: 2px solid #2a5a18;
-  color: #6db840;
-  font-size: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 22px;
-}
-
-.success-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #e8eaf6;
-  margin-bottom: 10px;
-}
-
-.success-sub {
-  font-size: 14px;
-  color: #667;
-  max-width: 440px;
-  line-height: 1.6;
-  margin-bottom: 6px;
-}
-
-.success-meta {
-  font-size: 13px;
-  color: #445;
-  margin-bottom: 8px;
-  font-family: monospace;
-}
-
-.success-note {
-  font-size: 12px;
-  color: #3a4a5a;
-  margin-bottom: 28px;
-}
-
-.success-actions { display: flex; gap: 12px; }
-
-.btn-new {
-  background: #7c6af7;
-  border: none;
-  border-radius: 8px;
-  padding: 11px 22px;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-}
-.btn-new:hover { background: #6858e0; }
-
-.btn-print {
-  background: transparent;
-  border: 1px solid #1e2840;
-  border-radius: 8px;
-  padding: 11px 22px;
-  color: #778;
-  font-size: 14px;
-  cursor: pointer;
-  font-family: inherit;
-}
-.btn-print:hover { border-color: #3a4a5a; color: #99a; }
+/* ── FOOTER ── */
+.site-footer{background:var(--navy);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;margin-top:0}
+.fl{font-size:10px;color:rgba(255,255,255,.45);font-family:var(--mono)}
+.fl strong{color:rgba(255,255,255,.75)}
+.fr{font-size:9px;color:rgba(255,255,255,.3);font-family:var(--mono);letter-spacing:.5px}
 
 /* ── RESPONSIVE ── */
-@media (max-width: 640px) {
-  .form-grid { grid-template-columns: 1fr; padding: 14px; }
-  .full-width { grid-column: 1; }
-  .panel-header { padding: 18px 14px 14px; }
-  .panel-footer { padding: 14px; flex-wrap: wrap; }
-  .footer-right { flex-wrap: wrap; justify-content: flex-end; }
-  .btn-next, .btn-back, .btn-submit { width: 100%; text-align: center; }
-  .error-toast { white-space: normal; }
-  .topbar, .team-badge-row { padding-left: 14px; padding-right: 14px; }
-  .step-nav-item { padding: 11px 14px; }
-  .snav-label { display: none; }
-  .roi-group { grid-template-columns: 1fr; }
-  .radio-group { flex-direction: column; }
-  .tag-row { flex-direction: column; }
-  .btn-add { width: 100%; text-align: center; }
+@media(max-width:640px){
+  .form-grid{grid-template-columns:1fr}
+  .full-width{grid-column:1}
+  .panel{padding:14px}
+  .panel-footer{padding:14px;flex-wrap:wrap;gap:10px}
+  .footer-right{flex-wrap:wrap;justify-content:flex-end}
+  .btn-next,.btn-back,.btn-submit{width:100%;text-align:center}
+  .radio-group{flex-direction:column}
+  .roi-group{grid-template-columns:1fr}
+  .tag-row{flex-direction:column}
+  .btn-add{width:100%;text-align:center}
+  .snav-item{padding:10px 14px}
 }
 
-/* ── PRINT ── */
-@media print {
-  .topbar, .team-badge-row, .step-nav, .panel-footer { display: none !important; }
-  .step-panel { display: flex !important; page-break-after: always; }
-  .form-card { border: 1px solid #ccc; break-inside: avoid; }
-  body { background: #fff; color: #000; }
-  .form-grid { grid-template-columns: 1fr 1fr; }
+@media print{
+  .topbar{position:static;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .step-nav,.panel-footer,.site-footer{display:none!important}
+  .panel{display:block!important;page-break-after:always}
 }
-
 </style>
 </head>
 <body>
 
-<div class="app" id="appRoot">
-
-  <!-- ── TOP BAR ── -->
-  <header class="topbar">
-    <div class="brand"><span class="brand-v">V</span><span class="brand-name">VaultDesk</span></div>
+<!-- ── TOP BAR ── -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-logo">VD</div>
+      <div>
+        <div class="brand-name">VaultDesk</div>
+        <div class="brand-sub">HARSHWAL AI VAULT · TOOL REQUEST</div>
+      </div>
+    </div>
+    <div class="doc-badge">PURCHASE REQUEST FORM</div>
     <div class="topbar-right">
       <span class="user-email">aivault@harshwal.com</span>
-      <button class="topbar-menu" aria-label="Menu">⋯</button>
+      <div class="avatar-btn">A</div>
     </div>
-  </header>
-
-  <!-- ── TEAM BADGE ── -->
-  <div class="team-badge-row">
-    <span class="detecting-label">Detecting…</span>
-    <span class="team-badge">● Teams</span>
-    <div class="avatar-circle" aria-label="User A">A</div>
   </div>
 
   <!-- ── STEP NAV ── -->
-  <nav class="step-nav" aria-label="Form steps">
-    <div class="step-nav-item active" id="snav-a" data-step="a">
-      <span class="snav-letter">A</span>
-      <span class="snav-label">Tool Details</span>
+  <div class="step-nav">
+    <button class="snav-item active" id="snav-a" onclick="goTo('b','a',isStepAValid)" style="cursor:default">
+      <span class="snav-circle">A</span>Tool Details
+    </button>
+    <button class="snav-item" id="snav-b">
+      <span class="snav-circle">B</span>Project &amp; Users
+    </button>
+    <button class="snav-item" id="snav-c">
+      <span class="snav-circle">C</span>Business Case
+    </button>
+    <button class="snav-item" id="snav-d">
+      <span class="snav-circle">D</span>Approval
+    </button>
+    <button class="snav-item" id="snav-e">
+      <span class="snav-circle">E</span>Declare &amp; Submit
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     STEP A — TOOL DETAILS
+══════════════════════════════════════ -->
+<div class="panel active" id="step-a">
+
+  <div class="sh">A — Tool Details <span class="badge b-navy">STEP 1 OF 5</span></div>
+
+  <div class="notice n-blue">
+    <div class="notice-icon">ℹ️</div>
+    <div>
+      <div class="notice-title">What are you requesting?</div>
+      <div class="notice-text">Fill all required fields marked <strong>*</strong> before proceeding. Ensure the tool name is exact — e.g. "Claude API (Anthropic)", "GitHub Copilot Business".</div>
     </div>
-    <div class="step-nav-item" id="snav-b" data-step="b">
-      <span class="snav-letter">B</span>
-      <span class="snav-label">Project &amp; Users</span>
-    </div>
-    <div class="step-nav-item" id="snav-c" data-step="c">
-      <span class="snav-letter">C</span>
-      <span class="snav-label">Business Case</span>
-    </div>
-    <div class="step-nav-item" id="snav-d" data-step="d">
-      <span class="snav-letter">D</span>
-      <span class="snav-label">Approval</span>
-    </div>
-    <div class="step-nav-item" id="snav-e" data-step="e">
-      <span class="snav-letter">E</span>
-      <span class="snav-label">Declare &amp; Submit</span>
-    </div>
-  </nav>
+  </div>
 
-  <!-- ═══════════════════════════════════════
-       STEP A — TOOL DETAILS
-  ════════════════════════════════════════ -->
-  <section class="step-panel active" id="step-a">
-    <div class="panel-header">
-      <h2 class="panel-title">A — Tool Details</h2>
-      <p class="panel-subtitle">What are you requesting?</p>
-    </div>
+  <div class="form-grid">
 
-    <div class="form-grid">
-
-      <!-- Q1 Tool Name (full width) -->
-      <div class="form-card full-width">
-        <div class="q-num">Q1</div>
-        <label class="q-title" for="q1_tool_name">Tool / Service Name <span class="req">*</span></label>
-        <p class="q-hint">Exact product name — e.g. "Claude API (Anthropic)", "GitHub Copilot Business"</p>
-        <input type="text" id="q1_tool_name" class="field-input" placeholder='e.g. "Notion AI"' oninput="validateA()" />
-        <div class="inline-warn" id="warn_duplicate">
-          ⚠ A similar tool may already be active. Check the existing register before proceeding.
-        </div>
-      </div>
-
-      <!-- Q2 Department -->
-      <div class="form-card">
-        <div class="q-num">Q2</div>
-        <label class="q-title" for="q2_dept">Department <span class="req">*</span></label>
-        <div class="select-wrap">
-          <select id="q2_dept" onchange="validateA()">
-            <option value="">Select department…</option>
-            <option value="tax">Tax</option>
-            <option value="audit">Audit</option>
-            <option value="advisory">Advisory</option>
-            <option value="accounts">Accounts / Finance</option>
-            <option value="admin">Admin / HR</option>
-            <option value="it">IT</option>
-            <option value="management">Management</option>
-            <option value="dm_dept">DM Dept</option>
-            <option value="cross">Cross-Department</option>
-            <option value="other">Other — type below ↓</option>
-          </select>
-        </div>
-        <input type="text" id="q2_dept_other" class="field-input other-input" placeholder="Type department…" oninput="validateA()" style="display:none" />
-      </div>
-
-      <!-- Q4 Category -->
-      <div class="form-card">
-        <div class="q-num">Q4</div>
-        <label class="q-title" for="q4_category">Category <span class="req">*</span></label>
-        <div class="select-wrap">
-          <select id="q4_category" onchange="validateA()">
-            <option value="">Select category…</option>
-            <option value="ai_llm">AI / LLM API</option>
-            <option value="saas_prod">SaaS Tool — Productivity</option>
-            <option value="saas_analytics">SaaS Tool — Analytics</option>
-            <option value="infra">Infrastructure / Cloud</option>
-            <option value="agent">Agent Build / Development</option>
-            <option value="training">Training / Certification</option>
-            <option value="hardware">Hardware / Device</option>
-            <option value="integration">Integration / Middleware</option>
-            <option value="security">Security / Compliance</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Q3 Monthly Cost -->
-      <div class="form-card">
-        <div class="q-num">Q3</div>
-        <label class="q-title" for="q3_cost">Monthly Cost (INR) <span class="req">*</span></label>
-        <p class="q-hint">For annual plans: Total ÷ 12</p>
-        <input type="number" id="q3_cost" class="field-input" min="0" placeholder="0" oninput="checkCost(); validateA();" />
-        <div class="inline-warn" id="warn_cost" style="display:none">
-          ⚠ Amount exceeds ₹5,000/month — Finance approval is mandatory.
-        </div>
-      </div>
-
-      <!-- Q7 Priority -->
-      <div class="form-card">
-        <div class="q-num">Q7</div>
-        <label class="q-title" for="q7_priority">Priority <span class="req">*</span></label>
-        <div class="select-wrap">
-          <select id="q7_priority" onchange="validateA()">
-            <option value="">Select priority…</option>
-            <option value="critical">Critical — Blocking current work</option>
-            <option value="high">High — Required this month</option>
-            <option value="medium">Medium — Required this quarter</option>
-            <option value="low">Low — Nice to have</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Q5 Business Justification (full width) -->
-      <div class="form-card full-width">
-        <div class="q-num">Q5</div>
-        <label class="q-title" for="q5_justification">Business Justification <span class="req">*</span></label>
-        <p class="q-hint">What problem does this solve? What does it automate? Why this tool over alternatives?</p>
-        <textarea id="q5_justification" class="field-input field-textarea" rows="4" oninput="validateA()"></textarea>
-      </div>
-
-    </div><!-- /form-grid -->
-
-    <div class="panel-footer">
-      <div class="footer-left"></div>
-      <div class="footer-right">
-        <div class="error-toast" id="err-a">⚠ Please fill all required fields.</div>
-        <button class="btn-next" onclick="goTo('b', 'a', isStepAValid)">Next: Project &amp; Users →</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════
-       STEP B — PROJECT & USERS
-  ════════════════════════════════════════ -->
-  <section class="step-panel" id="step-b">
-    <div class="panel-header">
-      <h2 class="panel-title">B — Project &amp; Users</h2>
-      <p class="panel-subtitle">Who uses it and for what?</p>
+    <!-- Q1 Tool Name -->
+    <div class="form-card full-width">
+      <div class="q-num">Q1</div>
+      <label class="q-title" for="q1_tool_name">Tool / Service Name <span class="req">*</span></label>
+      <p class="q-hint">Exact product name — e.g. "Claude API (Anthropic)", "GitHub Copilot Business"</p>
+      <input type="text" id="q1_tool_name" class="field-input" placeholder='e.g. "Notion AI"' oninput="validateA()" />
+      <div class="inline-warn">⚠ A similar tool may already be active. Check the existing register before proceeding.</div>
     </div>
 
-    <div class="form-grid">
-
-      <!-- Q8 Project Name -->
-      <div class="form-card full-width">
-        <div class="q-num">Q8</div>
-        <label class="q-title" for="q8_project">Project Name <span class="req">*</span></label>
-        <div class="select-wrap">
-          <select id="q8_project" onchange="handleQ8Change(); validateB();">
-            <option value="">Select project…</option>
-            <option value="tax_filing">Tax Filing Automation</option>
-            <option value="gl_recon">GL Reconciliation Agent</option>
-            <option value="dm_outreach">DM Outreach Pipeline</option>
-            <option value="hr_auto">HR Automation Suite</option>
-            <option value="grant">Grant Compliance Tracker</option>
-            <option value="sysmon">System Monitor</option>
-            <option value="rfp">RFP Builder</option>
-            <option value="capital">Capital Assets Agent</option>
-            <option value="sefa">SEFA / SF-425 Reports</option>
-            <option value="shared">Shared / No Specific Project</option>
-            <option value="firmwide">Firm-wide Tool</option>
-            <option value="other">Other — type below ↓</option>
-          </select>
-        </div>
-        <input type="text" id="q8_project_other" class="field-input other-input" placeholder="Type project name…" oninput="validateB()" style="display:none" />
+    <!-- Q2 Department -->
+    <div class="form-card">
+      <div class="q-num">Q2</div>
+      <label class="q-title" for="q2_dept">Department <span class="req">*</span></label>
+      <div class="select-wrap">
+        <select id="q2_dept" onchange="handleQ2Change(); validateA();">
+          <option value="">Select department…</option>
+          <option value="tax">Tax</option>
+          <option value="audit">Audit</option>
+          <option value="advisory">Advisory</option>
+          <option value="accounts">Accounts / Finance</option>
+          <option value="admin">Admin / HR</option>
+          <option value="it">IT</option>
+          <option value="management">Management</option>
+          <option value="dm_dept">DM Dept</option>
+          <option value="cross">Cross-Department</option>
+          <option value="other">Other — type below ↓</option>
+        </select>
       </div>
-
-      <!-- Q9 Project Owner -->
-      <div class="form-card">
-        <div class="q-num">Q9</div>
-        <label class="q-title" for="q9_owner">Project Owner / Manager <span class="req">*</span></label>
-        <div class="select-wrap">
-          <select id="q9_owner" onchange="handleQ9Change(); validateB();">
-            <option value="">Select or type…</option>
-            <option value="lokesh">Lokesh</option>
-            <option value="priya">Priya</option>
-            <option value="amit">Amit</option>
-            <option value="sanwar">Sanwar Harshwal</option>
-            <option value="other">Other — type below ↓</option>
-          </select>
-        </div>
-        <input type="text" id="q9_owner_other" class="field-input other-input" placeholder="Type owner name…" oninput="validateB()" style="display:none" />
-      </div>
-
-      <!-- Q10 Tool Scope -->
-      <div class="form-card">
-        <div class="q-num">Q10</div>
-        <label class="q-title">Tool Scope <span class="req">*</span></label>
-        <p class="q-hint">How is this tool being used?</p>
-        <div class="radio-group" id="rg_scope">
-          <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_project'); validateB();">
-            <span class="radio-dot"><span class="radio-inner"></span></span>Specific Project Only
-          </label>
-          <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_shared'); validateB();">
-            <span class="radio-dot"><span class="radio-inner"></span></span>Shared Across Projects
-          </label>
-          <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_dept'); validateB();">
-            <span class="radio-dot"><span class="radio-inner"></span></span>Department-wide
-          </label>
-          <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_company'); validateB();">
-            <span class="radio-dot"><span class="radio-inner"></span></span>Company-wide
-          </label>
-        </div>
-      </div>
-
-      <!-- Q11 Primary User -->
-      <div class="form-card">
-        <div class="q-num">Q11</div>
-        <label class="q-title" for="q11_primary_user">Primary User <span class="req">*</span></label>
-        <p class="q-hint">Main person managing day-to-day usage</p>
-        <div class="select-wrap">
-          <select id="q11_primary_user" onchange="handleQ11Change(); validateB();">
-            <option value="">Select primary user…</option>
-            <option value="lokesh">Lokesh</option>
-            <option value="priya">Priya</option>
-            <option value="amit">Amit</option>
-            <option value="sanwar">Sanwar Harshwal</option>
-            <option value="department">Department</option>
-            <option value="dm_dept">DM Dept</option>
-            <option value="other">Other — type below ↓</option>
-          </select>
-        </div>
-        <input type="text" id="q11_primary_other" class="field-input other-input" placeholder="Type name…" oninput="validateB()" style="display:none" />
-      </div>
-
-      <!-- Q13 Expected Users -->
-      <div class="form-card">
-        <div class="q-num">Q13</div>
-        <label class="q-title" for="q13_num_users">Expected Number of Users <span class="req">*</span></label>
-        <input type="number" id="q13_num_users" class="field-input" min="1" value="" placeholder="e.g. 3" oninput="updateCostBadge(); validateB();" />
-        <div class="cost-badge">💰 Cost per user: <span id="cost_per_user">—</span></div>
-      </div>
-
-      <!-- Q12 All Users (full width) -->
-      <div class="form-card full-width">
-        <div class="q-num">Q12</div>
-        <label class="q-title">All Users Who Will Use This Tool <span class="req">*</span></label>
-        <p class="q-hint">Check all who will use this tool. Use "Add Person" to add someone not listed.</p>
-        <div class="tag-row">
-          <input type="text" id="q12_user_input" class="field-input tag-field" placeholder="Type a name…" onkeydown="if(event.key==='Enter'){addUserTag()}" />
-          <button class="btn-add" onclick="addUserTag()">＋ Add Person</button>
-        </div>
-        <div class="tags-wrap" id="q12_tags"></div>
-      </div>
-
-      <!-- Q14 Usage Type (full width) -->
-      <div class="form-card full-width">
-        <div class="q-num">Q14</div>
-        <label class="q-title">Usage Type <span class="req">*</span></label>
-        <div class="radio-group" id="rg_usage">
-          <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_individual'); validateB();">
-            <span class="radio-dot"><span class="radio-inner"></span></span>Individual (1 person)
-          </label>
-          <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_team'); validateB();">
-            <span class="radio-dot"><span class="radio-inner"></span></span>Team (2–5 people)
-          </label>
-          <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_dept'); validateB();">
-            <span class="radio-dot"><span class="radio-inner"></span></span>Department (full dept)
-          </label>
-          <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_company'); validateB();">
-            <span class="radio-dot"><span class="radio-inner"></span></span>Company-wide
-          </label>
-        </div>
-      </div>
-
-    </div><!-- /form-grid -->
-
-    <div class="panel-footer">
-      <button class="btn-back" onclick="goBack('a','b')">← Back</button>
-      <div class="footer-right">
-        <div class="error-toast" id="err-b">⚠ Please fill all required fields.</div>
-        <button class="btn-next" onclick="goTo('c','b', isStepBValid)">Next: Business Case →</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════
-       STEP C — BUSINESS CASE
-  ════════════════════════════════════════ -->
-  <section class="step-panel" id="step-c">
-    <div class="panel-header">
-      <h2 class="panel-title">C — Business Case</h2>
-      <p class="panel-subtitle">What value will this deliver?</p>
+      <input type="text" id="q2_dept_other" class="field-input other-input" placeholder="Type department…" oninput="validateA()" style="display:none" />
     </div>
 
-    <div class="form-grid">
-
-      <!-- Q16 Expected Business Outcome -->
-      <div class="form-card full-width">
-        <div class="q-num">Q16</div>
-        <label class="q-title" for="q16_outcome">Expected Business Outcome <span class="req">*</span></label>
-        <p class="q-hint">Be specific with numbers — "saves X hours/week", "reduces errors by X%", "enables X new clients"</p>
-        <textarea id="q16_outcome" class="field-input field-textarea" rows="4" oninput="validateC()"></textarea>
-      </div>
-
-      <!-- Q17 ROI -->
-      <div class="form-card full-width">
-        <div class="q-num">Q17</div>
-        <label class="q-title">Expected ROI / Measurable Benefit <span class="req">*</span></label>
-        <p class="q-hint">Select primary benefit type</p>
-        <div class="radio-group roi-group" id="rg_roi">
-          <label class="radio-opt roi-opt" onclick="pickRadio('rg_roi',this,'roi_hours'); validateC();">
-            <span class="radio-dot"><span class="radio-inner"></span></span>⏱ Hours Saved/Week
-          </label>
-          <label class="radio-opt roi-opt" onclick="pickRadio('rg_roi',this,'roi_errors'); validateC();">
-            <span class="radio-dot"><span class="radio-inner"></span></span>✓ Error Reduction
-          </label>
-          <label class="radio-opt roi-opt" onclick="pickRadio('rg_roi',this,'roi_revenue'); validateC();">
-            <span class="radio-dot"><span class="radio-inner"></span></span>₹ Revenue Enabled
-          </label>
-          <label class="radio-opt roi-opt" onclick="pickRadio('rg_roi',this,'roi_clients'); validateC();">
-            <span class="radio-dot"><span class="radio-inner"></span></span>👥 Client Capacity
-          </label>
-          <label class="radio-opt roi-opt" onclick="pickRadio('rg_roi',this,'roi_cost'); validateC();">
-            <span class="radio-dot"><span class="radio-inner"></span></span>🛡 Cost Avoidance
-          </label>
-          <label class="radio-opt roi-opt" onclick="pickRadio('rg_roi',this,'roi_compliance'); validateC();">
-            <span class="radio-dot"><span class="radio-inner"></span></span>⚖ Compliance/Risk
-          </label>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="panel-footer">
-      <button class="btn-back" onclick="goBack('b','c')">← Back</button>
-      <div class="footer-right">
-        <div class="error-toast" id="err-c">⚠ Please fill all required fields.</div>
-        <button class="btn-next" onclick="goTo('d','c', isStepCValid)">Next: Approval Details →</button>
+    <!-- Q4 Category -->
+    <div class="form-card">
+      <div class="q-num">Q4</div>
+      <label class="q-title" for="q4_category">Category <span class="req">*</span></label>
+      <div class="select-wrap">
+        <select id="q4_category" onchange="validateA()">
+          <option value="">Select category…</option>
+          <option value="ai_llm">AI / LLM API</option>
+          <option value="saas_prod">SaaS Tool — Productivity</option>
+          <option value="saas_analytics">SaaS Tool — Analytics</option>
+          <option value="infra">Infrastructure / Cloud</option>
+          <option value="agent">Agent Build / Development</option>
+          <option value="training">Training / Certification</option>
+          <option value="hardware">Hardware / Device</option>
+          <option value="integration">Integration / Middleware</option>
+          <option value="security">Security / Compliance</option>
+          <option value="other">Other</option>
+        </select>
       </div>
     </div>
-  </section>
 
-  <!-- ═══════════════════════════════════════
-       STEP D — APPROVAL DETAILS
-  ════════════════════════════════════════ -->
-  <section class="step-panel" id="step-d">
-    <div class="panel-header">
-      <h2 class="panel-title">D — Approval Details</h2>
-      <p class="panel-subtitle">Approval &amp; administration</p>
+    <!-- Q3 Monthly Cost -->
+    <div class="form-card">
+      <div class="q-num">Q3</div>
+      <label class="q-title" for="q3_cost">Monthly Cost (INR) <span class="req">*</span></label>
+      <p class="q-hint">For annual plans: Total ÷ 12</p>
+      <input type="number" id="q3_cost" class="field-input" min="0" placeholder="0" oninput="checkCost(); validateA();" />
+      <div class="inline-warn" id="warn_cost" style="display:none">⚠ Amount exceeds ₹5,000/month — Finance approval is mandatory.</div>
     </div>
 
-    <div class="form-grid">
-
-      <!-- Q6 Requested By -->
-      <div class="form-card">
-        <div class="q-num">Q6</div>
-        <label class="q-title" for="q6_requested_by">Requested By <span class="req">*</span></label>
-        <div class="select-wrap">
-          <select id="q6_requested_by" onchange="handleQ6Change(); validateD();">
-            <option value="">Select your name…</option>
-            <option value="lokesh">Lokesh</option>
-            <option value="priya">Priya</option>
-            <option value="amit">Amit</option>
-            <option value="sanwar">Sanwar Harshwal</option>
-            <option value="other">Other — type below ↓</option>
-          </select>
-        </div>
-        <input type="text" id="q6_requested_other" class="field-input other-input" placeholder="Type name…" oninput="validateD()" style="display:none" />
-        <p class="confirm-email">Confirmation email → <span id="q6_email_display">—</span></p>
-      </div>
-
-      <!-- Q20 Reporting Manager -->
-      <div class="form-card">
-        <div class="q-num">Q20</div>
-        <label class="q-title" for="q20_manager">Reporting Manager <span class="req">*</span></label>
-        <div class="select-wrap">
-          <select id="q20_manager" onchange="handleQ20Change(); validateD();">
-            <option value="">Select reporting manager…</option>
-            <option value="sanwar">Sanwar Harshwal</option>
-            <option value="lokesh">Lokesh</option>
-            <option value="priya">Priya</option>
-            <option value="other">Other — type below ↓</option>
-          </select>
-        </div>
-        <input type="text" id="q20_manager_other" class="field-input other-input" placeholder="Type name…" oninput="validateD()" style="display:none" />
-      </div>
-
-      <!-- Q18 Subscription Manager -->
-      <div class="form-card">
-        <div class="q-num">Q18</div>
-        <label class="q-title" for="q18_sub_manager">Subscription Manager (after purchase) <span class="req">*</span></label>
-        <p class="q-hint">Who manages licence, renewals, and billing?</p>
-        <div class="select-wrap">
-          <select id="q18_sub_manager" onchange="handleQ18Change(); validateD();">
-            <option value="">Select subscription manager…</option>
-            <option value="lokesh">Lokesh</option>
-            <option value="priya">Priya</option>
-            <option value="amit">Amit</option>
-            <option value="sanwar">Sanwar Harshwal</option>
-            <option value="other">Other — type below ↓</option>
-          </select>
-        </div>
-        <input type="text" id="q18_sub_other" class="field-input other-input" placeholder="Type name…" oninput="validateD()" style="display:none" />
-      </div>
-
-      <!-- Q19 Required By Date -->
-      <div class="form-card">
-        <div class="q-num">Q19</div>
-        <label class="q-title" for="q19_date">Required By Date <span class="req">*</span></label>
-        <p class="q-hint">Minimum 5 working days from today</p>
-        <input type="date" id="q19_date" class="field-input" oninput="validateD()" />
-      </div>
-
-      <!-- Q22 Comments (full width, optional) -->
-      <div class="form-card full-width">
-        <div class="q-num">Q22</div>
-        <label class="q-title" for="q22_comments">Additional Comments <span class="optional">(optional)</span></label>
-        <textarea id="q22_comments" class="field-input field-textarea" rows="3"></textarea>
-      </div>
-
-    </div>
-
-    <div class="panel-footer">
-      <button class="btn-back" onclick="goBack('c','d')">← Back</button>
-      <div class="footer-right">
-        <div class="error-toast" id="err-d">⚠ Please fill all required fields.</div>
-        <button class="btn-next" onclick="goTo('e','d', isStepDValid)">Next: Review &amp; Declare →</button>
+    <!-- Q7 Priority -->
+    <div class="form-card">
+      <div class="q-num">Q7</div>
+      <label class="q-title" for="q7_priority">Priority <span class="req">*</span></label>
+      <div class="select-wrap">
+        <select id="q7_priority" onchange="validateA()">
+          <option value="">Select priority…</option>
+          <option value="critical">Critical — Blocking current work</option>
+          <option value="high">High — Required this month</option>
+          <option value="medium">Medium — Required this quarter</option>
+          <option value="low">Low — Nice to have</option>
+        </select>
       </div>
     </div>
-  </section>
 
-  <!-- ═══════════════════════════════════════
-       STEP E — REVIEW & SUBMIT
-  ════════════════════════════════════════ -->
-  <section class="step-panel" id="step-e">
-    <div class="panel-header">
-      <h2 class="panel-title">E — Review &amp; Submit</h2>
-      <p class="panel-subtitle">Review your request</p>
+    <!-- Q5 Business Justification -->
+    <div class="form-card full-width">
+      <div class="q-num">Q5</div>
+      <label class="q-title" for="q5_justification">Business Justification <span class="req">*</span></label>
+      <p class="q-hint">What problem does this solve? What does it automate? Why this tool over alternatives?</p>
+      <textarea id="q5_justification" class="field-input field-textarea" rows="4" oninput="validateA()"></textarea>
     </div>
 
-    <div class="form-grid">
+  </div>
 
-      <div class="form-card full-width declaration-card">
-        <h3 class="declare-heading">Final Declaration</h3>
-        <p class="declare-sub">All 5 declarations must be confirmed. The Submit button activates only when all are ticked.</p>
-        <div class="declare-progress"><span id="declare-count">0</span> / 5</div>
+  <div class="panel-footer">
+    <div></div>
+    <div class="footer-right">
+      <div class="error-toast" id="err-a">⚠ Please fill all required fields.</div>
+      <button class="btn-next" onclick="goTo('b','a',isStepAValid)">Next: Project &amp; Users →</button>
+    </div>
+  </div>
+</div>
 
-        <div class="declare-list">
-          <label class="declare-item">
-            <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
-            <span>I have checked the existing tool register and confirmed no duplicate tool is already active.</span>
-          </label>
-          <label class="declare-item">
-            <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
-            <span>I understand this purchase requires management approval before any payment is made.</span>
-          </label>
-          <label class="declare-item">
-            <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
-            <span>I confirm the business justification and ROI estimates are accurate to the best of my knowledge.</span>
-          </label>
-          <label class="declare-item">
-            <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
-            <span>I agree the named subscription manager is responsible for renewal and cancellation management.</span>
-          </label>
-          <label class="declare-item">
-            <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
-            <span>I understand that unapproved purchases will not be reimbursed by the firm.</span>
-          </label>
-        </div>
+<!-- ══════════════════════════════════════
+     STEP B — PROJECT & USERS
+══════════════════════════════════════ -->
+<div class="panel" id="step-b">
+
+  <div class="sh">B — Project &amp; Users <span class="badge b-navy">STEP 2 OF 5</span></div>
+
+  <div class="notice n-gold">
+    <div class="notice-icon">👥</div>
+    <div>
+      <div class="notice-title">Who uses it and for what?</div>
+      <div class="notice-text">Add all team members who will use this tool. Use the "Add Person" button to include everyone. Usage type and scope must be selected.</div>
+    </div>
+  </div>
+
+  <div class="form-grid">
+
+    <!-- Q8 Project Name -->
+    <div class="form-card full-width">
+      <div class="q-num">Q8</div>
+      <label class="q-title" for="q8_project">Project Name <span class="req">*</span></label>
+      <div class="select-wrap">
+        <select id="q8_project" onchange="handleQ8Change(); validateB();">
+          <option value="">Select project…</option>
+          <option value="tax_filing">Tax Filing Automation</option>
+          <option value="gl_recon">GL Reconciliation Agent</option>
+          <option value="dm_outreach">DM Outreach Pipeline</option>
+          <option value="hr_auto">HR Automation Suite</option>
+          <option value="grant">Grant Compliance Tracker</option>
+          <option value="sysmon">System Monitor</option>
+          <option value="rfp">RFP Builder</option>
+          <option value="capital">Capital Assets Agent</option>
+          <option value="sefa">SEFA / SF-425 Reports</option>
+          <option value="shared">Shared / No Specific Project</option>
+          <option value="firmwide">Firm-wide Tool</option>
+          <option value="other">Other — type below ↓</option>
+        </select>
       </div>
-
+      <input type="text" id="q8_project_other" class="field-input other-input" placeholder="Type project name…" oninput="validateB()" style="display:none" />
     </div>
 
-    <div class="panel-footer">
-      <button class="btn-back" onclick="goBack('d','e')">← Back</button>
-      <div class="footer-right">
-        <button class="btn-submit" id="submitBtn" onclick="handleSubmit()" disabled>Submit Purchase Request →</button>
+    <!-- Q9 Project Owner -->
+    <div class="form-card">
+      <div class="q-num">Q9</div>
+      <label class="q-title" for="q9_owner">Project Owner / Manager <span class="req">*</span></label>
+      <div class="select-wrap">
+        <select id="q9_owner" onchange="handleQ9Change(); validateB();">
+          <option value="">Select or type…</option>
+          <option value="lokesh">Lokesh</option>
+          <option value="priya">Priya</option>
+          <option value="amit">Amit</option>
+          <option value="sanwar">Sanwar Harshwal</option>
+          <option value="other">Other — type below ↓</option>
+        </select>
+      </div>
+      <input type="text" id="q9_owner_other" class="field-input other-input" placeholder="Type owner name…" oninput="validateB()" style="display:none" />
+    </div>
+
+    <!-- Q10 Tool Scope -->
+    <div class="form-card">
+      <div class="q-num">Q10</div>
+      <label class="q-title">Tool Scope <span class="req">*</span></label>
+      <p class="q-hint">How is this tool being used?</p>
+      <div class="radio-group" id="rg_scope">
+        <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_project'); validateB();">
+          <span class="radio-dot"><span class="radio-inner"></span></span>Specific Project Only
+        </label>
+        <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_shared'); validateB();">
+          <span class="radio-dot"><span class="radio-inner"></span></span>Shared Across Projects
+        </label>
+        <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_dept'); validateB();">
+          <span class="radio-dot"><span class="radio-inner"></span></span>Department-wide
+        </label>
+        <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_company'); validateB();">
+          <span class="radio-dot"><span class="radio-inner"></span></span>Company-wide
+        </label>
       </div>
     </div>
-  </section>
 
-  <!-- ═══════════════════════════════════════
-       SUCCESS
-  ════════════════════════════════════════ -->
-  <section class="success-screen" id="successScreen">
-    <div class="success-icon">✓</div>
-    <h2 class="success-title">Request Submitted!</h2>
-    <p class="success-sub">Your purchase request has been received. Your reporting manager and AI Vault team have been notified.</p>
-    <p class="success-meta" id="success-meta">—</p>
-    <p class="success-note">aivault@harshwal.com notified • Approval workflow started</p>
-    <div class="success-actions">
-      <button class="btn-new" onclick="resetForm()">＋ New Request</button>
-      <button class="btn-print" onclick="window.print()">🖨 Print Copy</button>
+    <!-- Q11 Primary User -->
+    <div class="form-card">
+      <div class="q-num">Q11</div>
+      <label class="q-title" for="q11_primary_user">Primary User <span class="req">*</span></label>
+      <p class="q-hint">Main person managing day-to-day usage</p>
+      <div class="select-wrap">
+        <select id="q11_primary_user" onchange="handleQ11Change(); validateB();">
+          <option value="">Select primary user…</option>
+          <option value="lokesh">Lokesh</option>
+          <option value="priya">Priya</option>
+          <option value="amit">Amit</option>
+          <option value="sanwar">Sanwar Harshwal</option>
+          <option value="department">Department</option>
+          <option value="dm_dept">DM Dept</option>
+          <option value="other">Other — type below ↓</option>
+        </select>
+      </div>
+      <input type="text" id="q11_primary_other" class="field-input other-input" placeholder="Type name…" oninput="validateB()" style="display:none" />
     </div>
-  </section>
 
-</div><!-- /app -->
+    <!-- Q13 Expected Users -->
+    <div class="form-card">
+      <div class="q-num">Q13</div>
+      <label class="q-title" for="q13_num_users">Expected Number of Users <span class="req">*</span></label>
+      <input type="number" id="q13_num_users" class="field-input" min="1" placeholder="e.g. 3" oninput="updateCostBadge(); validateB();" />
+      <div class="cost-badge">💰 Cost per user: <span id="cost_per_user">—</span></div>
+    </div>
+
+    <!-- Q12 All Users -->
+    <div class="form-card full-width">
+      <div class="q-num">Q12</div>
+      <label class="q-title">All Users Who Will Use This Tool <span class="req">*</span></label>
+      <p class="q-hint">Check all who will use this tool. Use "Add Person" to add someone not listed.</p>
+      <div class="tag-row">
+        <input type="text" id="q12_user_input" class="field-input tag-field" placeholder="Type a name…" onkeydown="if(event.key==='Enter'){addUserTag()}" />
+        <button class="btn-add" onclick="addUserTag()">+ Add Person</button>
+      </div>
+      <div class="tags-wrap" id="q12_tags"></div>
+    </div>
+
+    <!-- Q14 Usage Type -->
+    <div class="form-card full-width">
+      <div class="q-num">Q14</div>
+      <label class="q-title">Usage Type <span class="req">*</span></label>
+      <div class="radio-group" id="rg_usage">
+        <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_individual'); validateB();">
+          <span class="radio-dot"><span class="radio-inner"></span></span>Individual (1 person)
+        </label>
+        <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_team'); validateB();">
+          <span class="radio-dot"><span class="radio-inner"></span></span>Team (2–5 people)
+        </label>
+        <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_dept'); validateB();">
+          <span class="radio-dot"><span class="radio-inner"></span></span>Department (full dept)
+        </label>
+        <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_company'); validateB();">
+          <span class="radio-dot"><span class="radio-inner"></span></span>Company-wide
+        </label>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="panel-footer">
+    <button class="btn-back" onclick="goBack('a','b')">← Back</button>
+    <div class="footer-right">
+      <div class="error-toast" id="err-b">⚠ Please fill all required fields.</div>
+      <button class="btn-next" onclick="goTo('c','b',isStepBValid)">Next: Business Case →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     STEP C — BUSINESS CASE
+══════════════════════════════════════ -->
+<div class="panel" id="step-c">
+
+  <div class="sh">C — Business Case <span class="badge b-navy">STEP 3 OF 5</span></div>
+
+  <div class="notice n-green">
+    <div class="notice-icon">📈</div>
+    <div>
+      <div class="notice-title">What value will this deliver?</div>
+      <div class="notice-text">Be specific with numbers — "saves X hours/week", "reduces errors by X%", "enables X new clients". Select the primary measurable benefit type.</div>
+    </div>
+  </div>
+
+  <div class="form-grid">
+
+    <!-- Q16 Expected Outcome -->
+    <div class="form-card full-width">
+      <div class="q-num">Q16</div>
+      <label class="q-title" for="q16_outcome">Expected Business Outcome <span class="req">*</span></label>
+      <p class="q-hint">Be specific with numbers — "saves X hours/week", "reduces errors by X%", "enables X new clients"</p>
+      <textarea id="q16_outcome" class="field-input field-textarea" rows="4" oninput="validateC()"></textarea>
+    </div>
+
+    <!-- Q17 ROI -->
+    <div class="form-card full-width">
+      <div class="q-num">Q17</div>
+      <label class="q-title">Expected ROI / Measurable Benefit <span class="req">*</span></label>
+      <p class="q-hint">Select primary benefit type</p>
+      <div class="radio-group roi-group" id="rg_roi">
+        <label class="radio-opt" onclick="pickRadio('rg_roi',this,'roi_hours'); validateC();">
+          <span class="radio-dot"><span class="radio-inner"></span></span>⏱ Hours Saved/Week
+        </label>
+        <label class="radio-opt" onclick="pickRadio('rg_roi',this,'roi_errors'); validateC();">
+          <span class="radio-dot"><span class="radio-inner"></span></span>✓ Error Reduction
+        </label>
+        <label class="radio-opt" onclick="pickRadio('rg_roi',this,'roi_revenue'); validateC();">
+          <span class="radio-dot"><span class="radio-inner"></span></span>₹ Revenue Enabled
+        </label>
+        <label class="radio-opt" onclick="pickRadio('rg_roi',this,'roi_clients'); validateC();">
+          <span class="radio-dot"><span class="radio-inner"></span></span>👥 Client Capacity
+        </label>
+        <label class="radio-opt" onclick="pickRadio('rg_roi',this,'roi_cost'); validateC();">
+          <span class="radio-dot"><span class="radio-inner"></span></span>🛡 Cost Avoidance
+        </label>
+        <label class="radio-opt" onclick="pickRadio('rg_roi',this,'roi_compliance'); validateC();">
+          <span class="radio-dot"><span class="radio-inner"></span></span>⚖ Compliance/Risk
+        </label>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="panel-footer">
+    <button class="btn-back" onclick="goBack('b','c')">← Back</button>
+    <div class="footer-right">
+      <div class="error-toast" id="err-c">⚠ Please fill all required fields.</div>
+      <button class="btn-next" onclick="goTo('d','c',isStepCValid)">Next: Approval Details →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     STEP D — APPROVAL DETAILS
+══════════════════════════════════════ -->
+<div class="panel" id="step-d">
+
+  <div class="sh">D — Approval Details <span class="badge b-navy">STEP 4 OF 5</span></div>
+
+  <div class="notice n-blue">
+    <div class="notice-icon">🔐</div>
+    <div>
+      <div class="notice-title">Approval &amp; administration</div>
+      <div class="notice-text">All approvals require minimum 5 working days from today. Subscription manager will be responsible for renewals, cancellations, and billing.</div>
+    </div>
+  </div>
+
+  <div class="form-grid">
+
+    <!-- Q6 Requested By -->
+    <div class="form-card">
+      <div class="q-num">Q6</div>
+      <label class="q-title" for="q6_requested_by">Requested By <span class="req">*</span></label>
+      <div class="select-wrap">
+        <select id="q6_requested_by" onchange="handleQ6Change(); validateD();">
+          <option value="">Select your name…</option>
+          <option value="lokesh">Lokesh</option>
+          <option value="priya">Priya</option>
+          <option value="amit">Amit</option>
+          <option value="sanwar">Sanwar Harshwal</option>
+          <option value="other">Other — type below ↓</option>
+        </select>
+      </div>
+      <input type="text" id="q6_requested_other" class="field-input other-input" placeholder="Type name…" oninput="validateD()" style="display:none" />
+      <p class="confirm-email">Confirmation email → <span id="q6_email_display">—</span></p>
+    </div>
+
+    <!-- Q20 Reporting Manager -->
+    <div class="form-card">
+      <div class="q-num">Q20</div>
+      <label class="q-title" for="q20_manager">Reporting Manager <span class="req">*</span></label>
+      <div class="select-wrap">
+        <select id="q20_manager" onchange="handleQ20Change(); validateD();">
+          <option value="">Select reporting manager…</option>
+          <option value="sanwar">Sanwar Harshwal</option>
+          <option value="lokesh">Lokesh</option>
+          <option value="priya">Priya</option>
+          <option value="other">Other — type below ↓</option>
+        </select>
+      </div>
+      <input type="text" id="q20_manager_other" class="field-input other-input" placeholder="Type name…" oninput="validateD()" style="display:none" />
+    </div>
+
+    <!-- Q18 Subscription Manager -->
+    <div class="form-card">
+      <div class="q-num">Q18</div>
+      <label class="q-title" for="q18_sub_manager">Subscription Manager <span class="req">*</span></label>
+      <p class="q-hint">Who manages licence, renewals, and billing?</p>
+      <div class="select-wrap">
+        <select id="q18_sub_manager" onchange="handleQ18Change(); validateD();">
+          <option value="">Select subscription manager…</option>
+          <option value="lokesh">Lokesh</option>
+          <option value="priya">Priya</option>
+          <option value="amit">Amit</option>
+          <option value="sanwar">Sanwar Harshwal</option>
+          <option value="other">Other — type below ↓</option>
+        </select>
+      </div>
+      <input type="text" id="q18_sub_other" class="field-input other-input" placeholder="Type name…" oninput="validateD()" style="display:none" />
+    </div>
+
+    <!-- Q19 Required By Date -->
+    <div class="form-card">
+      <div class="q-num">Q19</div>
+      <label class="q-title" for="q19_date">Required By Date <span class="req">*</span></label>
+      <p class="q-hint">Minimum 5 working days from today</p>
+      <input type="date" id="q19_date" class="field-input" oninput="validateD()" />
+    </div>
+
+    <!-- Q22 Comments -->
+    <div class="form-card full-width">
+      <div class="q-num">Q22</div>
+      <label class="q-title" for="q22_comments">Additional Comments <span class="optional">(optional)</span></label>
+      <textarea id="q22_comments" class="field-input field-textarea" rows="3"></textarea>
+    </div>
+
+  </div>
+
+  <div class="panel-footer">
+    <button class="btn-back" onclick="goBack('c','d')">← Back</button>
+    <div class="footer-right">
+      <div class="error-toast" id="err-d">⚠ Please fill all required fields.</div>
+      <button class="btn-next" onclick="goTo('e','d',isStepDValid)">Next: Review &amp; Declare →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     STEP E — DECLARE & SUBMIT
+══════════════════════════════════════ -->
+<div class="panel" id="step-e">
+
+  <div class="sh">E — Review &amp; Submit <span class="badge b-navy">STEP 5 OF 5</span></div>
+
+  <div class="notice n-red">
+    <div class="notice-icon">⛔</div>
+    <div>
+      <div class="notice-title">Final Declaration Required</div>
+      <div class="notice-text">All 5 declarations must be confirmed before submission. The Submit button activates only when all are ticked. Unapproved purchases will not be reimbursed.</div>
+    </div>
+  </div>
+
+  <div class="form-grid">
+    <div class="form-card full-width declaration-card">
+      <div class="declare-heading">Final Declaration</div>
+      <p class="declare-sub">All 5 declarations must be confirmed. The Submit button activates only when all are ticked.</p>
+      <div class="declare-progress"><span id="declare-count">0</span> / 5 confirmed</div>
+      <div class="declare-list">
+        <label class="declare-item">
+          <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
+          <span>I have checked the existing tool register and confirmed no duplicate tool is already active.</span>
+        </label>
+        <label class="declare-item">
+          <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
+          <span>I understand this purchase requires management approval before any payment is made.</span>
+        </label>
+        <label class="declare-item">
+          <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
+          <span>I confirm the business justification and ROI estimates are accurate to the best of my knowledge.</span>
+        </label>
+        <label class="declare-item">
+          <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
+          <span>I agree the named subscription manager is responsible for renewal and cancellation management.</span>
+        </label>
+        <label class="declare-item">
+          <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
+          <span>I understand that unapproved purchases will not be reimbursed by the firm.</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    <button class="btn-back" onclick="goBack('d','e')">← Back</button>
+    <div class="footer-right">
+      <button class="btn-submit" id="submitBtn" onclick="handleSubmit()" disabled>Submit Purchase Request →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SUCCESS
+══════════════════════════════════════ -->
+<section class="success-screen" id="successScreen">
+  <div class="success-icon">✓</div>
+  <h2 class="success-title">Request Submitted!</h2>
+  <p class="success-sub">Your purchase request has been received. Your reporting manager and AI Vault team have been notified.</p>
+  <p class="success-meta" id="success-meta">—</p>
+  <p class="success-note">aivault@harshwal.com notified • Approval workflow started</p>
+  <div class="success-actions">
+    <button class="btn-new" onclick="resetForm()">＋ New Request</button>
+    <button class="btn-print" onclick="window.print()">🖨 Print Copy</button>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<div class="site-footer">
+  <div class="fl">Tool Purchase Request System by <strong>Harshwal Consulting Services Pvt Ltd</strong> · Jaipur, Rajasthan · 2026</div>
+  <div class="fr">INTERNAL USE ONLY · HARSHWAL AI VAULT</div>
+</div>
 
 <script>
-/* ════════════════════════════════════════════
-   VaultDesk — main.js
-   harshwalteam.github.io/Vaultdesk/
-   ════════════════════════════════════════════ */
+/* ── STATE ── */
+var radioState = {};
+var userTags   = [];
 
-/* ── GLOBAL STATE ── */
-var radioState = {};   // { groupId: selectedValue }
-var userTags   = [];   // Q12 people tags
-
-/* ══════════════════════════════════════════════
-   NAVIGATION
-══════════════════════════════════════════════ */
-
+/* ── NAVIGATION ── */
 function goTo(toStep, fromStep, validatorFn) {
   if (!validatorFn()) {
     document.getElementById('err-' + fromStep).classList.add('show');
     return;
   }
   document.getElementById('err-' + fromStep).classList.remove('show');
-
   document.getElementById('step-' + fromStep).classList.remove('active');
   document.getElementById('step-' + toStep).classList.add('active');
-
   var fromNav = document.getElementById('snav-' + fromStep);
   var toNav   = document.getElementById('snav-' + toStep);
   if (fromNav) { fromNav.classList.remove('active'); fromNav.classList.add('done'); }
   if (toNav)   { toNav.classList.remove('done');     toNav.classList.add('active'); }
-
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function goBack(toStep, fromStep) {
   document.getElementById('step-' + fromStep).classList.remove('active');
   document.getElementById('step-' + toStep).classList.add('active');
-
   var fromNav = document.getElementById('snav-' + fromStep);
   var toNav   = document.getElementById('snav-' + toStep);
   if (fromNav) { fromNav.classList.remove('active'); fromNav.classList.remove('done'); }
   if (toNav)   { toNav.classList.remove('done');     toNav.classList.add('active'); }
-
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ══════════════════════════════════════════════
-   RADIO HELPER
-══════════════════════════════════════════════ */
-
+/* ── RADIO HELPER ── */
 function pickRadio(groupId, el, value) {
   radioState[groupId] = value;
-  var group = document.getElementById(groupId);
-  if (!group) return;
-  group.querySelectorAll('.radio-opt').forEach(function(o) {
-    o.classList.remove('selected');
-  });
+  document.getElementById(groupId).querySelectorAll('.radio-opt').forEach(function(o) { o.classList.remove('selected'); });
   el.classList.add('selected');
 }
 
-/* ══════════════════════════════════════════════
-   STEP A — TOOL DETAILS
-══════════════════════════════════════════════ */
-
-/* Q2 Department: show/hide "other" input */
-document.getElementById('q2_dept').addEventListener('change', function () {
-  var other = document.getElementById('q2_dept_other');
-  other.style.display = (this.value === 'other') ? 'block' : 'none';
-  if (this.value !== 'other') other.value = '';
-  validateA();
-});
-
-/* Q3 Cost warning */
-function checkCost() {
-  var val  = parseFloat(document.getElementById('q3_cost').value) || 0;
-  var warn = document.getElementById('warn_cost');
-  warn.style.display = val > 5000 ? 'flex' : 'none';
+/* ── STEP A ── */
+function handleQ2Change() {
+  var sel = document.getElementById('q2_dept').value;
+  var inp = document.getElementById('q2_dept_other');
+  inp.style.display = (sel === 'other') ? 'block' : 'none';
+  if (sel !== 'other') inp.value = '';
 }
-
+function checkCost() {
+  var val = parseFloat(document.getElementById('q3_cost').value) || 0;
+  document.getElementById('warn_cost').style.display = val > 5000 ? 'flex' : 'none';
+}
 function isStepAValid() {
   if (!document.getElementById('q1_tool_name').value.trim()) return false;
-
   var dept = document.getElementById('q2_dept').value;
   if (!dept) return false;
   if (dept === 'other' && !document.getElementById('q2_dept_other').value.trim()) return false;
-
   if (!document.getElementById('q4_category').value) return false;
-
   var cost = document.getElementById('q3_cost').value.trim();
   if (cost === '' || parseFloat(cost) < 0) return false;
-
   if (!document.getElementById('q7_priority').value) return false;
   if (!document.getElementById('q5_justification').value.trim()) return false;
-
   return true;
 }
+function validateA() { if (isStepAValid()) document.getElementById('err-a').classList.remove('show'); }
 
-function validateA() {
-  if (isStepAValid()) document.getElementById('err-a').classList.remove('show');
-}
-
-/* ══════════════════════════════════════════════
-   STEP B — PROJECT & USERS
-══════════════════════════════════════════════ */
-
-/* Q8 Project Name */
+/* ── STEP B ── */
 function handleQ8Change() {
-  var sel   = document.getElementById('q8_project').value;
-  var other = document.getElementById('q8_project_other');
-  other.style.display = (sel === 'other') ? 'block' : 'none';
-  if (sel !== 'other') other.value = '';
+  var sel = document.getElementById('q8_project').value;
+  var inp = document.getElementById('q8_project_other');
+  inp.style.display = (sel === 'other') ? 'block' : 'none';
+  if (sel !== 'other') inp.value = '';
 }
-
-/* Q9 Project Owner */
 function handleQ9Change() {
-  var sel   = document.getElementById('q9_owner').value;
-  var other = document.getElementById('q9_owner_other');
-  other.style.display = (sel === 'other') ? 'block' : 'none';
-  if (sel !== 'other') other.value = '';
+  var sel = document.getElementById('q9_owner').value;
+  var inp = document.getElementById('q9_owner_other');
+  inp.style.display = (sel === 'other') ? 'block' : 'none';
+  if (sel !== 'other') inp.value = '';
 }
-
-/* Q11 Primary User */
 function handleQ11Change() {
-  var sel   = document.getElementById('q11_primary_user').value;
-  var other = document.getElementById('q11_primary_other');
-  other.style.display = (sel === 'other') ? 'block' : 'none';
-  if (sel !== 'other') other.value = '';
+  var sel = document.getElementById('q11_primary_user').value;
+  var inp = document.getElementById('q11_primary_other');
+  inp.style.display = (sel === 'other') ? 'block' : 'none';
+  if (sel !== 'other') inp.value = '';
 }
-
-/* Q13 Cost per user badge */
 function updateCostBadge() {
   var q3 = parseFloat(document.getElementById('q3_cost').value) || 0;
   var n  = parseInt(document.getElementById('q13_num_users').value) || 0;
   var el = document.getElementById('cost_per_user');
-  if (n > 0 && q3 > 0) {
-    el.textContent = '₹' + Math.round(q3 / n).toLocaleString('en-IN') + '/month';
-  } else {
-    el.textContent = '—';
-  }
+  el.textContent = (n > 0 && q3 > 0) ? '₹' + Math.round(q3 / n).toLocaleString('en-IN') + '/month' : '—';
 }
-
-/* Q12 User tags */
 function addUserTag() {
   var inp = document.getElementById('q12_user_input');
   var val = inp.value.trim();
@@ -1401,223 +834,126 @@ function addUserTag() {
   renderUserTags();
   validateB();
 }
-
-function removeUserTag(i) {
-  userTags.splice(i, 1);
-  renderUserTags();
-  validateB();
-}
-
+function removeUserTag(i) { userTags.splice(i, 1); renderUserTags(); validateB(); }
 function renderUserTags() {
-  var wrap = document.getElementById('q12_tags');
-  wrap.innerHTML = userTags.map(function (name, i) {
-    return (
-      '<span class="tag">' +
-        escapeHtml(name) +
-        '<span class="tag-x" onclick="removeUserTag(' + i + ')" title="Remove">×</span>' +
-      '</span>'
-    );
+  document.getElementById('q12_tags').innerHTML = userTags.map(function(name, i) {
+    return '<span class="tag">' + esc(name) + '<span class="tag-x" onclick="removeUserTag(' + i + ')">×</span></span>';
   }).join('');
 }
-
 function isStepBValid() {
   var proj = document.getElementById('q8_project').value;
   if (!proj) return false;
   if (proj === 'other' && !document.getElementById('q8_project_other').value.trim()) return false;
-
   var owner = document.getElementById('q9_owner').value;
   if (!owner) return false;
   if (owner === 'other' && !document.getElementById('q9_owner_other').value.trim()) return false;
-
   if (!radioState['rg_scope']) return false;
-
   var pUser = document.getElementById('q11_primary_user').value;
   if (!pUser) return false;
   if (pUser === 'other' && !document.getElementById('q11_primary_other').value.trim()) return false;
-
   var n = parseInt(document.getElementById('q13_num_users').value);
   if (!n || n < 1) return false;
-
   if (userTags.length === 0) return false;
-
   if (!radioState['rg_usage']) return false;
-
   return true;
 }
+function validateB() { if (isStepBValid()) document.getElementById('err-b').classList.remove('show'); }
 
-function validateB() {
-  if (isStepBValid()) document.getElementById('err-b').classList.remove('show');
-}
-
-/* ══════════════════════════════════════════════
-   STEP C — BUSINESS CASE
-══════════════════════════════════════════════ */
-
+/* ── STEP C ── */
 function isStepCValid() {
   if (!document.getElementById('q16_outcome').value.trim()) return false;
   if (!radioState['rg_roi']) return false;
   return true;
 }
+function validateC() { if (isStepCValid()) document.getElementById('err-c').classList.remove('show'); }
 
-function validateC() {
-  if (isStepCValid()) document.getElementById('err-c').classList.remove('show');
-}
-
-/* ══════════════════════════════════════════════
-   STEP D — APPROVAL DETAILS
-══════════════════════════════════════════════ */
-
+/* ── STEP D ── */
 function handleQ6Change() {
-  var sel   = document.getElementById('q6_requested_by').value;
-  var other = document.getElementById('q6_requested_other');
-  other.style.display = (sel === 'other') ? 'block' : 'none';
-  if (sel !== 'other') other.value = '';
-
-  var emailMap = {
-    lokesh: 'lokesh@harshwal.com',
-    priya:  'priya@harshwal.com',
-    amit:   'amit@harshwal.com',
-    sanwar: 'sanwar@harshwal.com'
-  };
-  document.getElementById('q6_email_display').textContent =
-    emailMap[sel] || (sel === 'other' ? '(enter name above)' : '—');
+  var sel = document.getElementById('q6_requested_by').value;
+  var inp = document.getElementById('q6_requested_other');
+  inp.style.display = (sel === 'other') ? 'block' : 'none';
+  if (sel !== 'other') inp.value = '';
+  var map = { lokesh:'lokesh@harshwal.com', priya:'priya@harshwal.com', amit:'amit@harshwal.com', sanwar:'sanwar@harshwal.com' };
+  document.getElementById('q6_email_display').textContent = map[sel] || (sel === 'other' ? '(enter name above)' : '—');
   validateD();
 }
-
 function handleQ20Change() {
-  var sel   = document.getElementById('q20_manager').value;
-  var other = document.getElementById('q20_manager_other');
-  other.style.display = (sel === 'other') ? 'block' : 'none';
-  if (sel !== 'other') other.value = '';
+  var sel = document.getElementById('q20_manager').value;
+  var inp = document.getElementById('q20_manager_other');
+  inp.style.display = (sel === 'other') ? 'block' : 'none';
+  if (sel !== 'other') inp.value = '';
   validateD();
 }
-
 function handleQ18Change() {
-  var sel   = document.getElementById('q18_sub_manager').value;
-  var other = document.getElementById('q18_sub_other');
-  other.style.display = (sel === 'other') ? 'block' : 'none';
-  if (sel !== 'other') other.value = '';
+  var sel = document.getElementById('q18_sub_manager').value;
+  var inp = document.getElementById('q18_sub_other');
+  inp.style.display = (sel === 'other') ? 'block' : 'none';
+  if (sel !== 'other') inp.value = '';
   validateD();
 }
-
-/* Set minimum date = 5 working days from today */
 (function setMinDate() {
-  var d = new Date();
-  var added = 0;
-  while (added < 5) {
-    d.setDate(d.getDate() + 1);
-    var day = d.getDay();
-    if (day !== 0 && day !== 6) added++;
-  }
+  var d = new Date(), added = 0;
+  while (added < 5) { d.setDate(d.getDate() + 1); var day = d.getDay(); if (day !== 0 && day !== 6) added++; }
   var el = document.getElementById('q19_date');
   if (el) el.min = d.toISOString().split('T')[0];
 })();
-
 function isStepDValid() {
   var reqBy = document.getElementById('q6_requested_by').value;
   if (!reqBy) return false;
   if (reqBy === 'other' && !document.getElementById('q6_requested_other').value.trim()) return false;
-
   var mgr = document.getElementById('q20_manager').value;
   if (!mgr) return false;
   if (mgr === 'other' && !document.getElementById('q20_manager_other').value.trim()) return false;
-
   var sub = document.getElementById('q18_sub_manager').value;
   if (!sub) return false;
   if (sub === 'other' && !document.getElementById('q18_sub_other').value.trim()) return false;
-
   if (!document.getElementById('q19_date').value) return false;
-
   return true;
 }
+function validateD() { if (isStepDValid()) document.getElementById('err-d').classList.remove('show'); }
 
-function validateD() {
-  if (isStepDValid()) document.getElementById('err-d').classList.remove('show');
-}
-
-/* ══════════════════════════════════════════════
-   STEP E — DECLARATIONS
-══════════════════════════════════════════════ */
-
+/* ── STEP E ── */
 function updateDeclare() {
-  var boxes   = document.querySelectorAll('.declare-check');
-  var checked = 0;
-  boxes.forEach(function (b) { if (b.checked) checked++; });
+  var boxes = document.querySelectorAll('.declare-check'), checked = 0;
+  boxes.forEach(function(b) { if (b.checked) checked++; });
   document.getElementById('declare-count').textContent = checked;
   document.getElementById('submitBtn').disabled = (checked < boxes.length);
 }
 
-/* ══════════════════════════════════════════════
-   SUBMIT
-══════════════════════════════════════════════ */
-
+/* ── SUBMIT ── */
 function handleSubmit() {
   var toolName = document.getElementById('q1_tool_name').value.trim();
   var reqBy    = document.getElementById('q6_requested_by').value;
-  var reqOther = document.getElementById('q6_requested_other').value.trim();
-  var reqName  = (reqBy === 'other') ? reqOther : reqBy;
-
-  document.getElementById('success-meta').textContent =
-    '"' + toolName + '" requested by ' + reqName;
-
-  document.querySelectorAll('.step-panel').forEach(function (p) {
-    p.classList.remove('active');
-  });
+  var reqName  = (reqBy === 'other') ? document.getElementById('q6_requested_other').value.trim() : reqBy;
+  document.getElementById('success-meta').textContent = '"' + toolName + '" requested by ' + reqName;
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
   document.getElementById('successScreen').classList.add('active');
-
-  document.querySelectorAll('.step-nav-item').forEach(function (n) {
-    n.classList.remove('active');
-    n.classList.add('done');
-  });
-
+  document.querySelectorAll('.snav-item').forEach(function(n) { n.classList.remove('active'); n.classList.add('done'); });
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ══════════════════════════════════════════════
-   RESET
-══════════════════════════════════════════════ */
-
+/* ── RESET ── */
 function resetForm() {
-  document.querySelectorAll('.field-input').forEach(function (el) { el.value = ''; });
-  document.querySelectorAll('select').forEach(function (el) { el.value = ''; });
-  document.querySelectorAll('.other-input').forEach(function (el) { el.style.display = 'none'; });
-  document.querySelectorAll('.declare-check').forEach(function (el) { el.checked = false; });
-  document.querySelectorAll('.radio-opt').forEach(function (el) { el.classList.remove('selected'); });
-  document.querySelectorAll('.error-toast').forEach(function (el) { el.classList.remove('show'); });
-
-  var warnCost = document.getElementById('warn_cost');
-  if (warnCost) warnCost.style.display = 'none';
-
-  radioState = {};
-  userTags   = [];
-  renderUserTags();
-  updateCostBadge();
-  updateDeclare();
-
+  document.querySelectorAll('.field-input').forEach(function(el) { el.value = ''; });
+  document.querySelectorAll('select').forEach(function(el) { el.value = ''; });
+  document.querySelectorAll('.other-input').forEach(function(el) { el.style.display = 'none'; });
+  document.querySelectorAll('.declare-check').forEach(function(el) { el.checked = false; });
+  document.querySelectorAll('.radio-opt').forEach(function(el) { el.classList.remove('selected'); });
+  document.querySelectorAll('.error-toast').forEach(function(el) { el.classList.remove('show'); });
+  var wc = document.getElementById('warn_cost'); if (wc) wc.style.display = 'none';
+  radioState = {}; userTags = [];
+  renderUserTags(); updateCostBadge(); updateDeclare();
   document.getElementById('successScreen').classList.remove('active');
   document.getElementById('step-a').classList.add('active');
-
-  document.querySelectorAll('.step-nav-item').forEach(function (n) {
-    n.classList.remove('active', 'done');
-  });
+  document.querySelectorAll('.snav-item').forEach(function(n) { n.classList.remove('active','done'); });
   document.getElementById('snav-a').classList.add('active');
-
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ══════════════════════════════════════════════
-   UTILITY
-══════════════════════════════════════════════ */
-
-function escapeHtml(str) {
-  return str
-    .replace(/&/g,  '&amp;')
-    .replace(/</g,  '&lt;')
-    .replace(/>/g,  '&gt;')
-    .replace(/"/g,  '&quot;')
-    .replace(/'/g,  '&#39;');
+/* ── UTILITY ── */
+function esc(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
-
 </script>
 </body>
 </html>
