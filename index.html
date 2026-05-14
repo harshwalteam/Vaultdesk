@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
 <title>VaultDesk — Harshwal AI Vault</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -890,34 +891,31 @@ function handleSubmit() {
   document.querySelectorAll('.snav-item').forEach(function(n) { n.classList.remove('active'); n.classList.add('done'); });
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  /* Send email via Power Automate */
-  fetch('https://defaultaabaa4a5f1244bfebb290dd6eda471.92.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/90ed813b539b4588a35b365cf5f21d94/triggers/manual/paths/invoke?api-version=1', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      tool_name:     toolName,
-      department:    deptFinal,
-      category:      category,
-      monthly_cost:  '₹' + cost,
-      priority:      priority,
-      justification: justify,
-      project:       projFinal,
-      owner:         owner,
-      num_users:     numUsers,
-      all_users:     allUsers,
-      outcome:       outcome,
-      roi:           roi,
-      requested_by:  reqName,
-      manager:       manager,
-      sub_manager:   subMgr,
-      required_date: reqDate,
-      comments:      comments,
-      submitted_at:  new Date().toLocaleString('en-IN', {timeZone:'Asia/Kolkata'})
-    })
-  }).then(function(res) {
-    console.log('Power Automate triggered:', res.status);
+  /* Send email via EmailJS */
+  emailjs.init('bp8w2ndTIahGlZHlU');
+  emailjs.send('service_0kxu4dp', 'z4wvvb9', {
+    tool_name:     toolName,
+    department:    deptFinal,
+    category:      category,
+    monthly_cost:  '₹' + cost,
+    priority:      priority,
+    justification: justify,
+    project:       projFinal,
+    owner:         owner,
+    num_users:     numUsers,
+    all_users:     allUsers,
+    outcome:       outcome,
+    roi:           roi,
+    requested_by:  reqName,
+    manager:       manager,
+    sub_manager:   subMgr,
+    required_date: reqDate,
+    comments:      comments,
+    submitted_at:  new Date().toLocaleString('en-IN', {timeZone:'Asia/Kolkata'})
+  }).then(function() {
+    console.log('Email sent successfully!');
   }).catch(function(err) {
-    console.error('Power Automate error:', err);
+    console.error('EmailJS error:', err);
   });
 }
 
