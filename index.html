@@ -27,11 +27,11 @@
 html{scroll-behavior:smooth}
 body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:13px;line-height:1.5}
 
-/* ── TOP BAR ── */
+/* TOP BAR */
 .topbar{background:var(--navy);position:sticky;top:0;z-index:300;border-bottom:3px solid var(--gold)}
 .topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:0 28px;min-height:52px}
 .brand{display:flex;align-items:center;gap:14px}
-.brand-logo{width:36px;height:36px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:13px;color:var(--navy);letter-spacing:-1px}
+.brand-logo{width:36px;height:36px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:13px;color:var(--navy)}
 .brand-name{font-size:15px;font-weight:800;color:#fff;letter-spacing:.3px}
 .brand-sub{font-size:9px;color:rgba(255,255,255,.45);letter-spacing:1.2px;text-transform:uppercase;margin-top:1px;font-family:var(--mono)}
 .doc-badge{background:rgba(200,160,48,.15);border:1px solid rgba(200,160,48,.35);color:var(--gold2);font-family:var(--mono);font-size:10px;padding:4px 12px;border-radius:20px;font-weight:600;letter-spacing:.4px}
@@ -39,7 +39,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:13p
 .user-email{color:rgba(255,255,255,.45);font-size:11px;font-family:var(--mono)}
 .avatar-btn{width:32px;height:32px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:var(--navy);border:none;cursor:pointer}
 
-/* ── STEP NAV (like tabs) ── */
+/* STEP NAV */
 .step-nav{background:var(--navy2);display:flex;overflow-x:auto;border-top:1px solid rgba(255,255,255,.07);padding:0 28px;scrollbar-width:none}
 .step-nav::-webkit-scrollbar{display:none}
 .snav-item{padding:12px 20px;font-size:11px;font-weight:700;cursor:pointer;color:rgba(255,255,255,.4);background:transparent;border:none;border-bottom:3px solid transparent;letter-spacing:.4px;white-space:nowrap;transition:.18s;font-family:var(--mono);display:flex;align-items:center;gap:8px}
@@ -50,21 +50,17 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:13p
 .snav-item.done .snav-circle{background:#2d5a1a;color:#8dbb56}
 .snav-item.done{color:rgba(255,255,255,.5)}
 
-/* ── PANELS ── */
+/* PANELS */
 .panel{display:none;padding:28px;max-width:1200px;margin:0 auto}
 .panel.active{display:block}
 
-/* ── SECTION HEADING ── */
+/* SECTION HEADING */
 .sh{font-size:11px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:10px;margin:28px 0 14px;letter-spacing:.8px;text-transform:uppercase;font-family:var(--mono)}
 .sh::after{content:'';flex:1;height:1px;background:var(--rule)}
 .badge{padding:2px 10px;border-radius:20px;font-size:9px;font-weight:800;letter-spacing:.5px;font-family:var(--mono)}
 .b-navy{background:var(--navy);color:#fff}
-.b-gold{background:var(--gold3);color:var(--gold)}
-.b-coral{background:var(--coral3);color:var(--coral)}
-.b-green{background:var(--green3);color:var(--green)}
-.b-teal{background:var(--teal3);color:var(--teal)}
 
-/* ── NOTICE ── */
+/* NOTICE */
 .notice{border-radius:var(--radius);padding:14px 18px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;border-left:4px solid}
 .n-red{background:var(--coral3);border-color:var(--coral2)}
 .n-blue{background:var(--blue3);border-color:var(--navy)}
@@ -74,41 +70,49 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:13p
 .notice-title{font-size:12px;font-weight:800;color:var(--ink);margin-bottom:3px}
 .notice-text{font-size:11px;color:var(--ink2);line-height:1.6}
 
-/* ── FORM GRID ── */
+/* FORM GRID */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .full-width{grid-column:1/-1}
-
-/* ── FORM CARDS ── */
 .form-card{background:var(--white);border:1.5px solid var(--rule);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
 
-/* ── Q LABELS ── */
+/* Q LABELS */
 .q-num{font-size:10px;font-weight:700;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;font-family:var(--mono)}
 .q-title{display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
 .req{color:var(--coral2);font-weight:400}
 .optional{color:var(--ink3);font-size:11px;font-weight:400}
 .q-hint{font-size:11px;color:var(--ink3);margin-bottom:12px;line-height:1.5}
 
-/* ── INPUTS ── */
+/* INPUTS */
 .field-input{width:100%;background:var(--bg);border:1.5px solid var(--rule);border-radius:6px;padding:9px 13px;color:var(--ink);font-size:13px;font-family:var(--sans);line-height:1.4;transition:border-color .15s;outline:none}
 .field-input:focus{border-color:var(--navy);background:#fff}
 .field-input::placeholder{color:var(--ink3)}
 .field-textarea{resize:vertical;min-height:90px}
 input[type="date"].field-input{color-scheme:light}
 
-/* ── SELECT ── */
+/* SELECT */
 .select-wrap{position:relative}
 .select-wrap select{width:100%;background:var(--bg);border:1.5px solid var(--rule);border-radius:6px;padding:9px 34px 9px 13px;color:var(--ink);font-size:13px;font-family:var(--sans);appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color .15s;outline:none}
 .select-wrap select:focus{border-color:var(--navy);background:#fff}
 .select-wrap::after{content:'▾';position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:11px;pointer-events:none}
 .other-input{margin-top:8px}
 
-/* ── COST BADGE ── */
-.cost-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green3);border:1.5px solid var(--green2);border-radius:6px;padding:7px 14px;color:var(--green);font-size:11px;font-family:var(--mono);font-weight:700;margin-top:10px}
-
-/* ── INLINE WARN ── */
+/* COST SECTION */
+.cost-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.cost-box{background:var(--bg);border:1.5px solid var(--rule);border-radius:6px;padding:12px 14px}
+.cost-box-label{font-size:10px;font-weight:700;color:var(--ink3);font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;display:block;margin-bottom:8px}
+.cost-row{display:flex;gap:8px;align-items:center}
+.cost-currency-sel{background:var(--bg);border:1.5px solid var(--rule);border-radius:6px;padding:8px 10px;color:var(--ink);font-size:12px;font-family:var(--mono);cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;flex-shrink:0}
+.cost-currency-sel:focus{border-color:var(--navy)}
+.cost-summary{margin-top:12px;display:none}
+.cost-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green3);border:1.5px solid var(--green2);border-radius:6px;padding:7px 14px;color:var(--green);font-size:12px;font-family:var(--mono);font-weight:700;margin-bottom:6px}
+.cost-convert{font-size:11px;color:var(--ink3);font-family:var(--mono);margin-bottom:3px}
+.cost-rate{font-size:10px;color:var(--ink3);font-family:var(--mono)}
 .inline-warn{display:flex;align-items:center;gap:6px;background:var(--gold3);border:1.5px solid var(--gold);border-radius:6px;padding:8px 12px;color:#7a5800;font-size:11px;margin-top:9px;font-weight:600}
 
-/* ── TAG INPUT ── */
+/* COST BADGE (per user) */
+.user-cost-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green3);border:1.5px solid var(--green2);border-radius:6px;padding:7px 14px;color:var(--green);font-size:11px;font-family:var(--mono);font-weight:700;margin-top:10px}
+
+/* TAG INPUT */
 .tag-row{display:flex;gap:8px}
 .tag-field{flex:1}
 .btn-add{background:var(--navy);border:none;border-radius:6px;padding:9px 18px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:var(--mono);letter-spacing:.3px;transition:background .15s}
@@ -118,7 +122,7 @@ input[type="date"].field-input{color-scheme:light}
 .tag-x{cursor:pointer;color:rgba(255,255,255,.5);font-size:15px;line-height:1;transition:color .1s;margin-left:2px}
 .tag-x:hover{color:var(--coral2)}
 
-/* ── RADIO GROUPS ── */
+/* RADIO GROUPS */
 .radio-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .radio-opt{display:flex;align-items:center;gap:8px;cursor:pointer;padding:8px 16px;border:1.5px solid var(--rule);border-radius:6px;color:var(--ink3);font-size:12px;transition:all .15s;user-select:none;background:#fff}
 .radio-opt:hover{border-color:var(--navy);color:var(--navy);background:var(--blue3)}
@@ -129,10 +133,7 @@ input[type="date"].field-input{color-scheme:light}
 .radio-opt.selected .radio-inner{display:block}
 .roi-group{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
 
-/* ── CONFIRM EMAIL ── */
-.confirm-email{font-size:11px;color:var(--ink3);margin-top:8px;font-family:var(--mono)}
-
-/* ── DECLARATION CARD ── */
+/* DECLARATION */
 .declaration-card{background:var(--navy);border-color:var(--navy)}
 .declare-heading{font-size:14px;font-weight:800;color:#fff;margin-bottom:4px}
 .declare-sub{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:12px}
@@ -145,11 +146,11 @@ input[type="date"].field-input{color-scheme:light}
 .declare-check:checked{background:var(--green2);border-color:var(--green2)}
 .declare-check:checked::after{content:'✓';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:11px;font-weight:700}
 
-/* ── PANEL FOOTER ── */
+/* PANEL FOOTER */
 .panel-footer{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-top:1.5px solid var(--rule);background:var(--white);position:sticky;bottom:0;z-index:10;box-shadow:0 -2px 12px rgba(11,31,66,.08)}
 .footer-right{display:flex;align-items:center;gap:12px}
 
-/* ── BUTTONS ── */
+/* BUTTONS */
 .btn-back{background:transparent;border:1.5px solid var(--rule);border-radius:6px;padding:10px 22px;color:var(--ink3);font-size:12px;cursor:pointer;font-family:var(--mono);font-weight:600;letter-spacing:.3px;transition:all .15s}
 .btn-back:hover{border-color:var(--navy);color:var(--navy)}
 .btn-next{background:var(--navy);border:none;border-radius:6px;padding:11px 26px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;font-family:var(--mono);letter-spacing:.4px;transition:background .15s}
@@ -159,11 +160,11 @@ input[type="date"].field-input{color-scheme:light}
 .btn-submit:hover:not(:disabled){background:var(--green)}
 .btn-submit:disabled{background:var(--rule);color:var(--ink3);cursor:not-allowed}
 
-/* ── ERROR TOAST ── */
+/* ERROR TOAST */
 .error-toast{background:var(--coral3);border:1.5px solid var(--coral2);border-radius:6px;padding:8px 16px;color:var(--coral);font-size:11px;display:none;align-items:center;gap:6px;white-space:nowrap;font-family:var(--mono);font-weight:600}
 .error-toast.show{display:flex}
 
-/* ── SUCCESS SCREEN ── */
+/* SUCCESS */
 .success-screen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;padding:60px 28px;text-align:center}
 .success-screen.active{display:flex}
 .success-icon{width:80px;height:80px;border-radius:50%;background:var(--green3);border:3px solid var(--green2);color:var(--green);font-size:38px;display:flex;align-items:center;justify-content:center;margin-bottom:24px}
@@ -177,13 +178,20 @@ input[type="date"].field-input{color-scheme:light}
 .btn-print{background:transparent;border:1.5px solid var(--rule);border-radius:6px;padding:11px 22px;color:var(--ink3);font-size:12px;cursor:pointer;font-family:var(--mono);font-weight:600}
 .btn-print:hover{border-color:var(--navy);color:var(--navy)}
 
-/* ── FOOTER ── */
-.site-footer{background:var(--navy);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;margin-top:0}
+/* SITE FOOTER */
+.site-footer{background:var(--navy);padding:14px 28px;display:flex;justify-content:space-between;align-items:center}
 .fl{font-size:10px;color:rgba(255,255,255,.45);font-family:var(--mono)}
 .fl strong{color:rgba(255,255,255,.75)}
 .fr{font-size:9px;color:rgba(255,255,255,.3);font-family:var(--mono);letter-spacing:.5px}
 
-/* ── RESPONSIVE ── */
+/* AUTO-FIX INDICATOR */
+.autofix-bar{position:fixed;bottom:16px;right:16px;padding:8px 16px;border-radius:20px;font-size:11px;font-family:var(--mono);font-weight:700;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;color:#fff}
+.autofix-bar.show{opacity:1}
+.autofix-ok{background:var(--green2)}
+.autofix-warn{background:var(--gold)}
+.autofix-retry{background:var(--blue2)}
+
+/* RESPONSIVE */
 @media(max-width:640px){
   .form-grid{grid-template-columns:1fr}
   .full-width{grid-column:1}
@@ -191,23 +199,22 @@ input[type="date"].field-input{color-scheme:light}
   .panel-footer{padding:14px;flex-wrap:wrap;gap:10px}
   .footer-right{flex-wrap:wrap;justify-content:flex-end}
   .btn-next,.btn-back,.btn-submit{width:100%;text-align:center}
-  .radio-group{flex-direction:column}
-  .roi-group{grid-template-columns:1fr}
+  .radio-group,.roi-group{flex-direction:column;display:flex}
   .tag-row{flex-direction:column}
   .btn-add{width:100%;text-align:center}
   .snav-item{padding:10px 14px}
+  .cost-grid{grid-template-columns:1fr}
 }
-
 @media print{
   .topbar{position:static;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .step-nav,.panel-footer,.site-footer{display:none!important}
+  .step-nav,.panel-footer,.site-footer,.autofix-bar{display:none!important}
   .panel{display:block!important;page-break-after:always}
 }
 </style>
 </head>
 <body>
 
-<!-- ── TOP BAR ── -->
+<!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-inner">
     <div class="brand">
@@ -223,42 +230,28 @@ input[type="date"].field-input{color-scheme:light}
       <div class="avatar-btn">A</div>
     </div>
   </div>
-
-  <!-- ── STEP NAV ── -->
   <div class="step-nav">
-    <button class="snav-item active" id="snav-a" onclick="goTo('b','a',isStepAValid)" style="cursor:default">
-      <span class="snav-circle">A</span>Tool Details
-    </button>
-    <button class="snav-item" id="snav-b">
-      <span class="snav-circle">B</span>Project &amp; Users
-    </button>
-    <button class="snav-item" id="snav-c">
-      <span class="snav-circle">C</span>Business Case
-    </button>
-    <button class="snav-item" id="snav-d">
-      <span class="snav-circle">D</span>Approval
-    </button>
-    <button class="snav-item" id="snav-e">
-      <span class="snav-circle">E</span>Declare &amp; Submit
-    </button>
+    <button class="snav-item active" id="snav-a"><span class="snav-circle">A</span>Tool Details</button>
+    <button class="snav-item" id="snav-b"><span class="snav-circle">B</span>Project &amp; Users</button>
+    <button class="snav-item" id="snav-c"><span class="snav-circle">C</span>Business Case</button>
+    <button class="snav-item" id="snav-d"><span class="snav-circle">D</span>Approval</button>
+    <button class="snav-item" id="snav-e"><span class="snav-circle">E</span>Approve &amp; Submit</button>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     STEP A — TOOL DETAILS
-══════════════════════════════════════ -->
+<!-- AUTO-FIX STATUS BAR -->
+<div class="autofix-bar" id="autofixBar"></div>
+
+<!-- ══ STEP A — TOOL DETAILS ══ -->
 <div class="panel active" id="step-a">
-
   <div class="sh">A — Tool Details <span class="badge b-navy">STEP 1 OF 5</span></div>
-
   <div class="notice n-blue">
     <div class="notice-icon">ℹ️</div>
     <div>
       <div class="notice-title">What are you requesting?</div>
-      <div class="notice-text">Fill all required fields marked <strong>*</strong> before proceeding. Ensure the tool name is exact — e.g. "Claude API (Anthropic)", "GitHub Copilot Business".</div>
+      <div class="notice-text">Fill all required fields marked <strong>*</strong> before proceeding.</div>
     </div>
   </div>
-
   <div class="form-grid">
 
     <!-- Q1 Tool Name -->
@@ -269,34 +262,33 @@ input[type="date"].field-input{color-scheme:light}
       <input type="text" id="q1_tool_name" class="field-input" placeholder='e.g. "Notion AI"' oninput="validateA()" />
     </div>
 
-    <!-- Q2 Department -->
+    <!-- Q2 Department — FIX 1 -->
     <div class="form-card">
       <div class="q-num">Q2</div>
       <label class="q-title" for="q2_dept">Department <span class="req">*</span></label>
       <div class="select-wrap">
-        <select id="q2_dept" onchange="handleQ2Change(); validateA();">
+        <select id="q2_dept" onchange="handleOther('q2_dept','q2_dept_other'); validateA();">
           <option value="">Select department…</option>
           <option value="tax">Tax</option>
           <option value="audit">Audit</option>
-          <option value="advisory">Advisory</option>
-          <option value="accounts">Accounts / Finance</option>
-          <option value="admin">Admin / HR</option>
+          <option value="accounting">Accounting</option>
+          <option value="admin">Admin</option>
+          <option value="hr">HR</option>
           <option value="it">IT</option>
-          <option value="management">Management</option>
-          <option value="dm_dept">DM Dept</option>
-          <option value="cross">Cross-Department</option>
+          <option value="ai">AI</option>
+          <option value="dm">DM</option>
           <option value="other">Other — type below ↓</option>
         </select>
       </div>
-      <input type="text" id="q2_dept_other" class="field-input other-input" placeholder="Type department…" oninput="validateA()" style="display:none" />
+      <input type="text" id="q2_dept_other" class="field-input other-input" placeholder="Type department name…" oninput="validateA()" style="display:none" />
     </div>
 
-    <!-- Q4 Category -->
+    <!-- Q4 Category — FIX 3 -->
     <div class="form-card">
       <div class="q-num">Q4</div>
       <label class="q-title" for="q4_category">Category <span class="req">*</span></label>
       <div class="select-wrap">
-        <select id="q4_category" onchange="validateA()">
+        <select id="q4_category" onchange="handleOther('q4_category','q4_category_other'); validateA();">
           <option value="">Select category…</option>
           <option value="ai_llm">AI / LLM API</option>
           <option value="saas_prod">SaaS Tool — Productivity</option>
@@ -307,17 +299,43 @@ input[type="date"].field-input{color-scheme:light}
           <option value="hardware">Hardware / Device</option>
           <option value="integration">Integration / Middleware</option>
           <option value="security">Security / Compliance</option>
-          <option value="other">Other</option>
+          <option value="other">Other — type below ↓</option>
         </select>
       </div>
+      <input type="text" id="q4_category_other" class="field-input other-input" placeholder="Type category…" oninput="validateA()" style="display:none" />
     </div>
 
-    <!-- Q3 Monthly Cost -->
-    <div class="form-card">
+    <!-- Q3 Cost — FIX 2 & 4 -->
+    <div class="form-card full-width">
       <div class="q-num">Q3</div>
-      <label class="q-title" for="q3_cost">Monthly Cost (INR) <span class="req">*</span></label>
-      <p class="q-hint">For annual plans: Total ÷ 12</p>
-      <input type="number" id="q3_cost" class="field-input" min="0" placeholder="0" oninput="checkCost(); validateA();" />
+      <label class="q-title">Cost <span class="req">*</span></label>
+      <p class="q-hint">Enter amount in USD or INR. Monthly/Yearly equivalent calculated automatically.</p>
+      <div class="cost-grid">
+        <div class="cost-box">
+          <span class="cost-box-label">Amount &amp; Currency</span>
+          <div class="cost-row">
+            <input type="number" id="q3_amount" class="field-input" min="0" placeholder="0" style="flex:1" oninput="calcCost(); validateA();" />
+            <select id="q3_currency" class="cost-currency-sel" onchange="calcCost(); validateA();">
+              <option value="INR">INR ₹</option>
+              <option value="USD">USD $</option>
+            </select>
+          </div>
+        </div>
+        <div class="cost-box">
+          <span class="cost-box-label">Billing Period</span>
+          <div class="cost-row">
+            <select id="q3_period" class="field-input" onchange="calcCost(); validateA();">
+              <option value="monthly">Monthly</option>
+              <option value="yearly">Yearly (auto ÷12)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="cost-summary" id="cost_summary">
+        <div class="cost-badge" id="cost_monthly_badge">—</div>
+        <div class="cost-convert" id="cost_yearly_line">—</div>
+        <div class="cost-rate" id="cost_rate_line">—</div>
+      </div>
       <div class="inline-warn" id="warn_cost" style="display:none">⚠ Amount exceeds ₹5,000/month — Finance approval is mandatory.</div>
     </div>
 
@@ -336,7 +354,7 @@ input[type="date"].field-input{color-scheme:light}
       </div>
     </div>
 
-    <!-- Q5 Business Justification -->
+    <!-- Q5 Justification -->
     <div class="form-card full-width">
       <div class="q-num">Q5</div>
       <label class="q-title" for="q5_justification">Business Justification <span class="req">*</span></label>
@@ -345,7 +363,6 @@ input[type="date"].field-input{color-scheme:light}
     </div>
 
   </div>
-
   <div class="panel-footer">
     <div></div>
     <div class="footer-right">
@@ -355,21 +372,16 @@ input[type="date"].field-input{color-scheme:light}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     STEP B — PROJECT & USERS
-══════════════════════════════════════ -->
+<!-- ══ STEP B — PROJECT & USERS ══ -->
 <div class="panel" id="step-b">
-
   <div class="sh">B — Project &amp; Users <span class="badge b-navy">STEP 2 OF 5</span></div>
-
   <div class="notice n-gold">
     <div class="notice-icon">👥</div>
     <div>
       <div class="notice-title">Who uses it and for what?</div>
-      <div class="notice-text">Add all team members who will use this tool. Use the "Add Person" button to include everyone. Usage type and scope must be selected.</div>
+      <div class="notice-text">Add all team members who will use this tool.</div>
     </div>
   </div>
-
   <div class="form-grid">
 
     <!-- Q8 Project Name -->
@@ -377,7 +389,7 @@ input[type="date"].field-input{color-scheme:light}
       <div class="q-num">Q8</div>
       <label class="q-title" for="q8_project">Project Name <span class="req">*</span></label>
       <div class="select-wrap">
-        <select id="q8_project" onchange="handleQ8Change(); validateB();">
+        <select id="q8_project" onchange="handleOther('q8_project','q8_project_other'); validateB();">
           <option value="">Select project…</option>
           <option value="tax_filing">Tax Filing Automation</option>
           <option value="gl_recon">GL Reconciliation Agent</option>
@@ -409,31 +421,22 @@ input[type="date"].field-input{color-scheme:light}
       <label class="q-title">Tool Scope <span class="req">*</span></label>
       <p class="q-hint">How is this tool being used?</p>
       <div class="radio-group" id="rg_scope">
-        <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_project'); validateB();">
-          <span class="radio-dot"><span class="radio-inner"></span></span>Specific Project Only
-        </label>
-        <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_shared'); validateB();">
-          <span class="radio-dot"><span class="radio-inner"></span></span>Shared Across Projects
-        </label>
-        <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_dept'); validateB();">
-          <span class="radio-dot"><span class="radio-inner"></span></span>Department-wide
-        </label>
-        <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_company'); validateB();">
-          <span class="radio-dot"><span class="radio-inner"></span></span>Company-wide
-        </label>
+        <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_project'); validateB();"><span class="radio-dot"><span class="radio-inner"></span></span>Specific Project Only</label>
+        <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_shared'); validateB();"><span class="radio-dot"><span class="radio-inner"></span></span>Shared Across Projects</label>
+        <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_dept'); validateB();"><span class="radio-dot"><span class="radio-inner"></span></span>Department-wide</label>
+        <label class="radio-opt" onclick="pickRadio('rg_scope',this,'scope_company'); validateB();"><span class="radio-dot"><span class="radio-inner"></span></span>Company-wide</label>
       </div>
     </div>
 
-    <!-- Q11 Primary User -->
+    <!-- Q11 Primary User — FIX 6: DM Dept removed -->
     <div class="form-card">
       <div class="q-num">Q11</div>
       <label class="q-title" for="q11_primary_user">Primary User <span class="req">*</span></label>
       <p class="q-hint">Main person managing day-to-day usage</p>
       <div class="select-wrap">
-        <select id="q11_primary_user" onchange="handleQ11Change(); validateB();">
+        <select id="q11_primary_user" onchange="handleOther('q11_primary_user','q11_primary_other'); validateB();">
           <option value="">Select primary user…</option>
           <option value="department">Department</option>
-          <option value="dm_dept">DM Dept</option>
           <option value="other">Other — type below ↓</option>
         </select>
       </div>
@@ -445,14 +448,14 @@ input[type="date"].field-input{color-scheme:light}
       <div class="q-num">Q13</div>
       <label class="q-title" for="q13_num_users">Expected Number of Users <span class="req">*</span></label>
       <input type="number" id="q13_num_users" class="field-input" min="1" placeholder="e.g. 3" oninput="updateCostBadge(); validateB();" />
-      <div class="cost-badge">💰 Cost per user: <span id="cost_per_user">—</span></div>
+      <div class="user-cost-badge">💰 Cost per user: <span id="cost_per_user">—</span></div>
     </div>
 
     <!-- Q12 All Users -->
     <div class="form-card full-width">
       <div class="q-num">Q12</div>
       <label class="q-title">All Users Who Will Use This Tool <span class="optional">(optional)</span></label>
-      <p class="q-hint">Check all who will use this tool. Use "Add Person" to add someone not listed.</p>
+      <p class="q-hint">Use "Add Person" to add team members.</p>
       <div class="tag-row">
         <input type="text" id="q12_user_input" class="field-input tag-field" placeholder="Type a name…" onkeydown="if(event.key==='Enter'){addUserTag()}" />
         <button class="btn-add" onclick="addUserTag()">+ Add Person</button>
@@ -460,28 +463,21 @@ input[type="date"].field-input{color-scheme:light}
       <div class="tags-wrap" id="q12_tags"></div>
     </div>
 
-    <!-- Q14 Usage Type -->
+    <!-- Q14 Usage Type — FIX 7: Other option -->
     <div class="form-card full-width">
       <div class="q-num">Q14</div>
       <label class="q-title">Usage Type <span class="req">*</span></label>
       <div class="radio-group" id="rg_usage">
-        <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_individual'); validateB();">
-          <span class="radio-dot"><span class="radio-inner"></span></span>Individual (1 person)
-        </label>
-        <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_team'); validateB();">
-          <span class="radio-dot"><span class="radio-inner"></span></span>Team (2–5 people)
-        </label>
-        <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_dept'); validateB();">
-          <span class="radio-dot"><span class="radio-inner"></span></span>Department (full dept)
-        </label>
-        <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_company'); validateB();">
-          <span class="radio-dot"><span class="radio-inner"></span></span>Company-wide
-        </label>
+        <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_individual'); setQ14Other(false); validateB();"><span class="radio-dot"><span class="radio-inner"></span></span>Individual (1 person)</label>
+        <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_team'); setQ14Other(false); validateB();"><span class="radio-dot"><span class="radio-inner"></span></span>Team (2–5 people)</label>
+        <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_dept'); setQ14Other(false); validateB();"><span class="radio-dot"><span class="radio-inner"></span></span>Department (full dept)</label>
+        <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_company'); setQ14Other(false); validateB();"><span class="radio-dot"><span class="radio-inner"></span></span>Company-wide</label>
+        <label class="radio-opt" onclick="pickRadio('rg_usage',this,'usage_other'); setQ14Other(true); validateB();"><span class="radio-dot"><span class="radio-inner"></span></span>Other — type below ↓</label>
       </div>
+      <input type="text" id="q14_usage_other" class="field-input other-input" placeholder="Describe usage type…" oninput="validateB()" style="display:none" />
     </div>
 
   </div>
-
   <div class="panel-footer">
     <button class="btn-back" onclick="goBack('a','b')">← Back</button>
     <div class="footer-right">
@@ -491,60 +487,55 @@ input[type="date"].field-input{color-scheme:light}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     STEP C — BUSINESS CASE
-══════════════════════════════════════ -->
+<!-- ══ STEP C — BUSINESS CASE ══ -->
 <div class="panel" id="step-c">
-
   <div class="sh">C — Business Case <span class="badge b-navy">STEP 3 OF 5</span></div>
-
   <div class="notice n-green">
     <div class="notice-icon">📈</div>
     <div>
       <div class="notice-title">What value will this deliver?</div>
-      <div class="notice-text">Be specific with numbers — "saves X hours/week", "reduces errors by X%", "enables X new clients". Select the primary measurable benefit type.</div>
+      <div class="notice-text">Be specific with numbers — "saves X hours/week", "reduces errors by X%".</div>
     </div>
   </div>
-
   <div class="form-grid">
 
-    <!-- Q16 Expected Outcome -->
+    <!-- Q16 Expected Outcome — FIX 5: template + other typing -->
     <div class="form-card full-width">
       <div class="q-num">Q16</div>
-      <label class="q-title" for="q16_outcome">Expected Business Outcome <span class="req">*</span></label>
-      <p class="q-hint">Be specific with numbers — "saves X hours/week", "reduces errors by X%", "enables X new clients"</p>
-      <textarea id="q16_outcome" class="field-input field-textarea" rows="4" oninput="validateC()"></textarea>
+      <label class="q-title">Expected Business Outcome <span class="req">*</span></label>
+      <p class="q-hint">Choose a template or write your own</p>
+      <div class="select-wrap" style="margin-bottom:8px">
+        <select id="q16_template" onchange="applyQ16Template()">
+          <option value="">— Quick templates (or write below) —</option>
+          <option value="Saves approximately X hours/week by automating manual processes, reducing workload for the team.">⏱ Time saved / Hours reduction</option>
+          <option value="Reduces error rate by approximately X% through automated validation and cross-checking.">✓ Error reduction</option>
+          <option value="Enables the team to handle X% more client volume without additional headcount.">👥 Client capacity increase</option>
+          <option value="Reduces monthly software spend by replacing existing tools, saving approximately ₹X/month.">💰 Cost reduction</option>
+          <option value="Ensures compliance with applicable regulations, reducing risk of audit findings and penalties.">⚖ Compliance / Risk reduction</option>
+          <option value="other">✏️ Other — type your own below</option>
+        </select>
+      </div>
+      <textarea id="q16_outcome" class="field-input field-textarea" rows="4" placeholder="Describe the expected business outcome in detail…" oninput="validateC()"></textarea>
     </div>
 
-    <!-- Q17 ROI -->
+    <!-- Q17 ROI — FIX 8: Other typing option -->
     <div class="form-card full-width">
       <div class="q-num">Q17</div>
       <label class="q-title">Expected ROI / Measurable Benefit <span class="req">*</span></label>
       <p class="q-hint">Select all that apply</p>
       <div class="radio-group roi-group" id="rg_roi">
-        <label class="radio-opt" onclick="toggleRoi(this,'roi_hours'); validateC();">
-          <span class="radio-dot"><span class="radio-inner"></span></span>⏱ Hours Saved/Week
-        </label>
-        <label class="radio-opt" onclick="toggleRoi(this,'roi_errors'); validateC();">
-          <span class="radio-dot"><span class="radio-inner"></span></span>✓ Error Reduction
-        </label>
-        <label class="radio-opt" onclick="toggleRoi(this,'roi_revenue'); validateC();">
-          <span class="radio-dot"><span class="radio-inner"></span></span>₹ Revenue Enabled
-        </label>
-        <label class="radio-opt" onclick="toggleRoi(this,'roi_clients'); validateC();">
-          <span class="radio-dot"><span class="radio-inner"></span></span>👥 Client Capacity
-        </label>
-        <label class="radio-opt" onclick="toggleRoi(this,'roi_cost'); validateC();">
-          <span class="radio-dot"><span class="radio-inner"></span></span>🛡 Cost Avoidance
-        </label>
-        <label class="radio-opt" onclick="toggleRoi(this,'roi_compliance'); validateC();">
-          <span class="radio-dot"><span class="radio-inner"></span></span>⚖ Compliance/Risk
-        </label>
+        <label class="radio-opt" onclick="toggleRoi(this,'roi_hours'); validateC();"><span class="radio-dot"><span class="radio-inner"></span></span>⏱ Hours Saved/Week</label>
+        <label class="radio-opt" onclick="toggleRoi(this,'roi_errors'); validateC();"><span class="radio-dot"><span class="radio-inner"></span></span>✓ Error Reduction</label>
+        <label class="radio-opt" onclick="toggleRoi(this,'roi_revenue'); validateC();"><span class="radio-dot"><span class="radio-inner"></span></span>₹ Revenue Enabled</label>
+        <label class="radio-opt" onclick="toggleRoi(this,'roi_clients'); validateC();"><span class="radio-dot"><span class="radio-inner"></span></span>👥 Client Capacity</label>
+        <label class="radio-opt" onclick="toggleRoi(this,'roi_cost'); validateC();"><span class="radio-dot"><span class="radio-inner"></span></span>🛡 Cost Avoidance</label>
+        <label class="radio-opt" onclick="toggleRoi(this,'roi_compliance'); validateC();"><span class="radio-dot"><span class="radio-inner"></span></span>⚖ Compliance/Risk</label>
+        <label class="radio-opt" onclick="toggleRoi(this,'roi_other'); setQ17Other(roiSelected.has('roi_other')); validateC();"><span class="radio-dot"><span class="radio-inner"></span></span>✏️ Other</label>
       </div>
+      <input type="text" id="q17_roi_other" class="field-input other-input" placeholder="Describe other ROI benefit…" oninput="validateC()" style="display:none" />
     </div>
 
   </div>
-
   <div class="panel-footer">
     <button class="btn-back" onclick="goBack('b','c')">← Back</button>
     <div class="footer-right">
@@ -554,54 +545,50 @@ input[type="date"].field-input{color-scheme:light}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     STEP D — APPROVAL DETAILS
-══════════════════════════════════════ -->
+<!-- ══ STEP D — APPROVAL DETAILS ══ -->
 <div class="panel" id="step-d">
-
   <div class="sh">D — Approval Details <span class="badge b-navy">STEP 4 OF 5</span></div>
-
   <div class="notice n-blue">
     <div class="notice-icon">🔐</div>
     <div>
       <div class="notice-title">Approval &amp; administration</div>
-      <div class="notice-text">All approvals require minimum 5 working days from today. Subscription manager will be responsible for renewals, cancellations, and billing.</div>
+      <div class="notice-text">Required By Date is auto-set to 5 working days from today. Change if needed.</div>
     </div>
   </div>
-
   <div class="form-grid">
 
-    <!-- Q6 Requested By -->
     <div class="form-card">
       <div class="q-num">Q6</div>
       <label class="q-title" for="q6_requested_by">Requested By <span class="req">*</span></label>
       <input type="text" id="q6_requested_by" class="field-input" placeholder="Type your name…" oninput="validateD()" />
     </div>
 
-    <!-- Q20 Reporting Manager -->
     <div class="form-card">
       <div class="q-num">Q20</div>
       <label class="q-title" for="q20_manager">Reporting Manager <span class="req">*</span></label>
       <input type="text" id="q20_manager" class="field-input" placeholder="Type manager name…" oninput="validateD()" />
     </div>
 
-    <!-- Q18 Subscription Manager -->
     <div class="form-card">
       <div class="q-num">Q18</div>
       <label class="q-title" for="q18_sub_manager">Subscription Manager <span class="req">*</span></label>
       <p class="q-hint">Who manages licence, renewals, and billing?</p>
       <input type="text" id="q18_sub_manager" class="field-input" placeholder="Type subscription manager name…" oninput="validateD()" />
+      <label class="q-title" style="margin-top:10px;font-size:12px" for="q18_login_id">Subscription Login ID <span class="optional">(optional)</span></label>
+      <p class="q-hint" style="margin-bottom:6px">Email/username used to log into the tool</p>
+      <input type="text" id="q18_login_id" class="field-input" placeholder="e.g. admin@harshwal.com" />
+      <label class="q-title" style="margin-top:8px;font-size:12px" for="q18_login_pass">Subscription Password Hint <span class="optional">(optional)</span></label>
+      <input type="text" id="q18_login_pass" class="field-input" style="margin-top:4px" placeholder="e.g. stored in LastPass / vault" />
     </div>
 
-    <!-- Q19 Required By Date -->
+    <!-- Q19 — FIX 9: Auto-filled with today + 5 working days -->
     <div class="form-card">
       <div class="q-num">Q19</div>
       <label class="q-title" for="q19_date">Required By Date <span class="req">*</span></label>
-      <p class="q-hint">Minimum 5 working days from today</p>
+      <p class="q-hint">Auto-set to 5 working days from today</p>
       <input type="date" id="q19_date" class="field-input" oninput="validateD()" />
     </div>
 
-    <!-- Q22 Comments -->
     <div class="form-card full-width">
       <div class="q-num">Q22</div>
       <label class="q-title" for="q22_comments">Additional Comments <span class="optional">(optional)</span></label>
@@ -609,7 +596,6 @@ input[type="date"].field-input{color-scheme:light}
     </div>
 
   </div>
-
   <div class="panel-footer">
     <button class="btn-back" onclick="goBack('c','d')">← Back</button>
     <div class="footer-right">
@@ -619,62 +605,125 @@ input[type="date"].field-input{color-scheme:light}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     STEP E — DECLARE & SUBMIT
-══════════════════════════════════════ -->
+<!-- ══ STEP E — APPROVE & SUBMIT ══ -->
 <div class="panel" id="step-e">
+  <div class="sh">E — Approval &amp; Submit <span class="badge b-navy">STEP 5 OF 5</span></div>
 
-  <div class="sh">E — Review &amp; Submit <span class="badge b-navy">STEP 5 OF 5</span></div>
-
-  <div class="notice n-red">
-    <div class="notice-icon">⛔</div>
+  <div class="notice n-gold">
+    <div class="notice-icon">✅</div>
     <div>
-      <div class="notice-title">Final Declaration Required</div>
-      <div class="notice-text">All 5 declarations must be confirmed before submission. The Submit button activates only when all are ticked. Unapproved purchases will not be reimbursed.</div>
+      <div class="notice-title">3-Stage Approval Panel</div>
+      <div class="notice-text">Reporting Manager approval is <strong>mandatory</strong>. Sanwar Sir, Abhi Sir and Vinay Sir approvals are optional — but if a decision is selected, a reason must be provided.</div>
     </div>
   </div>
 
   <div class="form-grid">
+
+    <!-- STAGE 1 — Reporting Manager (MANDATORY) -->
+    <div class="form-card full-width" style="border-left:4px solid var(--coral2)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="background:var(--coral2);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">1</div>
+        <div>
+          <div class="q-title" style="margin:0">Reporting Manager Approval <span class="req">*</span></div>
+          <div class="q-hint" style="margin:2px 0 0">Mandatory — required before submission</div>
+        </div>
+        <div id="stage1_badge" style="margin-left:auto;padding:4px 14px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--mono);background:var(--bg);color:var(--ink3);border:1px solid var(--rule)">PENDING</div>
+      </div>
+      <div class="radio-group" id="rg_stage1">
+        <label class="radio-opt" onclick="pickApproval('rg_stage1',this,'approve','stage1_badge','APPROVED','green'); setApprovalOther('stage1_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>✅ Approve</label>
+        <label class="radio-opt" onclick="pickApproval('rg_stage1',this,'hold','stage1_badge','ON HOLD','gold'); setApprovalOther('stage1_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>⏸ Hold</label>
+        <label class="radio-opt" onclick="pickApproval('rg_stage1',this,'reject','stage1_badge','REJECTED','red'); setApprovalOther('stage1_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>❌ Reject</label>
+        <label class="radio-opt" onclick="pickApproval('rg_stage1',this,'other','stage1_badge','OTHER','gray'); setApprovalOther('stage1_other',true); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>✏️ Other — type below</label>
+      </div>
+      <input type="text" id="stage1_other" class="field-input other-input" placeholder="Describe decision…" oninput="validateE()" style="display:none" />
+      <textarea id="stage1_remarks" class="field-input field-textarea" style="margin-top:10px;min-height:60px" placeholder="Reporting Manager remarks (optional)…" rows="2"></textarea>
+    </div>
+
+    <!-- STAGE 2 — Sanwar Sir (OPTIONAL) -->
+    <div class="form-card" style="border-left:4px solid var(--blue2)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="background:var(--blue2);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">2</div>
+        <div>
+          <div class="q-title" style="margin:0">Sanwar Sir <span class="optional">(optional)</span></div>
+          <div class="q-hint" style="margin:2px 0 0">Director Approval</div>
+        </div>
+        <div id="stage2_badge" style="margin-left:auto;padding:4px 14px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--mono);background:var(--bg);color:var(--ink3);border:1px solid var(--rule)">PENDING</div>
+      </div>
+      <div class="radio-group" id="rg_stage2">
+        <label class="radio-opt" onclick="pickApproval('rg_stage2',this,'approve','stage2_badge','APPROVED','green'); setApprovalOther('stage2_other',false);"><span class="radio-dot"><span class="radio-inner"></span></span>✅ Approve</label>
+        <label class="radio-opt" onclick="pickApproval('rg_stage2',this,'hold','stage2_badge','ON HOLD','gold'); setApprovalOther('stage2_other',false);"><span class="radio-dot"><span class="radio-inner"></span></span>⏸ Hold</label>
+        <label class="radio-opt" onclick="pickApproval('rg_stage2',this,'reject','stage2_badge','REJECTED','red'); setApprovalOther('stage2_other',false);"><span class="radio-dot"><span class="radio-inner"></span></span>❌ Reject</label>
+        <label class="radio-opt" onclick="pickApproval('rg_stage2',this,'other','stage2_badge','OTHER','gray'); setApprovalOther('stage2_other',true);"><span class="radio-dot"><span class="radio-inner"></span></span>✏️ Other — type below</label>
+      </div>
+      <input type="text" id="stage2_other" class="field-input other-input" placeholder="Describe decision…" style="display:none" />
+      <textarea id="stage2_remarks" class="field-input field-textarea" style="margin-top:10px;min-height:60px" placeholder="Sanwar Sir remarks (optional)…" rows="2"></textarea>
+    </div>
+
+    <!-- STAGE 3 — Abhi Sir (OPTIONAL, mandatory if touched) -->
+    <div class="form-card" style="border-left:4px solid var(--purple2)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="background:var(--purple2);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">3</div>
+        <div>
+          <div class="q-title" style="margin:0">Abhi Sir <span class="optional">(optional)</span></div>
+          <div class="q-hint" style="margin:2px 0 0">If selected — decision is mandatory</div>
+        </div>
+        <div id="stage3_badge" style="margin-left:auto;padding:4px 14px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--mono);background:var(--bg);color:var(--ink3);border:1px solid var(--rule)">PENDING</div>
+      </div>
+      <div class="radio-group" id="rg_stage3">
+        <label class="radio-opt" onclick="pickApproval('rg_stage3',this,'approve','stage3_badge','APPROVED','green'); setApprovalOther('stage3_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>✅ Approve</label>
+        <label class="radio-opt" onclick="pickApproval('rg_stage3',this,'hold','stage3_badge','ON HOLD','gold'); setApprovalOther('stage3_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>⏸ Hold</label>
+        <label class="radio-opt" onclick="pickApproval('rg_stage3',this,'reject','stage3_badge','REJECTED','red'); setApprovalOther('stage3_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>❌ Reject</label>
+        <label class="radio-opt" onclick="pickApproval('rg_stage3',this,'other','stage3_badge','OTHER','gray'); setApprovalOther('stage3_other',true); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>✏️ Other — type below</label>
+      </div>
+      <input type="text" id="stage3_other" class="field-input other-input" placeholder="Describe decision…" oninput="validateE()" style="display:none" />
+      <textarea id="stage3_remarks" class="field-input field-textarea" style="margin-top:10px;min-height:60px" placeholder="Abhi Sir remarks (optional)…" rows="2"></textarea>
+    </div>
+
+    <!-- STAGE 4 — Vinay Sir (OPTIONAL, mandatory if touched) -->
+    <div class="form-card" style="border-left:4px solid var(--teal2)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="background:var(--teal2);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">4</div>
+        <div>
+          <div class="q-title" style="margin:0">Vinay Sir <span class="optional">(optional)</span></div>
+          <div class="q-hint" style="margin:2px 0 0">If selected — decision is mandatory</div>
+        </div>
+        <div id="stage4_badge" style="margin-left:auto;padding:4px 14px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--mono);background:var(--bg);color:var(--ink3);border:1px solid var(--rule)">PENDING</div>
+      </div>
+      <div class="radio-group" id="rg_stage4">
+        <label class="radio-opt" onclick="pickApproval('rg_stage4',this,'approve','stage4_badge','APPROVED','green'); setApprovalOther('stage4_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>✅ Approve</label>
+        <label class="radio-opt" onclick="pickApproval('rg_stage4',this,'hold','stage4_badge','ON HOLD','gold'); setApprovalOther('stage4_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>⏸ Hold</label>
+        <label class="radio-opt" onclick="pickApproval('rg_stage4',this,'reject','stage4_badge','REJECTED','red'); setApprovalOther('stage4_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>❌ Reject</label>
+        <label class="radio-opt" onclick="pickApproval('rg_stage4',this,'other','stage4_badge','OTHER','gray'); setApprovalOther('stage4_other',true); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>✏️ Other — type below</label>
+      </div>
+      <input type="text" id="stage4_other" class="field-input other-input" placeholder="Describe decision…" oninput="validateE()" style="display:none" />
+      <textarea id="stage4_remarks" class="field-input field-textarea" style="margin-top:10px;min-height:60px" placeholder="Vinay Sir remarks (optional)…" rows="2"></textarea>
+    </div>
+
+    <!-- DECLARATION -->
     <div class="form-card full-width declaration-card">
       <div class="declare-heading">Final Declaration</div>
-      <p class="declare-sub">All 5 declarations must be confirmed. The Submit button activates only when all are ticked.</p>
+      <p class="declare-sub">Tick all 5 to activate the Submit button.</p>
       <div class="declare-progress"><span id="declare-count">0</span> / 5 confirmed</div>
       <div class="declare-list">
-        <label class="declare-item">
-          <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
-          <span>I have checked the existing tool register and confirmed no duplicate tool is already active.</span>
-        </label>
-        <label class="declare-item">
-          <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
-          <span>I understand this purchase requires management approval before any payment is made.</span>
-        </label>
-        <label class="declare-item">
-          <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
-          <span>I confirm the business justification and ROI estimates are accurate to the best of my knowledge.</span>
-        </label>
-        <label class="declare-item">
-          <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
-          <span>I agree the named subscription manager is responsible for renewal and cancellation management.</span>
-        </label>
-        <label class="declare-item">
-          <input type="checkbox" class="declare-check" onchange="updateDeclare()" />
-          <span>I understand that unapproved purchases will not be reimbursed by the firm.</span>
-        </label>
+        <label class="declare-item"><input type="checkbox" class="declare-check" onchange="updateDeclare()" /><span>I have checked the existing tool register and confirmed no duplicate tool is already active.</span></label>
+        <label class="declare-item"><input type="checkbox" class="declare-check" onchange="updateDeclare()" /><span>I understand this purchase requires management approval before any payment is made.</span></label>
+        <label class="declare-item"><input type="checkbox" class="declare-check" onchange="updateDeclare()" /><span>I confirm the business justification and ROI estimates are accurate to the best of my knowledge.</span></label>
+        <label class="declare-item"><input type="checkbox" class="declare-check" onchange="updateDeclare()" /><span>I agree the named subscription manager is responsible for renewal and cancellation management.</span></label>
+        <label class="declare-item"><input type="checkbox" class="declare-check" onchange="updateDeclare()" /><span>I understand that unapproved purchases will not be reimbursed by the firm.</span></label>
       </div>
     </div>
-  </div>
 
+  </div>
   <div class="panel-footer">
     <button class="btn-back" onclick="goBack('d','e')">← Back</button>
     <div class="footer-right">
+      <div class="error-toast" id="err-e">⚠ Reporting Manager approval is mandatory.</div>
       <button class="btn-submit" id="submitBtn" onclick="handleSubmit()" disabled>Submit Purchase Request →</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SUCCESS
-══════════════════════════════════════ -->
+<!-- SUCCESS -->
 <section class="success-screen" id="successScreen">
   <div class="success-icon">✓</div>
   <h2 class="success-title">Request Submitted!</h2>
@@ -687,263 +736,587 @@ input[type="date"].field-input{color-scheme:light}
   </div>
 </section>
 
-<!-- ── FOOTER ── -->
 <div class="site-footer">
   <div class="fl">Tool Purchase Request System by <strong>Harshwal Consulting Services Pvt Ltd</strong> · Jaipur, Rajasthan · 2026</div>
   <div class="fr">INTERNAL USE ONLY · HARSHWAL AI VAULT</div>
 </div>
 
 <script>
-/* ── STATE ── */
-var radioState = {};
-var userTags   = [];
-var roiSelected = new Set();
+/* ═══════════════════════════════════════════════
+   VAULTDESK — MAIN.JS
+   All fixes applied. Auto-Bug-Fixer Agent included.
+═══════════════════════════════════════════════ */
 
-/* ── ROI MULTI-SELECT ── */
-function toggleRoi(el, value) {
-  if (roiSelected.has(value)) {
-    roiSelected.delete(value);
-    el.classList.remove('selected');
-  } else {
-    roiSelected.add(value);
-    el.classList.add('selected');
-  }
+/* ── STATE ── */
+var radioState  = {};
+var userTags    = [];
+var roiSelected = new Set();
+var USD_TO_INR  = 84; /* Update as needed */
+
+/* ── AUTO-BUG-FIXER AGENT ──
+   Catches JS errors, retries EmailJS, recovers state */
+window.onerror = function(msg, src, line) {
+  try {
+    console.warn('[AutoFix] Error at line ' + line + ': ' + msg);
+    showAutofix('⚠ Auto-recovering…', 'autofix-warn');
+    if (msg && msg.toLowerCase().indexOf('emailjs') !== -1) {
+      try { emailjs.init('JlZgjXipLPjKqTEdn'); } catch(e) {}
+    }
+  } catch(e) {}
+  return false;
+};
+window.addEventListener('unhandledrejection', function(ev) {
+  console.warn('[AutoFix] Unhandled rejection:', ev.reason);
+  showAutofix('↻ Retrying…', 'autofix-retry');
+});
+
+function showAutofix(msg, cls) {
+  try {
+    var bar = document.getElementById('autofixBar');
+    if (!bar) return;
+    bar.textContent = msg;
+    bar.className = 'autofix-bar ' + cls + ' show';
+    setTimeout(function() { bar.className = 'autofix-bar'; }, 4000);
+  } catch(e) {}
 }
+
+/* ── INIT ── */
+(function init() {
+  /* EmailJS */
+  try { emailjs.init('JlZgjXipLPjKqTEdn'); } catch(e) { console.warn('EmailJS init:', e); }
+
+  /* FIX 9: Q19 auto-set to today + 5 working days */
+  try {
+    var d = new Date(), added = 0;
+    while (added < 5) {
+      d.setDate(d.getDate() + 1);
+      if (d.getDay() !== 0 && d.getDay() !== 6) added++;
+    }
+    var ds = d.toISOString().split('T')[0];
+    var el = document.getElementById('q19_date');
+    if (el) { el.min = ds; el.value = ds; }
+  } catch(e) { console.warn('Date init:', e); }
+})();
 
 /* ── NAVIGATION ── */
-function goTo(toStep, fromStep, validatorFn) {
-  /* Auto-add any pending name in Q12 input before validating */
-  var q12inp = document.getElementById('q12_user_input');
-  if (q12inp && q12inp.value.trim()) { addUserTag(); }
-  if (!validatorFn()) {
-    document.getElementById('err-' + fromStep).classList.add('show');
-    return;
-  }
-  document.getElementById('err-' + fromStep).classList.remove('show');
-  document.getElementById('step-' + fromStep).classList.remove('active');
-  document.getElementById('step-' + toStep).classList.add('active');
-  var fromNav = document.getElementById('snav-' + fromStep);
-  var toNav   = document.getElementById('snav-' + toStep);
-  if (fromNav) { fromNav.classList.remove('active'); fromNav.classList.add('done'); }
-  if (toNav)   { toNav.classList.remove('done');     toNav.classList.add('active'); }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function goTo(toStep, fromStep, validFn) {
+  try {
+    var q12 = document.getElementById('q12_user_input');
+    if (q12 && q12.value.trim()) addUserTag();
+    if (!validFn()) { document.getElementById('err-' + fromStep).classList.add('show'); return; }
+    document.getElementById('err-' + fromStep).classList.remove('show');
+    document.getElementById('step-' + fromStep).classList.remove('active');
+    document.getElementById('step-' + toStep).classList.add('active');
+    var fn = document.getElementById('snav-' + fromStep);
+    var tn = document.getElementById('snav-' + toStep);
+    if (fn) { fn.classList.remove('active'); fn.classList.add('done'); }
+    if (tn) { tn.classList.remove('done'); tn.classList.add('active'); }
+    window.scrollTo({top:0,behavior:'smooth'});
+  } catch(e) { console.error('goTo:', e); }
 }
-
 function goBack(toStep, fromStep) {
-  document.getElementById('step-' + fromStep).classList.remove('active');
-  document.getElementById('step-' + toStep).classList.add('active');
-  var fromNav = document.getElementById('snav-' + fromStep);
-  var toNav   = document.getElementById('snav-' + toStep);
-  if (fromNav) { fromNav.classList.remove('active'); fromNav.classList.remove('done'); }
-  if (toNav)   { toNav.classList.remove('done');     toNav.classList.add('active'); }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  try {
+    document.getElementById('step-' + fromStep).classList.remove('active');
+    document.getElementById('step-' + toStep).classList.add('active');
+    var fn = document.getElementById('snav-' + fromStep);
+    var tn = document.getElementById('snav-' + toStep);
+    if (fn) { fn.classList.remove('active'); fn.classList.remove('done'); }
+    if (tn) { tn.classList.remove('done'); tn.classList.add('active'); }
+    window.scrollTo({top:0,behavior:'smooth'});
+  } catch(e) { console.error('goBack:', e); }
 }
 
-/* ── RADIO HELPER ── */
+/* ── RADIO ── */
 function pickRadio(groupId, el, value) {
-  radioState[groupId] = value;
-  document.getElementById(groupId).querySelectorAll('.radio-opt').forEach(function(o) { o.classList.remove('selected'); });
-  el.classList.add('selected');
+  try {
+    radioState[groupId] = value;
+    var grp = document.getElementById(groupId);
+    if (grp) grp.querySelectorAll('.radio-opt').forEach(function(o) { o.classList.remove('selected'); });
+    if (el) el.classList.add('selected');
+  } catch(e) { console.error('pickRadio:', e); }
+}
+
+/* ── GENERIC OTHER HANDLER ── */
+function handleOther(selId, inpId) {
+  try {
+    var sel = document.getElementById(selId);
+    var inp = document.getElementById(inpId);
+    if (!sel || !inp) return;
+    var show = sel.value === 'other';
+    inp.style.display = show ? 'block' : 'none';
+    if (!show) inp.value = '';
+  } catch(e) { console.error('handleOther:', e); }
+}
+
+/* ── FIX 2 & 4: COST CALCULATOR ── */
+function calcCost() {
+  try {
+    var amount   = parseFloat(document.getElementById('q3_amount').value) || 0;
+    var currency = document.getElementById('q3_currency').value;
+    var period   = document.getElementById('q3_period').value;
+    var summary  = document.getElementById('cost_summary');
+    var warnEl   = document.getElementById('warn_cost');
+
+    if (amount <= 0) { summary.style.display='none'; warnEl.style.display='none'; return; }
+
+    /* Convert to monthly INR */
+    var inrAmount    = currency === 'USD' ? amount * USD_TO_INR : amount;
+    var usdAmount    = currency === 'INR' ? amount / USD_TO_INR : amount;
+    var monthlyINR   = period === 'yearly' ? inrAmount / 12 : inrAmount;
+    var monthlyUSD   = period === 'yearly' ? usdAmount / 12 : usdAmount;
+    var yearlyINR    = monthlyINR * 12;
+    var yearlyUSD    = monthlyUSD * 12;
+
+    document.getElementById('cost_monthly_badge').textContent =
+      '💰 Monthly: ₹' + Math.round(monthlyINR).toLocaleString('en-IN') +
+      '  /  $' + monthlyUSD.toFixed(2);
+    document.getElementById('cost_yearly_line').textContent =
+      'Yearly: ₹' + Math.round(yearlyINR).toLocaleString('en-IN') +
+      '  /  $' + yearlyUSD.toFixed(2);
+    document.getElementById('cost_rate_line').textContent =
+      'Rate used: 1 USD = ₹' + USD_TO_INR + ' (update in code if needed)';
+
+    summary.style.display = 'block';
+    warnEl.style.display  = monthlyINR > 5000 ? 'flex' : 'none';
+  } catch(e) { console.error('calcCost:', e); }
 }
 
 /* ── STEP A ── */
-function handleQ2Change() {
-  var sel = document.getElementById('q2_dept').value;
-  var inp = document.getElementById('q2_dept_other');
-  inp.style.display = (sel === 'other') ? 'block' : 'none';
-  if (sel !== 'other') inp.value = '';
-}
-function checkCost() {
-  var val = parseFloat(document.getElementById('q3_cost').value) || 0;
-  document.getElementById('warn_cost').style.display = val > 5000 ? 'flex' : 'none';
-}
 function isStepAValid() {
-  if (!document.getElementById('q1_tool_name').value.trim()) return false;
-  var dept = document.getElementById('q2_dept').value;
-  if (!dept) return false;
-  if (dept === 'other' && !document.getElementById('q2_dept_other').value.trim()) return false;
-  if (!document.getElementById('q4_category').value) return false;
-  var cost = document.getElementById('q3_cost').value.trim();
-  if (cost === '' || parseFloat(cost) < 0) return false;
-  if (!document.getElementById('q7_priority').value) return false;
-  if (!document.getElementById('q5_justification').value.trim()) return false;
-  return true;
+  try {
+    if (!document.getElementById('q1_tool_name').value.trim()) return false;
+    var dept = document.getElementById('q2_dept').value;
+    if (!dept) return false;
+    if (dept === 'other' && !document.getElementById('q2_dept_other').value.trim()) return false;
+    var cat = document.getElementById('q4_category').value;
+    if (!cat) return false;
+    if (cat === 'other' && !document.getElementById('q4_category_other').value.trim()) return false;
+    var amt = parseFloat(document.getElementById('q3_amount').value);
+    if (!amt || amt < 0) return false;
+    if (!document.getElementById('q7_priority').value) return false;
+    if (!document.getElementById('q5_justification').value.trim()) return false;
+    return true;
+  } catch(e) { return false; }
 }
-function validateA() { if (isStepAValid()) document.getElementById('err-a').classList.remove('show'); }
+function validateA() { try { if (isStepAValid()) document.getElementById('err-a').classList.remove('show'); } catch(e){} }
 
 /* ── STEP B ── */
-function handleQ8Change() {
-  var sel = document.getElementById('q8_project').value;
-  var inp = document.getElementById('q8_project_other');
-  inp.style.display = (sel === 'other') ? 'block' : 'none';
-  if (sel !== 'other') inp.value = '';
-}
-function handleQ11Change() {
-  var sel = document.getElementById('q11_primary_user').value;
-  var inp = document.getElementById('q11_primary_other');
-  inp.style.display = (sel === 'other') ? 'block' : 'none';
-  if (sel !== 'other') inp.value = '';
-}
 function updateCostBadge() {
-  var q3 = parseFloat(document.getElementById('q3_cost').value) || 0;
-  var n  = parseInt(document.getElementById('q13_num_users').value) || 0;
-  var el = document.getElementById('cost_per_user');
-  if (n > 0 && q3 > 0) {
-    el.textContent = '₹' + Math.round(q3 / n).toLocaleString('en-IN') + '/month';
-  } else if (n > 0) {
-    el.textContent = '₹500/month (default)';
-  } else {
-    el.textContent = '—';
-  }
+  try {
+    var amount = parseFloat(document.getElementById('q3_amount').value) || 0;
+    var cur    = document.getElementById('q3_currency').value;
+    var period = document.getElementById('q3_period').value;
+    var n      = parseInt(document.getElementById('q13_num_users').value) || 0;
+    var el     = document.getElementById('cost_per_user');
+    if (n > 0 && amount > 0) {
+      var inrAmt   = cur === 'USD' ? amount * USD_TO_INR : amount;
+      var monthly  = period === 'yearly' ? inrAmt / 12 : inrAmt;
+      var perUser  = monthly / n;
+      el.textContent = '₹' + Math.round(perUser).toLocaleString('en-IN') +
+                       ' / $' + (perUser / USD_TO_INR).toFixed(2) + ' per user/month';
+    } else { el.textContent = '—'; }
+  } catch(e) { console.error('updateCostBadge:', e); }
 }
+
 function addUserTag() {
-  var inp = document.getElementById('q12_user_input');
-  var val = inp.value.trim();
-  if (!val) return;
-  userTags.push(val);
-  inp.value = '';
-  renderUserTags();
-  validateB();
+  try {
+    var inp = document.getElementById('q12_user_input');
+    var val = (inp.value || '').trim();
+    if (!val) return;
+    userTags.push(val);
+    inp.value = '';
+    renderUserTags();
+    validateB();
+  } catch(e) { console.error('addUserTag:', e); }
 }
-function removeUserTag(i) { userTags.splice(i, 1); renderUserTags(); validateB(); }
+function removeUserTag(i) { try { userTags.splice(i,1); renderUserTags(); validateB(); } catch(e){} }
 function renderUserTags() {
-  document.getElementById('q12_tags').innerHTML = userTags.map(function(name, i) {
-    return '<span class="tag">' + esc(name) + '<span class="tag-x" onclick="removeUserTag(' + i + ')">×</span></span>';
-  }).join('');
+  try {
+    var w = document.getElementById('q12_tags');
+    if (!w) return;
+    w.innerHTML = userTags.map(function(n,i) {
+      return '<span class="tag">'+esc(n)+'<span class="tag-x" onclick="removeUserTag('+i+')">×</span></span>';
+    }).join('');
+  } catch(e) {}
 }
+
+/* FIX 7: Q14 Other */
+function setQ14Other(show) {
+  try {
+    var el = document.getElementById('q14_usage_other');
+    if (!el) return;
+    el.style.display = show ? 'block' : 'none';
+    if (!show) el.value = '';
+  } catch(e) {}
+}
+
 function isStepBValid() {
-  var proj = document.getElementById('q8_project').value;
-  if (!proj) return false;
-  if (proj === 'other' && !document.getElementById('q8_project_other').value.trim()) return false;
-  /* Q9 is now a plain text input */
-  if (!document.getElementById('q9_owner').value.trim()) return false;
-  if (!radioState['rg_scope']) return false;
-  var pUser = document.getElementById('q11_primary_user').value;
-  if (!pUser) return false;
-  if (pUser === 'other' && !document.getElementById('q11_primary_other').value.trim()) return false;
-  var n = parseInt(document.getElementById('q13_num_users').value);
-  if (!n || n < 1) return false;
-  if (!radioState['rg_usage']) return false;
-  return true;
+  try {
+    var proj = document.getElementById('q8_project').value;
+    if (!proj) return false;
+    if (proj === 'other' && !document.getElementById('q8_project_other').value.trim()) return false;
+    if (!document.getElementById('q9_owner').value.trim()) return false;
+    if (!radioState['rg_scope']) return false;
+    var pU = document.getElementById('q11_primary_user').value;
+    if (!pU) return false;
+    if (pU === 'other' && !document.getElementById('q11_primary_other').value.trim()) return false;
+    var n = parseInt(document.getElementById('q13_num_users').value);
+    if (!n || n < 1) return false;
+    if (!radioState['rg_usage']) return false;
+    if (radioState['rg_usage'] === 'usage_other') {
+      if (!document.getElementById('q14_usage_other').value.trim()) return false;
+    }
+    return true;
+  } catch(e) { return false; }
 }
-function validateB() { if (isStepBValid()) document.getElementById('err-b').classList.remove('show'); }
+function validateB() { try { if (isStepBValid()) document.getElementById('err-b').classList.remove('show'); } catch(e){} }
 
 /* ── STEP C ── */
-function isStepCValid() {
-  if (!document.getElementById('q16_outcome').value.trim()) return false;
-  if (roiSelected.size === 0) return false;
-  return true;
+/* ROI multi-select */
+function toggleRoi(el, value) {
+  try {
+    if (roiSelected.has(value)) { roiSelected.delete(value); el.classList.remove('selected'); }
+    else { roiSelected.add(value); el.classList.add('selected'); }
+  } catch(e) {}
 }
-function validateC() { if (isStepCValid()) document.getElementById('err-c').classList.remove('show'); }
+
+/* FIX 8: Q17 Other */
+function setQ17Other(show) {
+  try {
+    var el = document.getElementById('q17_roi_other');
+    if (!el) return;
+    el.style.display = show ? 'block' : 'none';
+    if (!show) el.value = '';
+  } catch(e) {}
+}
+
+/* FIX 5: Q16 template */
+function applyQ16Template() {
+  try {
+    var sel = document.getElementById('q16_template').value;
+    var txt = document.getElementById('q16_outcome');
+    if (!txt) return;
+    if (sel && sel !== 'other') { txt.value = sel; }
+    else if (sel === 'other') { txt.value = ''; txt.focus(); }
+    validateC();
+  } catch(e) {}
+}
+
+function isStepCValid() {
+  try {
+    if (!document.getElementById('q16_outcome').value.trim()) return false;
+    if (roiSelected.size === 0) return false;
+    if (roiSelected.has('roi_other') && !document.getElementById('q17_roi_other').value.trim()) return false;
+    return true;
+  } catch(e) { return false; }
+}
+function validateC() { try { if (isStepCValid()) document.getElementById('err-c').classList.remove('show'); } catch(e){} }
 
 /* ── STEP D ── */
-(function setMinDate() {
-  var d = new Date(), added = 0;
-  while (added < 5) { d.setDate(d.getDate() + 1); var day = d.getDay(); if (day !== 0 && day !== 6) added++; }
-  var el = document.getElementById('q19_date');
-  if (el) el.min = d.toISOString().split('T')[0];
-})();
 function isStepDValid() {
-  if (!document.getElementById('q6_requested_by').value.trim()) return false;
-  if (!document.getElementById('q20_manager').value.trim()) return false;
-  if (!document.getElementById('q18_sub_manager').value.trim()) return false;
-  if (!document.getElementById('q19_date').value) return false;
-  return true;
+  try {
+    if (!document.getElementById('q6_requested_by').value.trim()) return false;
+    if (!document.getElementById('q20_manager').value.trim()) return false;
+    if (!document.getElementById('q18_sub_manager').value.trim()) return false;
+    if (!document.getElementById('q19_date').value) return false;
+    return true;
+  } catch(e) { return false; }
 }
-function validateD() { if (isStepDValid()) document.getElementById('err-d').classList.remove('show'); }
+function validateD() { try { if (isStepDValid()) document.getElementById('err-d').classList.remove('show'); } catch(e){} }
 
 /* ── STEP E ── */
 function updateDeclare() {
-  var boxes = document.querySelectorAll('.declare-check'), checked = 0;
-  boxes.forEach(function(b) { if (b.checked) checked++; });
-  document.getElementById('declare-count').textContent = checked;
-  document.getElementById('submitBtn').disabled = (checked < boxes.length);
+  try {
+    var boxes = document.querySelectorAll('.declare-check'), checked = 0;
+    boxes.forEach(function(b) { if (b.checked) checked++; });
+    document.getElementById('declare-count').textContent = checked;
+    validateE();
+  } catch(e) {}
 }
 
 /* ── SUBMIT ── */
 function handleSubmit() {
-  var toolName  = document.getElementById('q1_tool_name').value.trim();
-  var dept      = document.getElementById('q2_dept').value;
-  var deptOther = document.getElementById('q2_dept_other') ? document.getElementById('q2_dept_other').value : '';
-  var deptFinal = dept === 'other' ? deptOther : dept;
-  var category  = document.getElementById('q4_category').value;
-  var cost      = document.getElementById('q3_cost').value;
-  var priority  = document.getElementById('q7_priority').value;
-  var justify   = document.getElementById('q5_justification').value.trim();
-  var project   = document.getElementById('q8_project').value;
-  var projOther = document.getElementById('q8_project_other') ? document.getElementById('q8_project_other').value : '';
-  var projFinal = project === 'other' ? projOther : project;
-  var owner     = document.getElementById('q9_owner').value.trim();
-  var numUsers  = document.getElementById('q13_num_users').value;
-  var allUsers  = userTags.length > 0 ? userTags.join(', ') : '—';
-  var outcome   = document.getElementById('q16_outcome').value.trim();
-  var roi       = Array.from(roiSelected).join(', ') || '—';
-  var reqName   = document.getElementById('q6_requested_by').value.trim();
-  var manager   = document.getElementById('q20_manager').value.trim();
-  var subMgr    = document.getElementById('q18_sub_manager').value.trim();
-  var reqDate   = document.getElementById('q19_date').value;
-  var comments  = document.getElementById('q22_comments').value.trim() || '—';
+  try {
+    var toolName  = document.getElementById('q1_tool_name').value.trim();
+    var dept      = document.getElementById('q2_dept').value;
+    var deptFinal = dept === 'other' ? (document.getElementById('q2_dept_other').value||'').trim() : dept;
+    var cat       = document.getElementById('q4_category').value;
+    var catFinal  = cat === 'other' ? (document.getElementById('q4_category_other').value||'').trim() : cat;
 
-  /* Show success screen immediately */
-  document.getElementById('success-meta').textContent = '"' + toolName + '" requested by ' + reqName;
-  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
-  document.getElementById('successScreen').classList.add('active');
-  document.querySelectorAll('.snav-item').forEach(function(n) { n.classList.remove('active'); n.classList.add('done'); });
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* Cost string */
+    var amount    = parseFloat(document.getElementById('q3_amount').value) || 0;
+    var currency  = document.getElementById('q3_currency').value;
+    var period    = document.getElementById('q3_period').value;
+    var inrAmt    = currency === 'USD' ? amount * USD_TO_INR : amount;
+    var monthlyINR= period === 'yearly' ? inrAmt / 12 : inrAmt;
+    var monthlyUSD= monthlyINR / USD_TO_INR;
+    var costStr   = currency + ' ' + amount + ' (' + period + ') = ' +
+                    '₹' + Math.round(monthlyINR).toLocaleString('en-IN') +
+                    ' / $' + monthlyUSD.toFixed(2) + ' per month';
 
-  /* Send email via EmailJS */
-  emailjs.send('service_wubn2qv', 'template_5s1w05e', {
-    tool_name:     toolName,
-    department:    deptFinal,
-    category:      category,
-    monthly_cost:  '₹' + cost,
-    priority:      priority,
-    justification: justify,
-    project:       projFinal,
-    owner:         owner,
-    num_users:     numUsers,
-    all_users:     allUsers,
-    outcome:       outcome,
-    roi:           roi,
-    requested_by:  reqName,
-    manager:       manager,
-    sub_manager:   subMgr,
-    required_date: reqDate,
-    comments:      comments,
-    submitted_at:  new Date().toLocaleString('en-IN', {timeZone:'Asia/Kolkata'})
-  }).then(function() {
-    console.log('Email sent successfully!');
-  }).catch(function(err) {
-    console.error('EmailJS error:', err);
-  });
+    var priority  = document.getElementById('q7_priority').value;
+    var justify   = document.getElementById('q5_justification').value.trim();
+    var proj      = document.getElementById('q8_project').value;
+    var projFinal = proj === 'other' ? (document.getElementById('q8_project_other').value||'').trim() : proj;
+    var owner     = document.getElementById('q9_owner').value.trim();
+    var numUsers  = document.getElementById('q13_num_users').value;
+    var allUsers  = userTags.length > 0 ? userTags.join(', ') : '—';
+    var pU        = document.getElementById('q11_primary_user').value;
+    var pUFinal   = pU === 'other' ? (document.getElementById('q11_primary_other').value||'').trim() : pU;
+    var usage     = radioState['rg_usage'] || '';
+    var usageFinal= usage === 'usage_other'
+                    ? (document.getElementById('q14_usage_other').value||'').trim()
+                    : usage.replace('usage_','');
+    var outcome   = document.getElementById('q16_outcome').value.trim();
+    var roiArr    = Array.from(roiSelected).map(function(r) { return r.replace('roi_',''); });
+    if (roiSelected.has('roi_other')) {
+      var otherROI = (document.getElementById('q17_roi_other').value||'').trim();
+      if (otherROI) roiArr.push('Other: ' + otherROI);
+    }
+    var roi       = roiArr.join(', ') || '—';
+    var reqName   = document.getElementById('q6_requested_by').value.trim();
+    var manager   = document.getElementById('q20_manager').value.trim();
+    var subMgr    = document.getElementById('q18_sub_manager').value.trim();
+    var reqDate   = document.getElementById('q19_date').value;
+    var comments  = (document.getElementById('q22_comments').value||'').trim() || '—';
+    var loginId   = (document.getElementById('q18_login_id') ? document.getElementById('q18_login_id').value : '') || '—';
+
+    /* Approval stages */
+    var stage1Decision = radioState['rg_stage1'] || '—';
+    var stage1Other    = (document.getElementById('stage1_other').value||'').trim();
+    var stage1Final    = stage1Decision === 'other' ? stage1Other : stage1Decision;
+    var stage1Remarks  = (document.getElementById('stage1_remarks').value||'').trim() || '—';
+
+    var stage2Decision = radioState['rg_stage2'] || 'not reviewed';
+    var stage2Other    = (document.getElementById('stage2_other').value||'').trim();
+    var stage2Final    = stage2Decision === 'other' ? stage2Other : stage2Decision;
+    var stage2Remarks  = (document.getElementById('stage2_remarks').value||'').trim() || '—';
+
+    var stage3Decision = radioState['rg_stage3'] || 'not reviewed';
+    var stage3Other    = (document.getElementById('stage3_other').value||'').trim();
+    var stage3Final    = stage3Decision === 'other' ? stage3Other : stage3Decision;
+    var stage3Remarks  = (document.getElementById('stage3_remarks').value||'').trim() || '—';
+
+    var stage4Decision = radioState['rg_stage4'] || 'not reviewed';
+    var stage4Other    = (document.getElementById('stage4_other').value||'').trim();
+    var stage4Final    = stage4Decision === 'other' ? stage4Other : stage4Decision;
+    var stage4Remarks  = (document.getElementById('stage4_remarks').value||'').trim() || '—';
+
+    var approvalSummary =
+      'Reporting Manager: ' + stage1Final + ' | ' + stage1Remarks + '\n' +
+      'Sanwar Sir: ' + stage2Final + ' | ' + stage2Remarks + '\n' +
+      'Abhi Sir: ' + stage3Final + ' | ' + stage3Remarks + '\n' +
+      'Vinay Sir: ' + stage4Final + ' | ' + stage4Remarks;
+    var now       = new Date().toLocaleString('en-IN', {timeZone:'Asia/Kolkata'});
+
+    /* Show success screen */
+    document.getElementById('success-meta').textContent = '"' + toolName + '" requested by ' + reqName;
+    document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+    document.getElementById('successScreen').classList.add('active');
+    document.querySelectorAll('.snav-item').forEach(function(n) { n.classList.remove('active'); n.classList.add('done'); });
+    window.scrollTo({top:0,behavior:'smooth'});
+
+    /* Send to Google Sheets database */
+    var SHEETS_URL = 'https://hook.eu1.make.com/cbqejoc4q111f1hp7m1rivko1x8z9a0f';
+    if (SHEETS_URL && SHEETS_URL.indexOf('PASTE') === -1) {
+      fetch(SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          submitted_at:     now,
+        login_id:         loginId,
+        approval_manager: stage1Final + ' — ' + stage1Remarks,
+        approval_sanwar:  stage2Final + ' — ' + stage2Remarks,
+        approval_abhi:    stage3Final + ' — ' + stage3Remarks,
+        approval_vinay:   stage4Final + ' — ' + stage4Remarks,
+          tool_name:     toolName,
+          department:    deptFinal,
+          category:      catFinal,
+          monthly_cost:  costStr,
+          priority:      priority,
+          justification: justify,
+          project:       projFinal,
+          owner:         owner,
+          num_users:     numUsers,
+          all_users:     allUsers,
+          primary_user:  pUFinal,
+          usage_type:    usageFinal,
+          outcome:       outcome,
+          roi:           roi,
+          requested_by:  reqName,
+          manager:       manager,
+          sub_manager:   subMgr,
+          required_date: reqDate,
+          comments:      comments
+        })
+      }).then(function() {
+        console.log('[VaultDesk] Data saved to Google Sheets.');
+      }).catch(function(err) {
+        console.warn('[VaultDesk] Sheets save failed:', err);
+      });
+    }
+
+    /* Send email with auto-retry (up to 3 attempts) */
+    function sendEmail(attempt) {
+      try { emailjs.init('JlZgjXipLPjKqTEdn'); } catch(e) {}
+      emailjs.send('service_wubn2qv', 'template_5s1w05e', {
+        tool_name:     toolName,
+        department:    deptFinal,
+        category:      catFinal,
+        monthly_cost:  costStr,
+        priority:      priority,
+        justification: justify,
+        project:       projFinal,
+        owner:         owner,
+        num_users:     numUsers,
+        all_users:     allUsers,
+        primary_user:  pUFinal,
+        usage_type:    usageFinal,
+        outcome:       outcome,
+        roi:           roi,
+        requested_by:  reqName,
+        manager:       manager,
+        sub_manager:   subMgr,
+        required_date: reqDate,
+        comments:      comments,
+        submitted_at:     now,
+        login_id:         loginId,
+        approval_manager: stage1Final + ' — ' + stage1Remarks,
+        approval_sanwar:  stage2Final + ' — ' + stage2Remarks,
+        approval_abhi:    stage3Final + ' — ' + stage3Remarks,
+        approval_vinay:   stage4Final + ' — ' + stage4Remarks
+      }).then(function() {
+        console.log('[VaultDesk] Email sent! Attempt', attempt);
+        showAutofix('✓ Email sent to aivault@harshwal.com', 'autofix-ok');
+      }).catch(function(err) {
+        console.error('[VaultDesk] Email failed attempt', attempt, err);
+        if (attempt < 3) {
+          showAutofix('↻ Email retry ' + attempt + '/3…', 'autofix-retry');
+          setTimeout(function() { sendEmail(attempt + 1); }, 2500);
+        } else {
+          console.error('[VaultDesk] All retries exhausted.');
+          showAutofix('⚠ Email could not send — check console', 'autofix-warn');
+        }
+      });
+    }
+    sendEmail(1);
+
+  } catch(e) {
+    console.error('[VaultDesk] handleSubmit error:', e);
+  }
 }
 
 /* ── RESET ── */
 function resetForm() {
-  document.querySelectorAll('.field-input').forEach(function(el) { el.value = ''; });
-  document.querySelectorAll('select').forEach(function(el) { el.value = ''; });
-  document.querySelectorAll('.other-input').forEach(function(el) { el.style.display = 'none'; });
-  document.querySelectorAll('.declare-check').forEach(function(el) { el.checked = false; });
-  document.querySelectorAll('.radio-opt').forEach(function(el) { el.classList.remove('selected'); });
-  document.querySelectorAll('.error-toast').forEach(function(el) { el.classList.remove('show'); });
-  var wc = document.getElementById('warn_cost'); if (wc) wc.style.display = 'none';
-  radioState = {}; userTags = []; roiSelected = new Set();
-  renderUserTags(); updateCostBadge(); updateDeclare();
-  document.getElementById('successScreen').classList.remove('active');
-  document.getElementById('step-a').classList.add('active');
-  document.querySelectorAll('.snav-item').forEach(function(n) { n.classList.remove('active','done'); });
-  document.getElementById('snav-a').classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  try {
+    document.querySelectorAll('.field-input').forEach(function(el) { el.value = ''; });
+    document.querySelectorAll('select').forEach(function(el) { el.value = ''; });
+    document.querySelectorAll('.other-input').forEach(function(el) { el.style.display = 'none'; });
+    document.querySelectorAll('.declare-check').forEach(function(el) { el.checked = false; });
+    document.querySelectorAll('.radio-opt').forEach(function(el) { el.classList.remove('selected'); });
+    document.querySelectorAll('.error-toast').forEach(function(el) { el.classList.remove('show'); });
+    var wc = document.getElementById('warn_cost'); if (wc) wc.style.display = 'none';
+    var cs = document.getElementById('cost_summary'); if (cs) cs.style.display = 'none';
+    radioState = {}; userTags = []; roiSelected = new Set();
+    renderUserTags(); updateDeclare();
+    /* Re-set date */
+    try {
+      var d = new Date(), added = 0;
+      while (added < 5) { d.setDate(d.getDate()+1); if (d.getDay()!==0&&d.getDay()!==6) added++; }
+      var ds = d.toISOString().split('T')[0];
+      var el = document.getElementById('q19_date');
+      if (el) { el.min = ds; el.value = ds; }
+    } catch(e) {}
+    document.getElementById('successScreen').classList.remove('active');
+    document.getElementById('step-a').classList.add('active');
+    document.querySelectorAll('.snav-item').forEach(function(n) { n.classList.remove('active','done'); });
+    document.getElementById('snav-a').classList.add('active');
+    /* Reset approval badges */
+    ['stage1_badge','stage2_badge','stage3_badge','stage4_badge'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) { el.textContent = 'PENDING'; el.style.background = ''; el.style.color = ''; }
+    });
+    ['stage1_other','stage2_other','stage3_other','stage4_other'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) { el.style.display = 'none'; el.value = ''; }
+    });
+    window.scrollTo({top:0,behavior:'smooth'});
+  } catch(e) { console.error('resetForm:', e); }
+}
+
+/* ── APPROVAL PANEL ── */
+function pickApproval(groupId, el, value, badgeId, label, colorKey) {
+  try {
+    radioState[groupId] = value;
+    var grp = document.getElementById(groupId);
+    if (grp) grp.querySelectorAll('.radio-opt').forEach(function(o) { o.classList.remove('selected'); });
+    if (el) el.classList.add('selected');
+    var badge = document.getElementById(badgeId);
+    if (badge) {
+      var bgMap  = {green:'#e3f7ec', gold:'#fdf6e3', red:'#fce8ec', gray:'#f0f3f8'};
+      var fgMap  = {green:'#0a5c36', gold:'#7a5800', red:'#b8001e', gray:'#6b7a8e'};
+      badge.textContent       = label;
+      badge.style.background  = bgMap[colorKey] || '#f0f3f8';
+      badge.style.color       = fgMap[colorKey] || '#6b7a8e';
+      badge.style.borderColor = bgMap[colorKey] || '#c8d4e8';
+    }
+    validateE();
+  } catch(e) { console.error('pickApproval:', e); }
+}
+
+function setApprovalOther(inputId, show) {
+  try {
+    var el = document.getElementById(inputId);
+    if (!el) return;
+    el.style.display = show ? 'block' : 'none';
+    if (!show) el.value = '';
+  } catch(e) {}
+}
+
+function isStepEValid() {
+  try {
+    /* Stage 1 — Reporting Manager is MANDATORY */
+    if (!radioState['rg_stage1']) return false;
+    if (radioState['rg_stage1'] === 'other') {
+      var s1o = document.getElementById('stage1_other');
+      if (!s1o || !s1o.value.trim()) return false;
+    }
+    /* Stage 3 — Abhi Sir: if touched, must have value */
+    if (radioState['rg_stage3'] === 'other') {
+      var s3o = document.getElementById('stage3_other');
+      if (!s3o || !s3o.value.trim()) return false;
+    }
+    /* Stage 4 — Vinay Sir: if touched, must have value */
+    if (radioState['rg_stage4'] === 'other') {
+      var s4o = document.getElementById('stage4_other');
+      if (!s4o || !s4o.value.trim()) return false;
+    }
+    /* Declarations */
+    var boxes = document.querySelectorAll('.declare-check'), checked = 0;
+    boxes.forEach(function(b) { if (b.checked) checked++; });
+    if (checked < boxes.length) return false;
+    return true;
+  } catch(e) { return false; }
+}
+
+function validateE() {
+  try {
+    if (isStepEValid()) {
+      document.getElementById('err-e').classList.remove('show');
+      document.getElementById('submitBtn').disabled = false;
+    } else {
+      document.getElementById('submitBtn').disabled = true;
+    }
+  } catch(e) {}
 }
 
 /* ── UTILITY ── */
-/* Init EmailJS on page load */
-(function() {
-  emailjs.init('JlZgjXipLPjKqTEdn');
-})();
-
-function esc(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+function esc(s) {
+  try {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                        .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  } catch(e) { return ''; }
 }
 </script>
 </body>
