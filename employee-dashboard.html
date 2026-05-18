@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>VaultDesk — My Request Status</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#0b1f42;--navy2:#132a5a;--gold:#c8a030;--gold2:#f0c040;--gold3:#fdf6e3;
+  --green:#0a5c36;--green2:#22a55e;--green3:#e3f7ec;
+  --coral:#b8001e;--coral2:#e93c52;--coral3:#fce8ec;
+  --blue:#1250a0;--blue2:#3d88e0;--blue3:#e6f0fc;
+  --orange:#b84010;--orange2:#e8692a;--orange3:#fdf0e8;
+  --purple:#3d1478;--purple2:#7e3fd4;--purple3:#f0e8fc;
+  --teal:#0d7a80;--teal2:#1abc9c;--teal3:#e2f7f5;
+  --ink:#0d1724;--ink2:#2e3d52;--ink3:#6b7a8e;
+  --bg:#f0f3f8;--white:#fff;--rule:#c8d4e8;
+  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+  --radius:8px;--shadow:0 2px 12px rgba(11,31,66,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:13px}
+.topbar{background:var(--navy);border-bottom:3px solid var(--gold);padding:0 28px;min-height:52px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-logo{width:36px;height:36px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:13px;color:var(--navy)}
+.brand-name{font-size:15px;font-weight:800;color:#fff}
+.brand-sub{font-size:9px;color:rgba(255,255,255,.45);letter-spacing:1.2px;text-transform:uppercase;font-family:var(--mono)}
+.nav-links{display:flex;gap:8px}
+.nav-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);border-radius:6px;padding:6px 14px;font-size:11px;font-family:var(--mono);cursor:pointer;text-decoration:none;font-weight:600}
+.nav-btn:hover{background:rgba(255,255,255,.2)}
+.nav-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.main{max-width:900px;margin:0 auto;padding:28px}
+.page-title{font-size:20px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.page-sub{font-size:12px;color:var(--ink3);margin-bottom:24px;font-family:var(--mono)}
+.search-box{background:var(--white);border:1.5px solid var(--rule);border-radius:var(--radius);padding:20px;margin-bottom:20px;box-shadow:var(--shadow)}
+.search-box label{font-size:12px;font-weight:700;color:var(--ink);display:block;margin-bottom:8px}
+.search-row{display:flex;gap:10px}
+.field-input{width:100%;background:var(--bg);border:1.5px solid var(--rule);border-radius:6px;padding:10px 14px;color:var(--ink);font-size:13px;font-family:var(--sans);outline:none}
+.field-input:focus{border-color:var(--navy);background:#fff}
+.btn-search{background:var(--navy);border:none;border-radius:6px;padding:10px 24px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;font-family:var(--mono);white-space:nowrap}
+.btn-search:hover{background:var(--navy2)}
+.loading{text-align:center;padding:40px;color:var(--ink3);font-family:var(--mono)}
+.spinner{display:inline-block;width:24px;height:24px;border:3px solid var(--rule);border-top-color:var(--navy);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-box{background:var(--coral3);border:1.5px solid var(--coral2);border-radius:var(--radius);padding:16px;color:var(--coral);font-size:12px;margin-bottom:16px}
+.card{background:var(--white);border:1.5px solid var(--rule);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:16px}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.tool-name{font-size:18px;font-weight:800;color:var(--navy)}
+.tool-meta{font-size:11px;color:var(--ink3);font-family:var(--mono);margin-top:3px}
+.status-chip{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;font-family:var(--mono)}
+.status-pending{background:var(--gold3);color:#7a5800}
+.status-approved{background:var(--green3);color:var(--green)}
+.status-rejected{background:var(--coral3);color:var(--coral)}
+.status-hold{background:var(--orange3);color:var(--orange)}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.info-item{background:var(--bg);border-radius:6px;padding:12px}
+.info-label{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;font-family:var(--mono);margin-bottom:4px}
+.info-value{font-size:13px;color:var(--ink);font-weight:600}
+.section-title{font-size:11px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.8px;font-family:var(--mono);margin:20px 0 12px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--rule)}
+.approval-stages{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stage-card{border-radius:var(--radius);padding:14px;border:1.5px solid var(--rule)}
+.stage-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.stage-name{font-size:12px;font-weight:700;color:var(--ink)}
+.stage-badge{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--mono)}
+.badge-approved{background:var(--green3);color:var(--green)}
+.badge-rejected{background:var(--coral3);color:var(--coral)}
+.badge-hold{background:var(--orange3);color:var(--orange)}
+.badge-pending{background:var(--bg);color:var(--ink3);border:1px solid var(--rule)}
+.badge-other{background:var(--blue3);color:var(--blue)}
+.stage-remarks{font-size:11px;color:var(--ink3);line-height:1.5}
+.stage-1{border-left:3px solid var(--coral2)}
+.stage-2{border-left:3px solid var(--blue2)}
+.stage-3{border-left:3px solid var(--purple2)}
+.stage-4{border-left:3px solid var(--teal2)}
+.purchase-box{background:var(--green3);border:1.5px solid var(--green2);border-radius:var(--radius);padding:16px;margin-top:12px}
+.purchase-title{font-size:12px;font-weight:800;color:var(--green);margin-bottom:8px}
+.purchase-detail{font-size:12px;color:var(--green);line-height:1.6}
+.empty-state{text-align:center;padding:60px 20px;color:var(--ink3)}
+.empty-icon{font-size:48px;margin-bottom:16px}
+.empty-title{font-size:16px;font-weight:700;color:var(--ink2);margin-bottom:8px}
+.empty-text{font-size:12px;line-height:1.6;max-width:340px;margin:0 auto}
+.site-footer{background:var(--navy);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;margin-top:40px}
+.fl{font-size:10px;color:rgba(255,255,255,.45);font-family:var(--mono)}
+.fl strong{color:rgba(255,255,255,.75)}
+.fr{font-size:9px;color:rgba(255,255,255,.3);font-family:var(--mono)}
+@media(max-width:600px){
+  .info-grid,.approval-stages{grid-template-columns:1fr}
+  .search-row{flex-direction:column}
+  .main{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-logo">VD</div>
+    <div>
+      <div class="brand-name">VaultDesk</div>
+      <div class="brand-sub">MY REQUEST STATUS</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="index.html" class="nav-btn">+ New Request</a>
+    <a href="employee-dashboard.html" class="nav-btn active">My Status</a>
+  </div>
+</div>
+
+<div class="main">
+  <div class="page-title">My Purchase Request</div>
+  <p class="page-sub">Track the approval status of your submitted request</p>
+  <div style="background:#e3f7ec;border:1.5px solid #22a55e;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#0a5c36;display:flex;gap:10px;align-items:center">
+    <span style="font-size:16px">✅</span>
+    <span>This dashboard is <strong>open to all employees</strong> — no login required. Search by your name or tool name to see your request status.</span>
+  </div>
+
+  <div class="search-box">
+    <label>Search by your name or tool name</label>
+    <div class="search-row">
+      <input type="text" id="searchInput" class="field-input" placeholder="e.g. Lokesh or Notion AI…" onkeydown="if(event.key==='Enter') searchRequest()" />
+      <button class="btn-search" onclick="searchRequest()">Search →</button>
+    </div>
+  </div>
+
+  <div id="results"></div>
+</div>
+
+<div class="site-footer">
+  <div class="fl">VaultDesk · <strong>Harshwal Consulting Services Pvt Ltd</strong> · 2026</div>
+  <div class="fr">INTERNAL USE ONLY</div>
+</div>
+
+<script>
+var AIRTABLE_TOKEN = 'patlj0BTez4Vz2phF.00cbc425d646c1e2708eebba08826eec8c9ba69f7bc80dc05be3840d9dffcc4a';
+var AIRTABLE_BASE  = 'appN500O6fqTAJUIp';
+var AIRTABLE_TBL   = 'tbljyPQ4OU4euOCGW';
+
+function getBadgeClass(val) {
+  if (!val || val === 'not reviewed' || val === '—') return 'badge-pending';
+  val = val.toLowerCase();
+  if (val.indexOf('approve') !== -1) return 'badge-approved';
+  if (val.indexOf('reject') !== -1)  return 'badge-rejected';
+  if (val.indexOf('hold') !== -1)    return 'badge-hold';
+  return 'badge-other';
+}
+
+function getBadgeLabel(val) {
+  if (!val || val === 'not reviewed' || val === '—') return 'PENDING';
+  val = val.toLowerCase();
+  if (val.indexOf('approve') !== -1) return 'APPROVED';
+  if (val.indexOf('reject') !== -1)  return 'REJECTED';
+  if (val.indexOf('hold') !== -1)    return 'ON HOLD';
+  return val.toUpperCase();
+}
+
+function getOverallStatus(r) {
+  var f = r.fields;
+  var mgr = (f['Manager Decision']||'').toLowerCase();
+  if (!mgr) return 'pending';
+  if (mgr.indexOf('reject') !== -1) return 'rejected';
+  if (mgr.indexOf('hold') !== -1)   return 'hold';
+  if (mgr.indexOf('approve') !== -1) return 'approved';
+  return 'pending';
+}
+
+function stageCard(num, name, borderClass, decision, remarks) {
+  var badge = getBadgeClass(decision);
+  var label = getBadgeLabel(decision);
+  return '<div class="stage-card ' + borderClass + '">' +
+    '<div class="stage-header">' +
+    '<div class="stage-name">Stage ' + num + ' — ' + name + '</div>' +
+    '<span class="stage-badge ' + badge + '">' + label + '</span>' +
+    '</div>' +
+    (remarks && remarks !== '—' ? '<div class="stage-remarks">' + esc(remarks) + '</div>' : '') +
+    '</div>';
+}
+
+function renderRecord(r) {
+  var f = r.fields;
+  var status = getOverallStatus(r);
+  var statusClass = 'status-' + status;
+  var statusLabel = status === 'approved' ? 'APPROVED' : status === 'rejected' ? 'REJECTED' : status === 'hold' ? 'ON HOLD' : 'PENDING';
+
+  var html = '<div class="card">';
+  html += '<div class="card-header">';
+  html += '<div><div class="tool-name">' + esc(f['Tool Name']||'Unknown Tool') + '</div>';
+  html += '<div class="tool-meta">Submitted by ' + esc(f['Requested By']||'—') + ' · ' + esc(f['Submitted At']||'—') + '</div></div>';
+  html += '<span class="status-chip ' + statusClass + '">' + statusLabel + '</span>';
+  html += '</div>';
+
+  html += '<div class="info-grid">';
+  html += '<div class="info-item"><div class="info-label">Department</div><div class="info-value">' + esc(f['Department']||'—') + '</div></div>';
+  html += '<div class="info-item"><div class="info-label">Category</div><div class="info-value">' + esc(f['Category']||'—') + '</div></div>';
+  html += '<div class="info-item"><div class="info-label">Monthly Cost</div><div class="info-value">' + esc(f['Monthly Cost']||'—') + '</div></div>';
+  html += '<div class="info-item"><div class="info-label">Priority</div><div class="info-value">' + esc(f['Priority']||'—') + '</div></div>';
+  html += '<div class="info-item"><div class="info-label">Project</div><div class="info-value">' + esc(f['Project']||'—') + '</div></div>';
+  html += '<div class="info-item"><div class="info-label">Required By</div><div class="info-value">' + esc(f['Required Date']||'—') + '</div></div>';
+  html += '</div>';
+
+  html += '<div class="section-title">Approval Status</div>';
+  html += '<div class="approval-stages">';
+  html += stageCard(1,'Reporting Manager','stage-1', f['Manager Decision'], f['Manager Remarks']);
+  html += stageCard(2,'Sanwar Sir','stage-2', f['Sanwar Decision'], f['Sanwar Remarks']);
+  html += stageCard(3,'Abhi Sir','stage-3', f['Abhi Decision'], f['Abhi Remarks']);
+  html += stageCard(4,'Vinay Sir','stage-4', f['Vinay Decision'], f['Vinay Remarks']);
+  html += '</div>';
+
+  if (f['Purchase Details'] || f['Purchase Made At']) {
+    html += '<div class="section-title">Purchase Details</div>';
+    html += '<div class="purchase-box">';
+    html += '<div class="purchase-title">✅ Purchase Completed</div>';
+    if (f['Purchase Details']) html += '<div class="purchase-detail"><b>Details:</b> ' + esc(f['Purchase Details']) + '</div>';
+    if (f['Purchase Made At']) html += '<div class="purchase-detail"><b>Where/How:</b> ' + esc(f['Purchase Made At']) + '</div>';
+    html += '</div>';
+  }
+
+  if (f['Sub Link']) {
+    html += '<div style="margin-top:12px"><a href="' + esc(f['Sub Link']) + '" target="_blank" style="color:var(--blue2);font-size:12px;font-family:var(--mono)">🔗 Subscription Link → ' + esc(f['Sub Link']) + '</a></div>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
+function searchRequest() {
+  var q = document.getElementById('searchInput').value.trim();
+  if (!q) { showError('Please enter your name or tool name.'); return; }
+
+  showLoading();
+
+  var filter = encodeURIComponent('OR(SEARCH("' + q.toLowerCase() + '",LOWER({Requested By})),SEARCH("' + q.toLowerCase() + '",LOWER({Tool Name})))');
+  var url = 'https://api.airtable.com/v0/' + AIRTABLE_BASE + '/' + AIRTABLE_TBL + '?filterByFormula=' + filter + '&sort[0][field]=Submitted At&sort[0][direction]=desc';
+
+  fetch(url, { headers: { 'Authorization': 'Bearer ' + AIRTABLE_TOKEN } })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (!data.records || data.records.length === 0) {
+      showEmpty(q);
+      return;
+    }
+    var html = '<p style="font-size:12px;color:var(--ink3);margin-bottom:16px;font-family:var(--mono)">' + data.records.length + ' request(s) found for "' + esc(q) + '"</p>';
+    data.records.forEach(function(r) { html += renderRecord(r); });
+    document.getElementById('results').innerHTML = html;
+  })
+  .catch(function(err) {
+    showError('Could not connect to database. Please try again.');
+    console.error(err);
+  });
+}
+
+function showLoading() {
+  document.getElementById('results').innerHTML = '<div class="loading"><div class="spinner"></div><br>Searching…</div>';
+}
+function showError(msg) {
+  document.getElementById('results').innerHTML = '<div class="error-box">⚠ ' + msg + '</div>';
+}
+function showEmpty(q) {
+  document.getElementById('results').innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No requests found</div><div class="empty-text">No purchase request found for "' + esc(q) + '". Try searching with your full name or exact tool name.</div></div>';
+}
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* Auto-search from localStorage if coming from form submit */
+try {
+  var lastId = localStorage.getItem('vaultdesk_last_submitted_by');
+  if (lastId) { document.getElementById('searchInput').value = lastId; searchRequest(); }
+} catch(e) {}
+</script>
+</body>
+</html>

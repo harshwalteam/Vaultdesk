@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>VaultDesk — Management Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#0b1f42;--navy2:#132a5a;--gold:#c8a030;--gold2:#f0c040;--gold3:#fdf6e3;
+  --green:#0a5c36;--green2:#22a55e;--green3:#e3f7ec;
+  --coral:#b8001e;--coral2:#e93c52;--coral3:#fce8ec;
+  --blue:#1250a0;--blue2:#3d88e0;--blue3:#e6f0fc;
+  --orange:#b84010;--orange2:#e8692a;--orange3:#fdf0e8;
+  --purple:#3d1478;--purple2:#7e3fd4;--purple3:#f0e8fc;
+  --teal:#0d7a80;--teal2:#1abc9c;--teal3:#e2f7f5;
+  --ink:#0d1724;--ink2:#2e3d52;--ink3:#6b7a8e;
+  --bg:#f0f3f8;--white:#fff;--rule:#c8d4e8;
+  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+  --radius:8px;--shadow:0 2px 12px rgba(11,31,66,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:13px}
+.topbar{background:var(--navy);border-bottom:3px solid var(--gold);padding:0 28px;min-height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-logo{width:36px;height:36px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:13px;color:var(--navy)}
+.brand-name{font-size:15px;font-weight:800;color:#fff}
+.brand-sub{font-size:9px;color:rgba(255,255,255,.45);letter-spacing:1.2px;text-transform:uppercase;font-family:var(--mono)}
+.nav-links{display:flex;gap:8px}
+.nav-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);border-radius:6px;padding:6px 14px;font-size:11px;font-family:var(--mono);cursor:pointer;text-decoration:none;font-weight:600}
+.nav-btn:hover{background:rgba(255,255,255,.2)}
+.nav-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.main{max-width:1200px;margin:0 auto;padding:28px}
+
+/* STATS STRIP */
+.stats-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:var(--white);border:1.5px solid var(--rule);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-left:3px solid var(--navy)}
+.stat-num{font-size:24px;font-weight:800;color:var(--navy);font-family:var(--mono)}
+.stat-label{font-size:10px;color:var(--ink3);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+
+/* FILTERS */
+.filters-bar{background:var(--white);border:1.5px solid var(--rule);border-radius:var(--radius);padding:16px 20px;margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;box-shadow:var(--shadow)}
+.filter-label{font-size:11px;font-weight:700;color:var(--ink3);font-family:var(--mono);white-space:nowrap}
+.filter-select{background:var(--bg);border:1.5px solid var(--rule);border-radius:6px;padding:7px 12px;color:var(--ink);font-size:12px;font-family:var(--sans);outline:none;cursor:pointer}
+.filter-input{background:var(--bg);border:1.5px solid var(--rule);border-radius:6px;padding:7px 12px;color:var(--ink);font-size:12px;font-family:var(--sans);outline:none;min-width:180px}
+.btn-filter{background:var(--navy);border:none;border-radius:6px;padding:8px 18px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--mono)}
+.btn-filter:hover{background:var(--navy2)}
+.btn-refresh{background:transparent;border:1.5px solid var(--rule);border-radius:6px;padding:7px 14px;color:var(--ink3);font-size:11px;cursor:pointer;font-family:var(--mono)}
+.btn-refresh:hover{border-color:var(--navy);color:var(--navy)}
+
+/* TABLE */
+.table-wrap{background:var(--white);border:1.5px solid var(--rule);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:24px}
+.table-header{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--rule)}
+.table-title{font-size:13px;font-weight:800;color:var(--navy);font-family:var(--mono)}
+.table-count{font-size:11px;color:var(--ink3);font-family:var(--mono)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{padding:10px 12px;text-align:left;background:var(--navy);color:rgba(255,255,255,.7);font-size:10px;font-family:var(--mono);font-weight:700;letter-spacing:.3px;white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+tr:hover td{background:#f8fafd}
+tr:last-child td{border-bottom:none}
+.tool-name-cell{font-weight:700;color:var(--navy);max-width:150px}
+.chip{padding:3px 8px;border-radius:10px;font-size:10px;font-weight:700;font-family:var(--mono);white-space:nowrap}
+.chip-pending{background:var(--gold3);color:#7a5800}
+.chip-approved{background:var(--green3);color:var(--green)}
+.chip-rejected{background:var(--coral3);color:var(--coral)}
+.chip-hold{background:var(--orange3);color:var(--orange)}
+.chip-other{background:var(--blue3);color:var(--blue)}
+.prio-critical{color:var(--coral2);font-weight:700}
+.prio-high{color:var(--orange2);font-weight:700}
+.prio-medium{color:var(--gold);font-weight:700}
+.prio-low{color:var(--green2);font-weight:700}
+.btn-view{background:var(--navy);border:none;border-radius:4px;padding:4px 10px;color:#fff;font-size:10px;cursor:pointer;font-family:var(--mono)}
+.btn-view:hover{background:var(--navy2)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(11,31,66,.5);z-index:500;display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:12px;width:100%;max-width:720px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(11,31,66,.3)}
+.modal-header{background:var(--navy);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;border-radius:12px 12px 0 0;position:sticky;top:0}
+.modal-title{font-size:16px;font-weight:800;color:#fff}
+.modal-close{background:none;border:none;color:rgba(255,255,255,.6);font-size:20px;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.modal-close:hover{background:rgba(255,255,255,.1);color:#fff}
+.modal-body{padding:24px}
+.modal-section{margin-bottom:20px}
+.modal-section-title{font-size:11px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.8px;font-family:var(--mono);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.modal-section-title::after{content:'';flex:1;height:1px;background:var(--rule)}
+.info-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.info-item{background:var(--bg);border-radius:6px;padding:10px 12px}
+.info-label{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.4px;font-family:var(--mono);margin-bottom:3px}
+.info-value{font-size:12px;color:var(--ink);font-weight:600;word-break:break-word}
+.approval-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stage-card{border-radius:var(--radius);padding:14px;border:1.5px solid var(--rule)}
+.stage-1{border-left:3px solid var(--coral2)}
+.stage-2{border-left:3px solid var(--blue2)}
+.stage-3{border-left:3px solid var(--purple2)}
+.stage-4{border-left:3px solid var(--teal2)}
+.stage-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.stage-name{font-size:11px;font-weight:700;color:var(--ink)}
+.stage-remarks{font-size:11px;color:var(--ink3);line-height:1.5;margin-top:4px}
+
+/* PURCHASE EDIT */
+.purchase-edit{background:var(--green3);border:1.5px solid var(--green2);border-radius:var(--radius);padding:16px;margin-top:12px}
+.purchase-edit-title{font-size:12px;font-weight:800;color:var(--green);margin-bottom:10px}
+.field-input{width:100%;background:var(--white);border:1.5px solid var(--green2);border-radius:6px;padding:8px 12px;color:var(--ink);font-size:12px;font-family:var(--sans);outline:none;margin-bottom:8px}
+.field-textarea{resize:vertical;min-height:70px}
+.btn-save-purchase{background:var(--green2);border:none;border-radius:6px;padding:8px 20px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--mono)}
+.btn-save-purchase:hover{background:var(--green)}
+
+/* REPORT TABS */
+.report-section{background:var(--white);border:1.5px solid var(--rule);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:24px}
+.report-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tab-btn{background:var(--bg);border:1.5px solid var(--rule);border-radius:6px;padding:7px 16px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--mono);color:var(--ink3)}
+.tab-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tab-btn:hover:not(.active){border-color:var(--navy);color:var(--navy)}
+.report-content{overflow-x:auto}
+
+/* LOADING */
+.loading{text-align:center;padding:40px;color:var(--ink3);font-family:var(--mono)}
+.spinner{display:inline-block;width:24px;height:24px;border:3px solid var(--rule);border-top-color:var(--navy);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.site-footer{background:var(--navy);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;margin-top:20px}
+.fl{font-size:10px;color:rgba(255,255,255,.45);font-family:var(--mono)}
+.fl strong{color:rgba(255,255,255,.75)}
+.fr{font-size:9px;color:rgba(255,255,255,.3);font-family:var(--mono)}
+
+@media(max-width:768px){
+  .stats-strip{grid-template-columns:1fr 1fr}
+  .filters-bar{flex-direction:column;align-items:stretch}
+  .approval-grid,.info-grid2{grid-template-columns:1fr}
+  .main{padding:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay" style="position:fixed;inset:0;background:var(--navy);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:12px;padding:40px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="width:56px;height:56px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:var(--mono);font-weight:700;font-size:18px;color:var(--gold)">VD</div>
+      <div style="font-size:18px;font-weight:800;color:var(--navy)">Management Access</div>
+      <div style="font-size:12px;color:var(--ink3);margin-top:4px;font-family:var(--mono)">VaultDesk · Harshwal Consulting Services</div>
+    </div>
+    <div id="loginError" style="display:none;background:#fce8ec;border:1px solid #e93c52;border-radius:6px;padding:10px 14px;color:#b8001e;font-size:12px;margin-bottom:16px;font-family:var(--mono)">⚠ Invalid credentials. Please try again.</div>
+    <div style="margin-bottom:14px">
+      <label style="font-size:11px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px">Login ID</label>
+      <input type="text" id="loginId" style="width:100%;background:#f0f3f8;border:1.5px solid #c8d4e8;border-radius:6px;padding:10px 14px;color:#0d1724;font-size:13px;font-family:sans-serif;outline:none" placeholder="Enter management ID…" onkeydown="if(event.key==='Enter')document.getElementById('loginPw').focus()" />
+    </div>
+    <div style="margin-bottom:20px">
+      <label style="font-size:11px;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px">Password</label>
+      <input type="password" id="loginPw" style="width:100%;background:#f0f3f8;border:1.5px solid #c8d4e8;border-radius:6px;padding:10px 14px;color:#0d1724;font-size:13px;font-family:sans-serif;outline:none" placeholder="Enter password…" onkeydown="if(event.key==='Enter')doLogin()" />
+    </div>
+    <button onclick="doLogin()" style="width:100%;background:var(--navy);border:none;border-radius:6px;padding:12px;color:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--mono);letter-spacing:.4px">Login to Management Dashboard →</button>
+    <div style="text-align:center;margin-top:16px">
+      <a href="employee-dashboard.html" style="font-size:11px;color:var(--ink3);font-family:var(--mono)">← Go to Employee View</a>
+    </div>
+  </div>
+</div>
+
+<div id="mainContent" style="display:none">
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-logo">VD</div>
+    <div>
+      <div class="brand-name">VaultDesk</div>
+      <div class="brand-sub">MANAGEMENT DASHBOARD</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="index.html" class="nav-btn">+ New Request</a>
+    <a href="employee-dashboard.html" class="nav-btn">Employee View</a>
+    <a href="management-dashboard.html" class="nav-btn active">Management</a>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- STATS -->
+  <div class="stats-strip" id="statsStrip">
+    <div class="stat-card"><div class="stat-num" id="stat-total">—</div><div class="stat-label">Total Requests</div></div>
+    <div class="stat-card" style="border-left-color:var(--gold)"><div class="stat-num" id="stat-pending">—</div><div class="stat-label">Pending</div></div>
+    <div class="stat-card" style="border-left-color:var(--green2)"><div class="stat-num" id="stat-approved">—</div><div class="stat-label">Approved</div></div>
+    <div class="stat-card" style="border-left-color:var(--coral2)"><div class="stat-num" id="stat-rejected">—</div><div class="stat-label">Rejected</div></div>
+    <div class="stat-card" style="border-left-color:var(--orange2)"><div class="stat-num" id="stat-hold">—</div><div class="stat-label">On Hold</div></div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters-bar">
+    <span class="filter-label">Filter:</span>
+    <select id="filterStatus" class="filter-select" onchange="applyFilters()">
+      <option value="">All Status</option>
+      <option value="Pending">Pending</option>
+      <option value="Approved">Approved</option>
+      <option value="Rejected">Rejected</option>
+      <option value="Hold">On Hold</option>
+    </select>
+    <select id="filterPriority" class="filter-select" onchange="applyFilters()">
+      <option value="">All Priority</option>
+      <option value="critical">Critical</option>
+      <option value="high">High</option>
+      <option value="medium">Medium</option>
+      <option value="low">Low</option>
+    </select>
+    <select id="filterDept" class="filter-select" onchange="applyFilters()">
+      <option value="">All Departments</option>
+    </select>
+    <input type="text" id="filterSearch" class="filter-input" placeholder="Search tool or name…" oninput="applyFilters()" />
+    <button class="btn-filter" onclick="loadAllRecords()">↻ Refresh</button>
+  </div>
+
+  <!-- MAIN TABLE -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <div class="table-title">All Purchase Requests</div>
+      <div class="table-count" id="tableCount">Loading…</div>
+    </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tool Name</th>
+            <th>Dept</th>
+            <th>Cost</th>
+            <th>Priority</th>
+            <th>Requested By</th>
+            <th>Manager</th>
+            <th>Status</th>
+            <th>Mgr Decision</th>
+            <th>Sanwar</th>
+            <th>Abhi</th>
+            <th>Vinay</th>
+            <th>Submitted</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr><td colspan="14" class="loading"><div class="spinner"></div> Loading records…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- REPORT SECTION -->
+  <div class="report-section">
+    <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:16px">📊 Purchase Reports</div>
+    <div class="report-tabs">
+      <button class="tab-btn active" onclick="switchReport('daily',this)">Daily</button>
+      <button class="tab-btn" onclick="switchReport('weekly',this)">Weekly</button>
+      <button class="tab-btn" onclick="switchReport('monthly',this)">Monthly</button>
+      <button class="tab-btn" onclick="switchReport('yearly',this)">Yearly</button>
+      <button class="tab-btn" onclick="switchReport('subscriptions',this)">Subscriptions</button>
+    </div>
+    <div class="report-content" id="reportContent">
+      <div class="loading"><div class="spinner"></div> Loading report…</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnBg(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Request Details</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+</div><!-- end mainContent -->
+<div class="site-footer">
+  <div class="fl">VaultDesk Management · <strong>Harshwal Consulting Services Pvt Ltd</strong> · 2026</div>
+  <div class="fr">MANAGEMENT ONLY · INTERNAL USE</div>
+</div>
+
+<script>
+var AIRTABLE_TOKEN = 'patlj0BTez4Vz2phF.00cbc425d646c1e2708eebba08826eec8c9ba69f7bc80dc05be3840d9dffcc4a';
+var AIRTABLE_BASE  = 'appN500O6fqTAJUIp';
+var AIRTABLE_TBL   = 'tbljyPQ4OU4euOCGW';
+
+var allRecords = [];
+var currentReport = 'daily';
+
+/* ── LOAD ALL RECORDS ── */
+function loadAllRecords() {
+  document.getElementById('tableBody').innerHTML = '<tr><td colspan="14" class="loading"><div class="spinner"></div> Loading…</td></tr>';
+  fetchAll('').then(function(records) {
+    allRecords = records;
+    buildDeptFilter(records);
+    renderTable(records);
+    updateStats(records);
+    renderReport(records, currentReport);
+  }).catch(function(err) {
+    document.getElementById('tableBody').innerHTML = '<tr><td colspan="14" style="padding:20px;color:var(--coral);text-align:center">Error loading data: ' + err.message + '</td></tr>';
+  });
+}
+
+function fetchAll(offset) {
+  var url = 'https://api.airtable.com/v0/' + AIRTABLE_BASE + '/' + AIRTABLE_TBL + '?pageSize=100&sort[0][field]=Submitted At&sort[0][direction]=desc';
+  if (offset) url += '&offset=' + offset;
+  return fetch(url, { headers: { 'Authorization': 'Bearer ' + AIRTABLE_TOKEN } })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var records = data.records || [];
+    if (data.offset) {
+      return fetchAll(data.offset).then(function(more) { return records.concat(more); });
+    }
+    return records;
+  });
+}
+
+/* ── STATS ── */
+function updateStats(records) {
+  var pending=0, approved=0, rejected=0, hold=0;
+  records.forEach(function(r) {
+    var d = (r.fields['Manager Decision']||'').toLowerCase();
+    if (!d) pending++;
+    else if (d.indexOf('approve')!==-1) approved++;
+    else if (d.indexOf('reject')!==-1) rejected++;
+    else if (d.indexOf('hold')!==-1) hold++;
+    else pending++;
+  });
+  document.getElementById('stat-total').textContent    = records.length;
+  document.getElementById('stat-pending').textContent  = pending;
+  document.getElementById('stat-approved').textContent = approved;
+  document.getElementById('stat-rejected').textContent = rejected;
+  document.getElementById('stat-hold').textContent     = hold;
+}
+
+/* ── DEPT FILTER ── */
+function buildDeptFilter(records) {
+  var depts = {};
+  records.forEach(function(r) { var d = r.fields['Department']||''; if(d) depts[d]=1; });
+  var sel = document.getElementById('filterDept');
+  sel.innerHTML = '<option value="">All Departments</option>';
+  Object.keys(depts).sort().forEach(function(d) {
+    sel.innerHTML += '<option value="'+esc(d)+'">'+esc(d)+'</option>';
+  });
+}
+
+/* ── FILTERS ── */
+function applyFilters() {
+  var status   = document.getElementById('filterStatus').value.toLowerCase();
+  var priority = document.getElementById('filterPriority').value.toLowerCase();
+  var dept     = document.getElementById('filterDept').value.toLowerCase();
+  var search   = document.getElementById('filterSearch').value.toLowerCase();
+
+  var filtered = allRecords.filter(function(r) {
+    var f = r.fields;
+    var d = (f['Manager Decision']||'').toLowerCase();
+    var recStatus = !d ? 'pending' : d.indexOf('approve')!==-1 ? 'approved' : d.indexOf('reject')!==-1 ? 'rejected' : d.indexOf('hold')!==-1 ? 'hold' : 'pending';
+
+    if (status && recStatus !== status) return false;
+    if (priority && (f['Priority']||'').toLowerCase() !== priority) return false;
+    if (dept && (f['Department']||'').toLowerCase() !== dept) return false;
+    if (search) {
+      var haystack = ((f['Tool Name']||'') + ' ' + (f['Requested By']||'') + ' ' + (f['Department']||'')).toLowerCase();
+      if (haystack.indexOf(search) === -1) return false;
+    }
+    return true;
+  });
+  renderTable(filtered);
+}
+
+/* ── RENDER TABLE ── */
+function getDecisionChip(val) {
+  if (!val) return '<span class="chip chip-pending">PENDING</span>';
+  var v = val.toLowerCase();
+  if (v.indexOf('approve')!==-1) return '<span class="chip chip-approved">APPROVED</span>';
+  if (v.indexOf('reject')!==-1)  return '<span class="chip chip-rejected">REJECTED</span>';
+  if (v.indexOf('hold')!==-1)    return '<span class="chip chip-hold">ON HOLD</span>';
+  return '<span class="chip chip-other">'+esc(val.substring(0,10))+'</span>';
+}
+
+function getPrioClass(p) {
+  var map = {critical:'prio-critical',high:'prio-high',medium:'prio-medium',low:'prio-low'};
+  return map[(p||'').toLowerCase()] || '';
+}
+
+function renderTable(records) {
+  document.getElementById('tableCount').textContent = records.length + ' records';
+  if (records.length === 0) {
+    document.getElementById('tableBody').innerHTML = '<tr><td colspan="14" style="padding:30px;text-align:center;color:var(--ink3)">No records found</td></tr>';
+    return;
+  }
+  var html = '';
+  records.forEach(function(r, i) {
+    var f = r.fields;
+    var d = (f['Manager Decision']||'').toLowerCase();
+    var rowStatus = !d ? 'pending' : d.indexOf('approve')!==-1 ? 'approved' : d.indexOf('reject')!==-1 ? 'rejected' : 'hold';
+    var bgColor = rowStatus === 'approved' ? '#f8fff9' : rowStatus === 'rejected' ? '#fff8f8' : rowStatus === 'hold' ? '#fffdf0' : '';
+    html += '<tr style="background:' + bgColor + '">';
+    html += '<td style="color:var(--ink3);font-family:var(--mono);font-size:10px">' + (i+1) + '</td>';
+    html += '<td class="tool-name-cell">' + esc(f['Tool Name']||'—') + '</td>';
+    html += '<td>' + esc(f['Department']||'—') + '</td>';
+    html += '<td style="font-family:var(--mono);font-size:11px;white-space:nowrap">' + esc(f['Monthly Cost']||'—') + '</td>';
+    html += '<td class="' + getPrioClass(f['Priority']) + '">' + esc((f['Priority']||'—').toUpperCase()) + '</td>';
+    html += '<td>' + esc(f['Requested By']||'—') + '</td>';
+    html += '<td>' + esc(f['Manager']||'—') + '</td>';
+    html += '<td>' + getDecisionChip(f['Manager Decision']) + '</td>';
+    html += '<td>' + getDecisionChip(f['Manager Decision']) + '</td>';
+    html += '<td>' + getDecisionChip(f['Sanwar Decision']) + '</td>';
+    html += '<td>' + getDecisionChip(f['Abhi Decision']) + '</td>';
+    html += '<td>' + getDecisionChip(f['Vinay Decision']) + '</td>';
+    html += '<td style="font-size:10px;color:var(--ink3);font-family:var(--mono);white-space:nowrap">' + esc((f['Submitted At']||'—').substring(0,16)) + '</td>';
+    html += '<td><button class="btn-view" onclick="openModal(\'' + r.id + '\')">View</button></td>';
+    html += '</tr>';
+  });
+  document.getElementById('tableBody').innerHTML = html;
+}
+
+/* ── MODAL ── */
+function openModal(recordId) {
+  var r = allRecords.find(function(x) { return x.id === recordId; });
+  if (!r) return;
+  var f = r.fields;
+  document.getElementById('modalTitle').textContent = (f['Tool Name']||'Request') + ' — Details';
+
+  var html = '';
+
+  /* Basic Info */
+  html += '<div class="modal-section"><div class="modal-section-title">Request Information</div>';
+  html += '<div class="info-grid2">';
+  var fields = [
+    ['Tool Name', f['Tool Name']], ['Department', f['Department']],
+    ['Category', f['Category']], ['Monthly Cost', f['Monthly Cost']],
+    ['Priority', f['Priority']], ['Project', f['Project']],
+    ['Owner', f['Owner']], ['Num Users', f['Num Users']],
+    ['Requested By', f['Requested By']], ['Manager', f['Manager']],
+    ['Sub Manager', f['Sub Manager']], ['Required Date', f['Required Date']],
+    ['Submitted At', f['Submitted At']], ['ROI', f['ROI']],
+  ];
+  fields.forEach(function(item) {
+    html += '<div class="info-item"><div class="info-label">'+esc(item[0])+'</div><div class="info-value">'+esc(item[1]||'—')+'</div></div>';
+  });
+  html += '</div>';
+  if (f['Justification']) {
+    html += '<div class="info-item" style="margin-top:10px"><div class="info-label">Business Justification</div><div class="info-value" style="font-weight:400;line-height:1.6">'+esc(f['Justification'])+'</div></div>';
+  }
+  if (f['Outcome']) {
+    html += '<div class="info-item" style="margin-top:8px"><div class="info-label">Expected Outcome</div><div class="info-value" style="font-weight:400;line-height:1.6">'+esc(f['Outcome'])+'</div></div>';
+  }
+  if (f['Sub Link']) {
+    html += '<div style="margin-top:10px"><a href="'+esc(f['Sub Link'])+'" target="_blank" style="color:var(--blue2);font-size:12px;font-family:var(--mono)">🔗 Subscription Link: '+esc(f['Sub Link'])+'</a></div>';
+  }
+  html += '</div>';
+
+  /* Approval Status */
+  html += '<div class="modal-section"><div class="modal-section-title">Approval Status</div>';
+  html += '<div class="approval-grid">';
+  var stages = [
+    ['1','Reporting Manager','stage-1', f['Manager Decision'], f['Manager Remarks']],
+    ['2','Sanwar Sir','stage-2', f['Sanwar Decision'], f['Sanwar Remarks']],
+    ['3','Abhi Sir','stage-3', f['Abhi Decision'], f['Abhi Remarks']],
+    ['4','Vinay Sir','stage-4', f['Vinay Decision'], f['Vinay Remarks']],
+  ];
+  stages.forEach(function(s) {
+    var chip = getDecisionChip(s[3]);
+    html += '<div class="stage-card '+s[2]+'">';
+    html += '<div class="stage-header"><div class="stage-name">Stage '+s[0]+' — '+s[1]+'</div>'+chip+'</div>';
+    if (s[4] && s[4] !== '—') html += '<div class="stage-remarks">'+esc(s[4])+'</div>';
+    html += '</div>';
+  });
+  html += '</div></div>';
+
+  /* Purchase Details — Management editable */
+  html += '<div class="modal-section"><div class="modal-section-title">Purchase Details (Management)</div>';
+  html += '<div class="purchase-edit">';
+  html += '<div class="purchase-edit-title">📦 Where & How Purchased</div>';
+  html += '<input type="text" id="purchase_details_'+recordId+'" class="field-input" placeholder="e.g. Purchased via website with credit card on 15 May 2026…" value="'+esc(f['Purchase Details']||'')+'" />';
+  html += '<input type="text" id="purchase_made_at_'+recordId+'" class="field-input" placeholder="e.g. Amazon / Company Card / NEFT Transfer…" value="'+esc(f['Purchase Made At']||'')+'" />';
+  html += '<button class="btn-save-purchase" onclick="savePurchaseDetails(\''+recordId+'\')">💾 Save Purchase Details</button>';
+  html += '</div></div>';
+
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+function closeModalOnBg(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+/* ── SAVE PURCHASE DETAILS ── */
+function savePurchaseDetails(recordId) {
+  var details = document.getElementById('purchase_details_'+recordId).value;
+  var madeAt  = document.getElementById('purchase_made_at_'+recordId).value;
+
+  fetch('https://api.airtable.com/v0/' + AIRTABLE_BASE + '/' + AIRTABLE_TBL + '/' + recordId, {
+    method: 'PATCH',
+    headers: { 'Authorization': 'Bearer ' + AIRTABLE_TOKEN, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields: { 'Purchase Details': details, 'Purchase Made At': madeAt } })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(res) {
+    if (res.id) {
+      /* Update local record */
+      var r = allRecords.find(function(x) { return x.id === recordId; });
+      if (r) { r.fields['Purchase Details'] = details; r.fields['Purchase Made At'] = madeAt; }
+      alert('Purchase details saved!');
+    }
+  })
+  .catch(function(err) { alert('Save failed: ' + err.message); });
+}
+
+/* ── REPORTS ── */
+function switchReport(type, btn) {
+  currentReport = type;
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderReport(allRecords, type);
+}
+
+function renderReport(records, type) {
+  var now = new Date();
+  var filtered = records;
+
+  if (type === 'daily') {
+    filtered = records.filter(function(r) {
+      var d = new Date(r.fields['Submitted At']||'');
+      return d.toDateString() === now.toDateString();
+    });
+  } else if (type === 'weekly') {
+    var weekAgo = new Date(now.getTime() - 7*24*60*60*1000);
+    filtered = records.filter(function(r) { return new Date(r.fields['Submitted At']||'') >= weekAgo; });
+  } else if (type === 'monthly') {
+    filtered = records.filter(function(r) {
+      var d = new Date(r.fields['Submitted At']||'');
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    });
+  } else if (type === 'yearly') {
+    filtered = records.filter(function(r) {
+      return new Date(r.fields['Submitted At']||'').getFullYear() === now.getFullYear();
+    });
+  } else if (type === 'subscriptions') {
+    filtered = records.filter(function(r) {
+      var d = (r.fields['Manager Decision']||'').toLowerCase();
+      return d.indexOf('approve') !== -1;
+    });
+  }
+
+  if (filtered.length === 0) {
+    document.getElementById('reportContent').innerHTML = '<div style="padding:30px;text-align:center;color:var(--ink3);font-family:var(--mono)">No records for this period</div>';
+    return;
+  }
+
+  var periodLabel = type === 'daily' ? 'Today' : type === 'weekly' ? 'Last 7 days' : type === 'monthly' ? 'This month' : type === 'yearly' ? 'This year' : 'All approved';
+
+  var html = '<div style="margin-bottom:12px;font-size:12px;color:var(--ink3);font-family:var(--mono)">';
+  html += periodLabel + ' · ' + filtered.length + ' request(s)</div>';
+  html += '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">';
+  html += '<thead><tr>';
+  ['#','Tool','Dept','Cost','Priority','Requested By','Decision','Purchased From','Date'].forEach(function(h) {
+    html += '<th style="padding:8px 10px;text-align:left;background:var(--navy);color:rgba(255,255,255,.7);font-size:10px;font-family:var(--mono);white-space:nowrap">'+h+'</th>';
+  });
+  html += '</tr></thead><tbody>';
+
+  filtered.forEach(function(r, i) {
+    var f = r.fields;
+    var bg = i%2===0 ? '#fff' : '#f8fafd';
+    html += '<tr style="background:'+bg+'">';
+    html += '<td style="padding:8px 10px;color:var(--ink3);font-size:10px;font-family:var(--mono)">'+(i+1)+'</td>';
+    html += '<td style="padding:8px 10px;font-weight:700;color:var(--navy)">'+esc(f['Tool Name']||'—')+'</td>';
+    html += '<td style="padding:8px 10px">'+esc(f['Department']||'—')+'</td>';
+    html += '<td style="padding:8px 10px;font-family:var(--mono);font-size:11px">'+esc(f['Monthly Cost']||'—')+'</td>';
+    html += '<td style="padding:8px 10px">'+esc((f['Priority']||'—').toUpperCase())+'</td>';
+    html += '<td style="padding:8px 10px">'+esc(f['Requested By']||'—')+'</td>';
+    html += '<td style="padding:8px 10px">'+getDecisionChip(f['Manager Decision'])+'</td>';
+    html += '<td style="padding:8px 10px;font-size:11px;color:var(--ink3)">'+esc(f['Purchase Made At']||'—')+'</td>';
+    html += '<td style="padding:8px 10px;font-size:10px;color:var(--ink3);font-family:var(--mono);white-space:nowrap">'+esc((f['Submitted At']||'—').substring(0,10))+'</td>';
+    html += '</tr>';
+  });
+
+  html += '</tbody></table></div>';
+  document.getElementById('reportContent').innerHTML = html;
+}
+
+/* ── UTILITY ── */
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── LOGIN ── */
+var MGMT_CREDENTIALS = {
+  'vaultdesk.admin': 'Harshwal@2026',
+  'sanwar': 'Sanwar@123',
+  'abhi': 'Abhi@123',
+  'vinay': 'Vinay@123',
+  'lokesh': 'Lokesh@123'
+};
+
+function doLogin() {
+  var id = (document.getElementById('loginId').value||'').trim().toLowerCase();
+  var pw = (document.getElementById('loginPw').value||'').trim();
+  var errEl = document.getElementById('loginError');
+
+  if (MGMT_CREDENTIALS[id] && MGMT_CREDENTIALS[id] === pw) {
+    errEl.style.display = 'none';
+    document.getElementById('loginOverlay').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    try { sessionStorage.setItem('vaultdesk_mgmt_auth', id); } catch(e) {}
+    loadAllRecords();
+  } else {
+    errEl.style.display = 'block';
+    document.getElementById('loginPw').value = '';
+    document.getElementById('loginPw').focus();
+  }
+}
+
+function checkSession() {
+  try {
+    var auth = sessionStorage.getItem('vaultdesk_mgmt_auth');
+    if (auth && MGMT_CREDENTIALS[auth]) {
+      document.getElementById('loginOverlay').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'block';
+      return true;
+    }
+  } catch(e) {}
+  return false;
+}
+
+/* ── INIT ── */
+if (!checkSession()) {
+  /* Show login — do not load records yet */
+  setTimeout(function() {
+    document.getElementById('loginId').focus();
+  }, 100);
+} else {
+  loadAllRecords();
+}
+/* Auto refresh every 2 minutes */
+setInterval(loadAllRecords, 120000);
+</script>
+</body>
+</html>
