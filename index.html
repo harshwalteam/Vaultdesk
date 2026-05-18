@@ -225,7 +225,9 @@ input[type="date"].field-input{color-scheme:light}
       </div>
     </div>
     <div class="doc-badge">PURCHASE REQUEST FORM</div>
-    <div class="topbar-right">
+    <div class="topbar-right" style="gap:8px">
+      <a href="employee-dashboard.html" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);border-radius:6px;padding:5px 12px;font-size:10px;font-family:var(--mono);text-decoration:none;font-weight:600">My Status</a>
+      <a href="management-dashboard.html" style="background:rgba(200,160,48,.2);border:1px solid rgba(200,160,48,.4);color:var(--gold2);border-radius:6px;padding:5px 12px;font-size:10px;font-family:var(--mono);text-decoration:none;font-weight:600">Management</a>
       <span class="user-email">aivault@harshwal.com</span>
       <div class="avatar-btn">A</div>
     </div>
@@ -357,7 +359,7 @@ input[type="date"].field-input{color-scheme:light}
     <!-- Q5 Justification -->
     <div class="form-card full-width">
       <div class="q-num">Q5</div>
-      <label class="q-title" for="q5_justification">Business Justification <span class="req">*</span></label>
+      <label class="q-title" for="q5_justification">Business Justification <span class="optional">(optional)</span></label>
       <p class="q-hint">What problem does this solve? What does it automate? Why this tool over alternatives?</p>
       <textarea id="q5_justification" class="field-input field-textarea" rows="4" oninput="validateA()"></textarea>
     </div>
@@ -574,11 +576,9 @@ input[type="date"].field-input{color-scheme:light}
       <label class="q-title" for="q18_sub_manager">Subscription Manager <span class="req">*</span></label>
       <p class="q-hint">Who manages licence, renewals, and billing?</p>
       <input type="text" id="q18_sub_manager" class="field-input" placeholder="Type subscription manager name…" oninput="validateD()" />
-      <label class="q-title" style="margin-top:10px;font-size:12px" for="q18_login_id">Subscription Login ID <span class="optional">(optional)</span></label>
-      <p class="q-hint" style="margin-bottom:6px">Email/username used to log into the tool</p>
-      <input type="text" id="q18_login_id" class="field-input" placeholder="e.g. admin@harshwal.com" />
-      <label class="q-title" style="margin-top:8px;font-size:12px" for="q18_login_pass">Subscription Password Hint <span class="optional">(optional)</span></label>
-      <input type="text" id="q18_login_pass" class="field-input" style="margin-top:4px" placeholder="e.g. stored in LastPass / vault" />
+      <label class="q-title" style="margin-top:10px;font-size:12px" for="q18_sub_link">Subscription Link to Buy <span class="optional">(optional)</span></label>
+      <p class="q-hint" style="margin-bottom:6px">URL where this tool can be purchased or subscribed</p>
+      <input type="url" id="q18_sub_link" class="field-input" placeholder="e.g. https://tool.com/pricing" />
     </div>
 
     <!-- Q19 — FIX 9: Auto-filled with today + 5 working days -->
@@ -781,6 +781,43 @@ function showAutofix(msg, cls) {
 }
 
 /* ── INIT ── */
+
+/* AIRTABLE CONFIG */
+var AIRTABLE_TOKEN = "patlj0BTez4Vz2phF.00cbc425d646c1e2708eebba08826eec8c9ba69f7bc80dc05be3840d9dffcc4a";
+var AIRTABLE_BASE  = "appN500O6fqTAJUIp";
+var AIRTABLE_TBL   = "tbljyPQ4OU4euOCGW";
+
+function saveToAirtable(d) {
+  var fields = {
+    "Tool Name": d.tool_name||"", "Department": d.department||"",
+    "Category": d.category||"", "Monthly Cost": d.monthly_cost||"",
+    "Priority": d.priority||"", "Justification": d.justification||"",
+    "Project": d.project||"", "Owner": d.owner||"",
+    "Num Users": d.num_users||"", "All Users": d.all_users||"",
+    "Primary User": d.primary_user||"", "Usage Type": d.usage_type||"",
+    "Outcome": d.outcome||"", "ROI": d.roi||"",
+    "Requested By": d.requested_by||"", "Manager": d.manager||"",
+    "Sub Manager": d.sub_manager||"", "Sub Link": d.sub_link||"",
+    "Required Date": d.required_date||"", "Comments": d.comments||"",
+    "Submitted At": d.submitted_at||"", "Status": "Pending",
+    "Manager Decision": d.stage1||"", "Manager Remarks": d.stage1_remarks||"",
+    "Sanwar Decision": d.stage2||"", "Sanwar Remarks": d.stage2_remarks||"",
+    "Abhi Decision": d.stage3||"", "Abhi Remarks": d.stage3_remarks||"",
+    "Vinay Decision": d.stage4||"", "Vinay Remarks": d.stage4_remarks||"",
+    "Purchase Details": "", "Purchase Made At": ""
+  };
+  fetch("https://api.airtable.com/v0/"+AIRTABLE_BASE+"/"+AIRTABLE_TBL, {
+    method:"POST",
+    headers:{"Authorization":"Bearer "+AIRTABLE_TOKEN,"Content-Type":"application/json"},
+    body: JSON.stringify({fields:fields})
+  }).then(function(r){return r.json();}).then(function(res){
+    if(res.id){
+      console.log("[VaultDesk] Saved to Airtable:",res.id);
+      try{localStorage.setItem("vaultdesk_last_id",res.id);}catch(e){}
+      showAutofix("Saved to database","autofix-ok");
+    }
+  }).catch(function(err){console.error("[VaultDesk] Airtable error:",err);});
+}
 (function init() {
   /* EmailJS */
   try { emailjs.init('JlZgjXipLPjKqTEdn'); } catch(e) { console.warn('EmailJS init:', e); }
@@ -894,7 +931,6 @@ function isStepAValid() {
     var amt = parseFloat(document.getElementById('q3_amount').value);
     if (!amt || amt < 0) return false;
     if (!document.getElementById('q7_priority').value) return false;
-    if (!document.getElementById('q5_justification').value.trim()) return false;
     return true;
   } catch(e) { return false; }
 }
@@ -1111,6 +1147,7 @@ function handleSubmit() {
 
     /* Show success screen */
     document.getElementById('success-meta').textContent = '"' + toolName + '" requested by ' + reqName;
+    try { localStorage.setItem('vaultdesk_last_submitted_by', reqName); } catch(e) {}
     document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
     document.getElementById('successScreen').classList.add('active');
     document.querySelectorAll('.snav-item').forEach(function(n) { n.classList.remove('active'); n.classList.add('done'); });
@@ -1156,6 +1193,20 @@ function handleSubmit() {
         console.warn('[VaultDesk] Sheets save failed:', err);
       });
     }
+
+    /* Save to Airtable */
+    saveToAirtable({
+      tool_name:toolName,department:deptFinal,category:catFinal,
+      monthly_cost:costStr,priority:priority,justification:justify,
+      project:projFinal,owner:owner,num_users:numUsers,all_users:allUsers,
+      primary_user:pUFinal,usage_type:usageFinal,outcome:outcome,roi:roi,
+      requested_by:reqName,manager:manager,sub_manager:subMgr,
+      sub_link:subLink,required_date:reqDate,comments:comments,submitted_at:now,
+      stage1:stage1Final,stage1_remarks:stage1Remarks,
+      stage2:stage2Final,stage2_remarks:stage2Remarks,
+      stage3:stage3Final,stage3_remarks:stage3Remarks,
+      stage4:stage4Final,stage4_remarks:stage4Remarks
+    });
 
     /* Send email with auto-retry (up to 3 attempts) */
     function sendEmail(attempt) {
