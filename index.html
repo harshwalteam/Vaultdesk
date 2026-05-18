@@ -1130,7 +1130,7 @@ function handleSubmit() {
     /* Send email with auto-retry (up to 3 attempts) */
     function sendEmail(attempt) {
       try { emailjs.init('JlZgjXipLPjKqTEdn'); } catch(e) {}
-      emailjs.send('service_wubn2qv', 'template_5s1w05e', {
+    emailjs.send('service_wubn2qv', 'template_5s1w05e', {         name:          reqName,         email:         'aivault@harshwal.com',
         name:          reqName,
         email:         'aivault@harshwal.com',
         tool_name:     toolName,
