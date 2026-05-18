@@ -236,8 +236,8 @@ input[type="date"].field-input{color-scheme:light}
     <button class="snav-item active" id="snav-a"><span class="snav-circle">A</span>Tool Details</button>
     <button class="snav-item" id="snav-b"><span class="snav-circle">B</span>Project &amp; Users</button>
     <button class="snav-item" id="snav-c"><span class="snav-circle">C</span>Business Case</button>
-    <button class="snav-item" id="snav-d"><span class="snav-circle">D</span>Approval</button>
-    <button class="snav-item" id="snav-e"><span class="snav-circle">E</span>Approve &amp; Submit</button>
+    <button class="snav-item" id="snav-d"><span class="snav-circle">D</span>Approval Details</button>
+    <button class="snav-item" id="snav-e"><span class="snav-circle">E</span>Review &amp; Submit</button>
   </div>
 </div>
 
@@ -542,7 +542,7 @@ input[type="date"].field-input{color-scheme:light}
     <button class="btn-back" onclick="goBack('b','c')">← Back</button>
     <div class="footer-right">
       <div class="error-toast" id="err-c">⚠ Please fill all required fields.</div>
-      <button class="btn-next" onclick="goTo('d','c',isStepCValid)">Next: Approval Details →</button>
+      <button class="btn-next" onclick="goTo('d','c',isStepCValid)">Next: Review &amp; Submit →</button>
     </div>
   </div>
 </div>
@@ -607,97 +607,27 @@ input[type="date"].field-input{color-scheme:light}
 
 <!-- ══ STEP E — APPROVE & SUBMIT ══ -->
 <div class="panel" id="step-e">
-  <div class="sh">E — Approval &amp; Submit <span class="badge b-navy">STEP 5 OF 5</span></div>
+  <div class="sh">E — Review &amp; Submit <span class="badge b-navy">STEP 5 OF 5</span></div>
 
   <div class="notice n-gold">
-    <div class="notice-icon">✅</div>
+    <div class="notice-icon">📋</div>
     <div>
-      <div class="notice-title">3-Stage Approval Panel</div>
-      <div class="notice-text">Reporting Manager approval is <strong>mandatory</strong>. Sanwar Sir, Abhi Sir and Vinay Sir approvals are optional — but if a decision is selected, a reason must be provided.</div>
+      <div class="notice-title">Almost Done!</div>
+      <div class="notice-text">Please confirm the declaration below and submit your request. Your manager and the management team will be notified automatically for approval.</div>
     </div>
   </div>
 
+  <!-- Hidden stage fields (will be submitted as Pending) -->
+  <input type="hidden" id="stage1_other" value="" />
+  <textarea id="stage1_remarks" style="display:none"></textarea>
+  <input type="hidden" id="stage2_other" value="" />
+  <textarea id="stage2_remarks" style="display:none"></textarea>
+  <input type="hidden" id="stage3_other" value="" />
+  <textarea id="stage3_remarks" style="display:none"></textarea>
+  <input type="hidden" id="stage4_other" value="" />
+  <textarea id="stage4_remarks" style="display:none"></textarea>
+
   <div class="form-grid">
-
-    <!-- STAGE 1 — Reporting Manager (MANDATORY) -->
-    <div class="form-card full-width" style="border-left:4px solid var(--coral2)">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-        <div style="background:var(--coral2);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">1</div>
-        <div>
-          <div class="q-title" style="margin:0">Reporting Manager Approval <span class="req">*</span></div>
-          <div class="q-hint" style="margin:2px 0 0">Mandatory — required before submission</div>
-        </div>
-        <div id="stage1_badge" style="margin-left:auto;padding:4px 14px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--mono);background:var(--bg);color:var(--ink3);border:1px solid var(--rule)">PENDING</div>
-      </div>
-      <div class="radio-group" id="rg_stage1">
-        <label class="radio-opt" onclick="pickApproval('rg_stage1',this,'approve','stage1_badge','APPROVED','green'); setApprovalOther('stage1_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>✅ Approve</label>
-        <label class="radio-opt" onclick="pickApproval('rg_stage1',this,'hold','stage1_badge','ON HOLD','gold'); setApprovalOther('stage1_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>⏸ Hold</label>
-        <label class="radio-opt" onclick="pickApproval('rg_stage1',this,'reject','stage1_badge','REJECTED','red'); setApprovalOther('stage1_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>❌ Reject</label>
-        <label class="radio-opt" onclick="pickApproval('rg_stage1',this,'other','stage1_badge','OTHER','gray'); setApprovalOther('stage1_other',true); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>✏️ Other — type below</label>
-      </div>
-      <input type="text" id="stage1_other" class="field-input other-input" placeholder="Describe decision…" oninput="validateE()" style="display:none" />
-      <textarea id="stage1_remarks" class="field-input field-textarea" style="margin-top:10px;min-height:60px" placeholder="Reporting Manager remarks (optional)…" rows="2"></textarea>
-    </div>
-
-    <!-- STAGE 2 — Sanwar Sir (OPTIONAL) -->
-    <div class="form-card" style="border-left:4px solid var(--blue2)">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-        <div style="background:var(--blue2);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">2</div>
-        <div>
-          <div class="q-title" style="margin:0">Sanwar Sir <span class="optional">(optional)</span></div>
-          <div class="q-hint" style="margin:2px 0 0">Director Approval</div>
-        </div>
-        <div id="stage2_badge" style="margin-left:auto;padding:4px 14px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--mono);background:var(--bg);color:var(--ink3);border:1px solid var(--rule)">PENDING</div>
-      </div>
-      <div class="radio-group" id="rg_stage2">
-        <label class="radio-opt" onclick="pickApproval('rg_stage2',this,'approve','stage2_badge','APPROVED','green'); setApprovalOther('stage2_other',false);"><span class="radio-dot"><span class="radio-inner"></span></span>✅ Approve</label>
-        <label class="radio-opt" onclick="pickApproval('rg_stage2',this,'hold','stage2_badge','ON HOLD','gold'); setApprovalOther('stage2_other',false);"><span class="radio-dot"><span class="radio-inner"></span></span>⏸ Hold</label>
-        <label class="radio-opt" onclick="pickApproval('rg_stage2',this,'reject','stage2_badge','REJECTED','red'); setApprovalOther('stage2_other',false);"><span class="radio-dot"><span class="radio-inner"></span></span>❌ Reject</label>
-        <label class="radio-opt" onclick="pickApproval('rg_stage2',this,'other','stage2_badge','OTHER','gray'); setApprovalOther('stage2_other',true);"><span class="radio-dot"><span class="radio-inner"></span></span>✏️ Other — type below</label>
-      </div>
-      <input type="text" id="stage2_other" class="field-input other-input" placeholder="Describe decision…" style="display:none" />
-      <textarea id="stage2_remarks" class="field-input field-textarea" style="margin-top:10px;min-height:60px" placeholder="Sanwar Sir remarks (optional)…" rows="2"></textarea>
-    </div>
-
-    <!-- STAGE 3 — Abhi Sir (OPTIONAL, mandatory if touched) -->
-    <div class="form-card" style="border-left:4px solid var(--purple2)">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-        <div style="background:var(--purple2);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">3</div>
-        <div>
-          <div class="q-title" style="margin:0">Abhi Sir <span class="optional">(optional)</span></div>
-          <div class="q-hint" style="margin:2px 0 0">If selected — decision is mandatory</div>
-        </div>
-        <div id="stage3_badge" style="margin-left:auto;padding:4px 14px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--mono);background:var(--bg);color:var(--ink3);border:1px solid var(--rule)">PENDING</div>
-      </div>
-      <div class="radio-group" id="rg_stage3">
-        <label class="radio-opt" onclick="pickApproval('rg_stage3',this,'approve','stage3_badge','APPROVED','green'); setApprovalOther('stage3_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>✅ Approve</label>
-        <label class="radio-opt" onclick="pickApproval('rg_stage3',this,'hold','stage3_badge','ON HOLD','gold'); setApprovalOther('stage3_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>⏸ Hold</label>
-        <label class="radio-opt" onclick="pickApproval('rg_stage3',this,'reject','stage3_badge','REJECTED','red'); setApprovalOther('stage3_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>❌ Reject</label>
-        <label class="radio-opt" onclick="pickApproval('rg_stage3',this,'other','stage3_badge','OTHER','gray'); setApprovalOther('stage3_other',true); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>✏️ Other — type below</label>
-      </div>
-      <input type="text" id="stage3_other" class="field-input other-input" placeholder="Describe decision…" oninput="validateE()" style="display:none" />
-      <textarea id="stage3_remarks" class="field-input field-textarea" style="margin-top:10px;min-height:60px" placeholder="Abhi Sir remarks (optional)…" rows="2"></textarea>
-    </div>
-
-    <!-- STAGE 4 — Vinay Sir (OPTIONAL, mandatory if touched) -->
-    <div class="form-card" style="border-left:4px solid var(--teal2)">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-        <div style="background:var(--teal2);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">4</div>
-        <div>
-          <div class="q-title" style="margin:0">Vinay Sir <span class="optional">(optional)</span></div>
-          <div class="q-hint" style="margin:2px 0 0">If selected — decision is mandatory</div>
-        </div>
-        <div id="stage4_badge" style="margin-left:auto;padding:4px 14px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--mono);background:var(--bg);color:var(--ink3);border:1px solid var(--rule)">PENDING</div>
-      </div>
-      <div class="radio-group" id="rg_stage4">
-        <label class="radio-opt" onclick="pickApproval('rg_stage4',this,'approve','stage4_badge','APPROVED','green'); setApprovalOther('stage4_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>✅ Approve</label>
-        <label class="radio-opt" onclick="pickApproval('rg_stage4',this,'hold','stage4_badge','ON HOLD','gold'); setApprovalOther('stage4_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>⏸ Hold</label>
-        <label class="radio-opt" onclick="pickApproval('rg_stage4',this,'reject','stage4_badge','REJECTED','red'); setApprovalOther('stage4_other',false); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>❌ Reject</label>
-        <label class="radio-opt" onclick="pickApproval('rg_stage4',this,'other','stage4_badge','OTHER','gray'); setApprovalOther('stage4_other',true); validateE();"><span class="radio-dot"><span class="radio-inner"></span></span>✏️ Other — type below</label>
-      </div>
-      <input type="text" id="stage4_other" class="field-input other-input" placeholder="Describe decision…" oninput="validateE()" style="display:none" />
-      <textarea id="stage4_remarks" class="field-input field-textarea" style="margin-top:10px;min-height:60px" placeholder="Vinay Sir remarks (optional)…" rows="2"></textarea>
-    </div>
 
     <!-- DECLARATION -->
     <div class="form-card full-width declaration-card">
@@ -717,7 +647,7 @@ input[type="date"].field-input{color-scheme:light}
   <div class="panel-footer">
     <button class="btn-back" onclick="goBack('d','e')">← Back</button>
     <div class="footer-right">
-      <div class="error-toast" id="err-e">⚠ Reporting Manager approval is mandatory.</div>
+      <div class="error-toast" id="err-e" style="display:none"></div>
       <button class="btn-submit" id="submitBtn" onclick="handleSubmit()" disabled>Submit Purchase Request →</button>
     </div>
   </div>
@@ -783,9 +713,9 @@ function showAutofix(msg, cls) {
 /* ── INIT ── */
 
 /* AIRTABLE CONFIG */
-var AIRTABLE_TOKEN = "patlj0BTez4Vz2phF.00cbc425d646c1e2708eebba08826eec8c9ba69f7bc80dc05be3840d9dffcc4a";
+var AIRTABLE_TOKEN = "patjsFygpSxmbvY4O.b9b911994fa36522d54e62d83ce1b34afbd77c4599ab3fd52f3e1a9d4ce07cd0";
 var AIRTABLE_BASE  = "appN500O6fqTAJUIp";
-var AIRTABLE_TBL   = "tbljyPQ4OU4euOCGW";
+var AIRTABLE_TBL   = "tblVOAUTG1Rl3xePo";
 
 function saveToAirtable(d) {
   var fields = {
@@ -1117,26 +1047,15 @@ function handleSubmit() {
     var comments  = (document.getElementById('q22_comments').value||'').trim() || '—';
     var loginId   = (document.getElementById('q18_login_id') ? document.getElementById('q18_login_id').value : '') || '—';
 
-    /* Approval stages */
-    var stage1Decision = radioState['rg_stage1'] || '—';
-    var stage1Other    = (document.getElementById('stage1_other').value||'').trim();
-    var stage1Final    = stage1Decision === 'other' ? stage1Other : stage1Decision;
-    var stage1Remarks  = (document.getElementById('stage1_remarks').value||'').trim() || '—';
-
-    var stage2Decision = radioState['rg_stage2'] || 'not reviewed';
-    var stage2Other    = (document.getElementById('stage2_other').value||'').trim();
-    var stage2Final    = stage2Decision === 'other' ? stage2Other : stage2Decision;
-    var stage2Remarks  = (document.getElementById('stage2_remarks').value||'').trim() || '—';
-
-    var stage3Decision = radioState['rg_stage3'] || 'not reviewed';
-    var stage3Other    = (document.getElementById('stage3_other').value||'').trim();
-    var stage3Final    = stage3Decision === 'other' ? stage3Other : stage3Decision;
-    var stage3Remarks  = (document.getElementById('stage3_remarks').value||'').trim() || '—';
-
-    var stage4Decision = radioState['rg_stage4'] || 'not reviewed';
-    var stage4Other    = (document.getElementById('stage4_other').value||'').trim();
-    var stage4Final    = stage4Decision === 'other' ? stage4Other : stage4Decision;
-    var stage4Remarks  = (document.getElementById('stage4_remarks').value||'').trim() || '—';
+    /* Approval stages — all set to Pending, management will approve via dashboard */
+    var stage1Final   = 'Pending';
+    var stage1Remarks = '—';
+    var stage2Final   = 'Pending';
+    var stage2Remarks = '—';
+    var stage3Final   = 'Pending';
+    var stage3Remarks = '—';
+    var stage4Final   = 'Pending';
+    var stage4Remarks = '—';
 
     var approvalSummary =
       'Reporting Manager: ' + stage1Final + ' | ' + stage1Remarks + '\n' +
@@ -1327,23 +1246,7 @@ function setApprovalOther(inputId, show) {
 
 function isStepEValid() {
   try {
-    /* Stage 1 — Reporting Manager is MANDATORY */
-    if (!radioState['rg_stage1']) return false;
-    if (radioState['rg_stage1'] === 'other') {
-      var s1o = document.getElementById('stage1_other');
-      if (!s1o || !s1o.value.trim()) return false;
-    }
-    /* Stage 3 — Abhi Sir: if touched, must have value */
-    if (radioState['rg_stage3'] === 'other') {
-      var s3o = document.getElementById('stage3_other');
-      if (!s3o || !s3o.value.trim()) return false;
-    }
-    /* Stage 4 — Vinay Sir: if touched, must have value */
-    if (radioState['rg_stage4'] === 'other') {
-      var s4o = document.getElementById('stage4_other');
-      if (!s4o || !s4o.value.trim()) return false;
-    }
-    /* Declarations */
+    /* Only declarations required — approval is done by management after submission */
     var boxes = document.querySelectorAll('.declare-check'), checked = 0;
     boxes.forEach(function(b) { if (b.checked) checked++; });
     if (checked < boxes.length) return false;
